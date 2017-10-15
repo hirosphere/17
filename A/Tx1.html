@@ -27,7 +27,7 @@ var TextHDPane = class_def
 			this.JSON_Edit = $.Create
 			(
 				"textarea",
-				d2, { value: "[\"鶯谷\"]" },
+				d2, { value: "[91,\"鶯谷\",\"100px cursive\"]" },
 				{  }
 			);
 			
@@ -64,9 +64,10 @@ var TextHDPane = class_def
 		
 		this.Update = function()
 		{
-			//document.title = this.Doc.Value.Title + " -- Hashdoc";
-			// $.Text( this.Title, this.Doc.Value.Title );
-			$.Text( this.Title, this.Doc.JSON );
+			document.title = this.Doc.Value.Title + " -- Hashdoc";
+			$.Text( this.Title, this.Doc.Value.Title );
+			this.Title.style.font = this.Doc.Value.Font;
+			//$.Text( this.Title, this.Doc.JSON );
 		};
 	}
 );
@@ -81,7 +82,7 @@ var TextHD = class_def
 			base.Initiate.call( this );
 			
 			this.JSON = "";
-			this.Value = { Title: "" };
+			this.Value = { Title: "", Font: "" };
 			
 			var self = this;
 			window.addEventListener( "hashchange", function() { self.Update(); } ,  false );
@@ -92,7 +93,12 @@ var TextHD = class_def
 		this.Update = function()
 		{
 			this.JSON = decodeURIComponent( location.hash.substr( 1 ) );
-			this.Value = $.FromJSON( this.JSON );
+			var value = $.FromJSON( this.JSON );
+			this.Value =
+			{
+				Title: value && value[ 1 ] || "--",
+				Font: value && value[ 2 ] || ""
+			};
 			this.Notify( "ValueChange" );
 		};
 		
