@@ -75,7 +75,7 @@ var $ = new function()
 		return ( "" + plain ).replace( /<|>|&|  | |\t|\r\n|\r|\n/, hp_rep );
 	};
 	
-	ht_rep_tab =
+	var ht_rep_tab =
 	{
 		"<": "&lt;",
 		">": "&gt;",
@@ -88,7 +88,7 @@ var $ = new function()
 		"\n": "<br/>\r\n" 
 	};
 	
-	function hp_rep( all, ch )  {  }
+	function hp_rep( ch )  {  return ht_rep_tab[ ch ];  }
 	
 	
 	//*  *//
@@ -153,10 +153,14 @@ var $ = new function()
 		DD:  function( date )  {  return  ( "0" + date.getDate() ).substr( -2 );  },
 		B: function( date )  {  return  df_youbi[  date.getDay()  ];  },
 		
+		hms: function( date )  {  return df( "{hh}:{mm}:{ss}", date );  },
 		
-		hh:  function( date )  {  return  "" + date.getHours();  },
-		mm:  function( date )  {  return  "" + date.getMinutes();  },
-		ss:  function( date )  {  return  "" + date.getSeconds();  },
+		hh:  function( date )  {  return  ( "0" + date.getHours() ).substr( -2 );  },
+		h:  function( date )  {  return  "" + date.getHours();  },
+		mm:  function( date )  {  return  ( "0" + date.getMinutes() ).substr( -2 );  },
+		m:  function( date )  {  return  "" + date.getMinutes();  },
+		ss:  function( date )  {  return  ( "0" + date.getSeconds() ).substr( -2 );  },
+		s:  function( date )  {  return  "" + date.getSeconds();  },
 		
 		uYMD: function( date ) {  return df( "{uYYYY}/{uMM}/{uDD}", date );  },
 		
