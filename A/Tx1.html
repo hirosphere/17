@@ -14,12 +14,45 @@ var TextHDPane = class_def
 	{
 		this.Initiate = function( com )
 		{
+			var self = this;
 			this.Doc = TextHD.Create();
 			
 			var e = $.Create( "div", com );
-			this.Title = $.Create( "h1", e );
 			
-			var self = this;
+			var d1 = $.Create( "div", e );
+			this.Title = $.Create( "h1", d1 );
+			
+			
+			var d2 = $.Create( "div", e );
+			this.JSON_Edit = $.Create
+			(
+				"textarea",
+				d2, { value: "[\"鶯谷\"]" },
+				{  }
+			);
+			
+			var upd_bu = $.Create_t( "button", d2, "反映" );
+			var d3 = $.Create( "div", e );
+			this.Link = $.Create
+			(
+				"a",  d3,  {  },  {  }, "Link"
+			);
+			this.Hash_Edit = $.Create
+			(
+				"textarea",
+				d3,  null,
+				{  }
+			);
+			
+			upd_bu.onclick = function()
+			{
+				self.Link.href =
+				self.Hash_Edit.value =
+					location.href.replace( location.hash, "" ) + "#" +
+					encodeURIComponent( self.JSON_Edit.value );
+			};
+			
+			
 			var eh =
 			{
 				ValueChange: function()  { self.Update() }
@@ -31,8 +64,9 @@ var TextHDPane = class_def
 		
 		this.Update = function()
 		{
-			document.title = this.Doc.Value.Title + " -- Hashdoc";
-			$.Text( this.Title, this.Doc.Value.Title );
+			//document.title = this.Doc.Value.Title + " -- Hashdoc";
+			// $.Text( this.Title, this.Doc.Value.Title );
+			$.Text( this.Title, this.Doc.JSON );
 		};
 	}
 );
@@ -46,6 +80,7 @@ var TextHD = class_def
 		{
 			base.Initiate.call( this );
 			
+			this.JSON = "";
 			this.Value = { Title: "" };
 			
 			var self = this;
@@ -56,29 +91,9 @@ var TextHD = class_def
 		
 		this.Update = function()
 		{
-			this.Value.Title = location.hash;
+			this.JSON = decodeURIComponent( location.hash.substr( 1 ) );
+			this.Value = $.FromJSON( this.JSON );
 			this.Notify( "ValueChange" );
-		};
-		
-		this.SetHash = function( value )
-		{
-		
-		};
-		
-		this.GetHash = function()
-		{
-			
-		};
-		
-		//  //
-		
-		this.FromHash = function( hash )
-		{
-			var value = {};
-			
-			hash = hash.replace( /^#/, "" );
-			
-			return value;
 		};
 		
 	}

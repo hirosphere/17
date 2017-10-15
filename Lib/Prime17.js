@@ -39,7 +39,12 @@ var $ = new function()
 {
 	// * DOM * //
 	
-	this.Create = function( type, com, attrs, text )
+	this.Create_t = function( type, com, text, attrs, style, class_name )
+	{
+		return  this.Create( type, com, attrs, style, text, class_name );
+	};
+	
+	this.Create = function( type, com, attrs, style, text, class_name )
 	{
 		var e = document.createElement( type );
 		if( attrs )  for( var fn in attrs )  e[ fn ] = attrs[ fn ];
@@ -237,4 +242,22 @@ var $ = new function()
 		}
 	);
 	
+	// *  JSON  * //
+	
+	this.FromJSON = function( json, failv )
+	{
+		try 
+		{
+			return eval (  "(\r\n" + json + "\r\n)"  );
+		}
+		catch( exc )
+		{
+			return failv;
+		}
+	};
+	
+	this.ToJSON = function( value )
+	{
+	
+	};
 };
