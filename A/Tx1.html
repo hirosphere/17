@@ -60,16 +60,26 @@ var TextHD = class_def
 			this.Notify( "ValueChange" );
 		};
 		
-		this.GetValue = function()
+		this.SetHash = function( value )
+		{
+		
+		};
+		
+		this.GetHash = function()
 		{
 			
 		};
 		
-		this.SetValue = function( value )
+		//  //
+		
+		this.FromHash = function( hash )
 		{
-		
+			var value = {};
+			
+			hash = hash.replace( /^#/, "" );
+			
+			return value;
 		};
-		
 		
 	}
 );
