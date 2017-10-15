@@ -29,6 +29,7 @@ function class_def( Base, definition )
 	return This;
 };
 
+
 // *  * //
 
 
@@ -191,6 +192,48 @@ var $ = new function()
 			{
 				
 			};
+		}
+	);
+	
+	
+	// *  Model - View  * //
+	
+	this.Model = class_def
+	(
+		null,
+		function()
+		{
+			this.Initiate = function()
+			{
+				this.Views = {};
+			};
+			
+			this.AddView = function( view )
+			{
+				if( view && view.RTId == null )
+				{
+					view.RTId = next_id ++;
+				}
+				
+				if( this.Views[ view.RTId ] == null )
+				{
+					this.Views[ view.RTId ] = view;
+				}
+			};
+			
+			this.Notify = function( message, args )
+			{
+				for( var rtid in this.Views )
+				{
+					var view = this.Views[ rtid ];
+					var fn = view[ message ];
+					if( fn )  fn.apply( view, args );
+				}
+			};
+			
+			// *    * //
+			
+			var next_id = 1;
 		}
 	);
 	

@@ -1,0 +1,84 @@
+﻿<html>
+<head>
+<title>Text 1 -- HashDoc</title>
+<script src="../Lib/Prime17.js"></script>
+</head>
+<body>
+<div id= "App1"></div>
+<script>
+
+var TextHDPane = class_def
+(
+	null,
+	function()
+	{
+		this.Initiate = function( com )
+		{
+			this.Doc = TextHD.Create();
+			
+			var e = $.Create( "div", com );
+			this.Title = $.Create( "h1", e );
+			
+			var self = this;
+			var eh =
+			{
+				ValueChange: function()  { self.Update() }
+			};
+			this.Doc.AddView( eh );
+			
+			this.Update();
+		};
+		
+		this.Update = function()
+		{
+			document.title = this.Doc.Value.Title + " -- Hashdoc";
+			$.Text( this.Title, this.Doc.Value.Title );
+		};
+	}
+);
+
+var TextHD = class_def
+(
+	$.Model,
+	function( base )
+	{
+		this.Initiate = function()
+		{
+			base.Initiate.call( this );
+			
+			this.Value = { Title: "" };
+			
+			var self = this;
+			window.addEventListener( "hashchange", function() { self.Update(); } ,  false );
+			
+			this.Update();
+		};
+		
+		this.Update = function()
+		{
+			this.Value.Title = location.hash;
+			this.Notify( "ValueChange" );
+		};
+		
+		this.GetValue = function()
+		{
+			
+		};
+		
+		this.SetValue = function( value )
+		{
+		
+		};
+		
+		
+	}
+);
+
+new function()
+{
+	TextHDPane.Create( $.Id( "App1" ) );
+}
+
+</script>
+</body>
+</html>
