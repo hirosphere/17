@@ -27,7 +27,7 @@ var TextHDPane = class_def
 			this.JSON_Edit = $.Create
 			(
 				"textarea",
-				d2, { value: "[91,\"鶯谷\",\"100px cursive\"]" },
+				d2, { },
 				{  }
 			);
 			
@@ -46,10 +46,7 @@ var TextHDPane = class_def
 			
 			upd_bu.onclick = function()
 			{
-				self.Link.href =
-				self.Hash_Edit.value =
-					location.href.replace( location.hash, "" ) + "#" +
-					encodeURIComponent( self.JSON_Edit.value );
+				self.Update_Link();
 			};
 			
 			
@@ -67,7 +64,17 @@ var TextHDPane = class_def
 			document.title = this.Doc.Value.Title + " -- Hashdoc";
 			$.Text( this.Title, this.Doc.Value.Title );
 			this.Title.style.font = this.Doc.Value.Font;
-			//$.Text( this.Title, this.Doc.JSON );
+			
+			this.JSON_Edit.value = this.Doc.JSON;
+			this.Update_Link();
+		};
+		
+		this.Update_Link = function()
+		{
+			this.Link.href =
+			this.Hash_Edit.value =
+				location.href.replace( location.hash, "" ) + "#" +
+				encodeURIComponent( this.JSON_Edit.value );
 		};
 	}
 );
