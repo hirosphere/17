@@ -13,12 +13,13 @@ var Pane_001 = class_def
 			chord_button( e, synth, -30, -18, -13, -11 );
 			chord_button( e, synth, -27, -15, -10, -8 );
 			chord_button( e, synth, -24, -12, -7, -5 );
+			chord_button( e, synth, -21, -9, -4, -2 );
 			chord_button( e, synth, -25, -13, -8, -6 );
 		};
 		
 		function chord_button( com, synth, b, c1, c2, c3 )
 		{
-			var bu = $.Create( "button", com, null, "Push" );
+			var bu = $.Create_t( "button", com, "Push" );
 			bu.style.padding = "1em";
 			
 			bu.onclick = function()
