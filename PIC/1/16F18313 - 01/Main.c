@@ -62,8 +62,8 @@ void main( void )
 	//  Port  //
 	
 	ANSELA	= 0b000000;
-	TRISA		= 0b00011;
-	LATA		=0b100000;
+	TRISA		= 0b000011;
+	LATA		= 0b100000;
 	
 	//  Timer, PWM  //
 	
