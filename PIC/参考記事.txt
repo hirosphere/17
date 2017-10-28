@@ -1,0 +1,3 @@
+﻿PIC16F18313使い方：Configurable Logic Cell (CLC) http://www.geocities.jp/zattouka/GarageHouse/micon/MPLAB/16F18313/CLC/CLC.htm
+
+Bequest333のページ 続12 8ピンPICでUSB PIC16F18313 HID-シリアルアダプター https://www3.hp-ez.com/hp/bequest333/page104

@@ -1,0 +1,29 @@
+{
+	Title: "PIC16F18313 - 01",
+	Chip: "16F18313",
+	Output: "16F18313 -01.hex",
+	OutDir: "{PrjDir}\\Output",
+	WorkDir: "{PrjDir}\\Work",
+	IPaths:
+	[
+		// "{PrjDir}\\..\\Lib"
+	],
+	Srcs:
+	[
+		{
+			Dir: "{PrjDir}",
+			Items:
+			[
+				"Main.c",
+				// "Periph.c"
+			]
+		},
+		{
+			Dir: "{PrjDir}\\..\\Lib",
+			Items:
+			[
+				// "Prime.c"
+			]
+		}
+	]
+}
