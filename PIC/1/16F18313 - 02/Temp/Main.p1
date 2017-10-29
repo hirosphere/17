@@ -1,4 +1,10 @@
 Version 3.2 HI-TECH Software Intermediate Code
+"73 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+[s S657 `us 1 `us 1 `uc 1 `us 1 ]
+[n S657 . Env Freq Width Phase ]
+"89
+[s S658 `uc 1 `*uc 1 `*uc 1 `uc 1 ]
+[n S658 . Output Start Cur Time ]
 [p mainexit ]
 "9279 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [s S477 :4 `uc 1 ]
@@ -11,14 +17,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S476 . . . ]
 "9289
 [v _OSCFRQbits `VS476 ~T0 @X0 0 e@2335 ]
-"2371
+"100 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+[v _Con_Init `(v ~T0 @X0 0 ef ]
+"2371 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _ANSELA `Vuc ~T0 @X0 0 e@396 ]
 "1433
 [v _TRISA `Vuc ~T0 @X0 0 e@140 ]
 "1975
 [v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"10459
-[v _RA4PPS `Vuc ~T0 @X0 0 e@3732 ]
+"10408
+[v _RA2PPS `Vuc ~T0 @X0 0 e@3730 ]
 "1344
 [v _PR2 `Vuc ~T0 @X0 0 e@30 ]
 "1325
@@ -33,13 +41,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _PIE1 `Vuc ~T0 @X0 0 e@145 ]
 "335
 [v _INTCON `Vuc ~T0 @X0 0 e@11 ]
-"89 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+"107 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _MidTick_Step `(v ~T0 @X0 0 ef ]
+"101
+[v _Con_Step `(v ~T0 @X0 0 ef ]
 "14497 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _TMR2IF `Vb ~T0 @X0 0 e@137 ]
-"73 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-[s S657 `us 1 `uc 1 `uc 1 `us 1 ]
-[n S657 . Freq Width Amp Phase ]
+"86 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+[v _Voix_int_Step `(uc ~T0 @X0 0 ef1`*S657 ]
+"97
+[v _Seq_Init `(v ~T0 @X0 0 ef2`*S658`*uc ]
+"83
+[v _Voix_Init `(v ~T0 @X0 0 ef1`*S657 ]
+"84
+[v _Voix_Trigger `(v ~T0 @X0 0 ef2`*S657`uc ]
+"98
+[v _Seq_Step `(v ~T0 @X0 0 ef1`*S658 ]
+"85
+[v _Voix_Step `(v ~T0 @X0 0 ef1`*S657 ]
 "21 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [p x FEXTOSC=OFF ]
 "22
@@ -558,155 +577,390 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSL equ 0FEEh ;# ">
 "12794
 [; <" TOSH equ 0FEFh ;# ">
-"87 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+"105 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _MidTick_DivCtr `uc ~T0 @X0 1 e ]
 [i _MidTick_DivCtr
 -> -> 1 `i `uc
 ]
-"88
+"106
 [v _MidTick_Task `uc ~T0 @X0 1 e ]
 [i _MidTick_Task
 -> -> 0 `i `uc
 ]
-"90
+"109
 [v _LED_Ctr `us ~T0 @X0 1 e ]
 [i _LED_Ctr
 -> -> 0 `i `us
 ]
-"92
+"111
+[v _Vo_1 `S657 ~T0 @X0 1 e ]
+"112
+[v _Vo_2 `S657 ~T0 @X0 1 e ]
+"114
+[v _Seq_1 `S658 ~T0 @X0 1 e ]
+"115
+[v _Seq_2 `S658 ~T0 @X0 1 e ]
+"117
 [v _main `(v ~T0 @X0 1 ef ]
-"93
+"118
 {
 [e :U _main ]
 [f ]
-"94
-[e = . . _OSCFRQbits 0 0 -> -> 7 `i `uc ]
-"98
-[e = _ANSELA -> -> 0 `i `uc ]
-"99
-[e = _TRISA -> -> 3 `i `uc ]
-"100
-[e = _LATA -> -> 32 `i `uc ]
-"102
-[e = _RA4PPS -> -> 12 `i `uc ]
-"106
-[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
-"107
-[e = _TMR2 -> -> 0 `i `uc ]
-"112
-[e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
-"114
-[e = _CCPR1 -> -> 128 `i `us ]
 "119
-[e = _CCP1CON -> | << -> 1 `i -> 7 `i << -> 15 `i -> 0 `i `uc ]
-"125
-[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
+[e = . . _OSCFRQbits 0 0 -> -> 7 `i `uc ]
+"123
+[e ( _Con_Init ..  ]
+"127
+[e = _ANSELA -> -> 0 `i `uc ]
+"128
+[e = _TRISA -> -> 3 `i `uc ]
 "129
-[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+[e = _LATA -> -> 32 `i `uc ]
 "131
-[e :U 660 ]
-"132
-{
-"133
-[e $ ! != -> _MidTick_Task `i -> -> -> 0 `i `uc `i 662  ]
-"134
-{
+[e = _RA2PPS -> -> 12 `i `uc ]
 "135
-[e -- _MidTick_Task -> -> 1 `i `uc ]
+[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
 "136
-[e ( _MidTick_Step ..  ]
-"137
-}
-[e :U 662 ]
-"138
-}
-[e :U 659 ]
-"131
-[e $U 660  ]
-[e :U 661 ]
-"140
-[e :UE 658 ]
-}
-"142
-[v _MidTick_Step `(v ~T0 @X0 1 ef ]
+[e = _TMR2 -> -> 0 `i `uc ]
+"141
+[e = _T2CON -> | | << -> 1 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
 "143
+[e = _CCPR1 -> -> 0 `i `us ]
+"148
+[e = _CCP1CON -> | << -> 1 `i -> 7 `i << -> 15 `i -> 0 `i `uc ]
+"154
+[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
+"158
+[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+"160
+[e :U 661 ]
+"161
+{
+"162
+[e $ ! != -> _MidTick_Task `i -> -> -> 0 `i `uc `i 663  ]
+"163
+{
+"164
+[e -- _MidTick_Task -> -> 1 `i `uc ]
+"165
+[e ( _MidTick_Step ..  ]
+"166
+}
+[e :U 663 ]
+"167
+}
+[e :U 660 ]
+"160
+[e $U 661  ]
+[e :U 662 ]
+"169
+[e :UE 659 ]
+}
+"171
+[v _MidTick_Step `(v ~T0 @X0 1 ef ]
+"172
 {
 [e :U _MidTick_Step ]
 [f ]
-"144
+"173
 [e =+ _LED_Ctr -> -> 131 `i `us ]
-"145
+"174
 [e = _LATA -> >> -> _LED_Ctr `ui -> 10 `i `uc ]
-"146
-[e :UE 663 ]
+"176
+[e ( _Con_Step ..  ]
+"177
+[e :UE 664 ]
 }
-[v F5267 `(v ~T0 @X0 1 tf ]
-"149
-[v _ISR `IF5267 ~T0 @X0 1 e ]
-"150
+[v F5291 `(v ~T0 @X0 1 tf ]
+"180
+[v _ISR `IF5291 ~T0 @X0 1 e ]
+"181
 {
 [e :U _ISR ]
 [f ]
-"151
-[e $ ! _TMR2IF 665  ]
-"152
+"182
+[e $ ! _TMR2IF 666  ]
+"183
 {
-"153
-[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 666  ]
-"154
+"184
+[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 667  ]
+"185
 {
-"155
+"186
 [e = _MidTick_DivCtr -> -> 64 `i `uc ]
-"156
+"187
 [e ++ _MidTick_Task -> -> 1 `i `uc ]
-"159
+"188
+}
+[e :U 667 ]
+"190
+[v _acc `us ~T0 @X0 1 a ]
+[e = _acc -> -> 0 `i `us ]
+"191
+[e =+ _acc -> ( _Voix_int_Step (1 &U _Vo_1 `us ]
+"192
+[e =+ _acc -> ( _Voix_int_Step (1 &U _Vo_2 `us ]
+"193
+[e = _CCPR1 _acc ]
+"195
+[e = _TMR2IF -> -> 0 `i `b ]
+"196
 }
 [e :U 666 ]
-"160
-[e = _TMR2IF -> -> 0 `i `b ]
-"161
+"197
+[e :UE 665 ]
 }
-[e :U 665 ]
-"162
-[e :UE 664 ]
+"202
+[v _Seq_A_1 `uc ~T0 @X0 -> 0 `x e ]
+[i _Seq_A_1
+:U ..
+"206
+-> -> 255 `i `uc
+..
+]
+"208
+[v _Seq_A_2 `uc ~T0 @X0 -> 0 `x e ]
+[i _Seq_A_2
+:U ..
+"212
+-> -> 255 `i `uc
+..
+]
+"214
+[v _Con_Init `(v ~T0 @X0 1 ef ]
+"215
+{
+[e :U _Con_Init ]
+[f ]
+"216
+[e ( _Seq_Init (2 , &U _Seq_1 &U _Seq_A_1 ]
+"217
+[e ( _Seq_Init (2 , &U _Seq_2 &U _Seq_A_2 ]
+"219
+[e ( _Voix_Init (1 &U _Vo_1 ]
+"220
+[e ( _Voix_Init (1 &U _Vo_2 ]
+"222
+[e ( _Voix_Trigger (2 , &U _Vo_1 -> -> 55 `i `uc ]
+"223
+[e ( _Voix_Trigger (2 , &U _Vo_2 -> -> 64 `i `uc ]
+"224
+[e :UE 668 ]
 }
-"169
+"226
+[v _Con_Step `(v ~T0 @X0 1 ef ]
+"227
+{
+[e :U _Con_Step ]
+[f ]
+"228
+[e ( _Seq_Step (1 &U _Seq_1 ]
+"229
+[e ( _Seq_Step (1 &U _Seq_2 ]
+"231
+[e ( _Voix_Step (1 &U _Vo_1 ]
+"232
+[e ( _Voix_Step (1 &U _Vo_2 ]
+"233
+[e :UE 669 ]
+}
+"238
+[v _Seq_Init `(v ~T0 @X0 1 ef2`*S658`*uc ]
+"239
+{
+[e :U _Seq_Init ]
+"238
+[v _this `*S658 ~T0 @X0 1 r1 ]
+[v _start `*uc ~T0 @X0 1 r2 ]
+"239
+[f ]
+"240
+[e = . *U _this 0 -> -> 0 `i `uc ]
+"241
+[e = . *U _this 2 = . *U _this 1 _start ]
+"242
+[e = . *U _this 3 -> -> 1 `i `uc ]
+"243
+[e :UE 670 ]
+}
+"245
+[v _Seq_Step `(v ~T0 @X0 1 ef1`*S658 ]
+"246
+{
+[e :U _Seq_Step ]
+"245
+[v _this `*S658 ~T0 @X0 1 r1 ]
+"246
+[f ]
+"247
+[e :UE 671 ]
+}
+"254
+[v _Voix_Decay `Cus ~T0 @X0 1 e ]
+[i _Voix_Decay
+-> -> 32 `i `us
+]
+"256
+[v _Voix_Key_Table `Cus ~T0 @X0 -> 72 `i e ]
+[i _Voix_Key_Table
+:U ..
+"258
+-> -> 134 `i `us
+-> -> 142 `i `us
+-> -> 150 `i `us
+-> -> 159 `i `us
+-> -> 169 `i `us
+-> -> 179 `i `us
+-> -> 189 `i `us
+-> -> 201 `i `us
+-> -> 213 `i `us
+-> -> 225 `i `us
+-> -> 239 `i `us
+-> -> 253 `i `us
+"259
+-> -> 268 `i `us
+-> -> 284 `i `us
+-> -> 301 `i `us
+-> -> 319 `i `us
+-> -> 338 `i `us
+-> -> 358 `i `us
+-> -> 379 `i `us
+-> -> 401 `i `us
+-> -> 425 `i `us
+-> -> 451 `i `us
+-> -> 477 `i `us
+-> -> 506 `i `us
+"260
+-> -> 536 `i `us
+-> -> 568 `i `us
+-> -> 601 `i `us
+-> -> 637 `i `us
+-> -> 675 `i `us
+-> -> 715 `i `us
+-> -> 758 `i `us
+-> -> 803 `i `us
+-> -> 851 `i `us
+-> -> 901 `i `us
+-> -> 955 `i `us
+-> -> 1011 `i `us
+"261
+-> -> 1072 `i `us
+-> -> 1135 `i `us
+-> -> 1203 `i `us
+-> -> 1274 `i `us
+-> -> 1350 `i `us
+-> -> 1430 `i `us
+-> -> 1515 `i `us
+-> -> 1606 `i `us
+-> -> 1701 `i `us
+-> -> 1802 `i `us
+-> -> 1909 `i `us
+-> -> 2023 `i `us
+"262
+-> -> 2143 `i `us
+-> -> 2271 `i `us
+-> -> 2406 `i `us
+-> -> 2549 `i `us
+-> -> 2700 `i `us
+-> -> 2861 `i `us
+-> -> 3031 `i `us
+-> -> 3211 `i `us
+-> -> 3402 `i `us
+-> -> 3604 `i `us
+-> -> 3819 `i `us
+-> -> 4046 `i `us
+"263
+-> -> 4286 `i `us
+-> -> 4541 `i `us
+-> -> 4811 `i `us
+-> -> 5098 `i `us
+-> -> 5401 `i `us
+-> -> 5722 `i `us
+-> -> 6062 `i `us
+-> -> 6422 `i `us
+-> -> 6804 `i `us
+-> -> 7209 `i `us
+-> -> 7638 `i `us
+"264
+-> -> 8092 `i `us
+..
+]
+"266
 [v _Voix_Init `(v ~T0 @X0 1 ef1`*S657 ]
-"170
+"267
 {
 [e :U _Voix_Init ]
-"169
+"266
 [v _this `*S657 ~T0 @X0 1 r1 ]
-"170
+"267
 [f ]
-"171
-[e = . *U _this 0 -> / * -> -> 440 `i `l -> 65536 `l -> -> 32000 `i `l `us ]
-"172
-[e = . *U _this 1 -> -> 100 `i `uc ]
-"173
-[e = . *U _this 2 -> -> 120 `i `uc ]
-"174
+"268
+[e = . *U _this 1 -> -> 0 `i `us ]
+"269
+[e = . *U _this 2 -> -> 128 `i `uc ]
+"270
+[e = . *U _this 0 -> -> 0 `i `us ]
+"271
 [e = . *U _this 3 -> -> 0 `i `us ]
-"175
-[e :UE 667 ]
+"272
+[e :UE 672 ]
 }
-"177
+"274
+[v _Voix_Trigger `(v ~T0 @X0 1 ef2`*S657`uc ]
+"275
+{
+[e :U _Voix_Trigger ]
+"274
+[v _this `*S657 ~T0 @X0 1 r1 ]
+[v _key `uc ~T0 @X0 1 r2 ]
+"275
+[f ]
+"276
+[e = . *U _this 1 *U + &U _Voix_Key_Table * -> -> - -> _key `i -> 12 `i `ui `ux -> -> # *U &U _Voix_Key_Table `ui `ux ]
+"277
+[e = . *U _this 0 -> -> 65280 `ui `us ]
+"278
+[e :UE 673 ]
+}
+"280
+[v _Voix_Step `(v ~T0 @X0 1 ef1`*S657 ]
+"281
+{
+[e :U _Voix_Step ]
+"280
+[v _this `*S657 ~T0 @X0 1 r1 ]
+"281
+[f ]
+"282
+[e $ ! > -> . *U _this 0 `ui -> _Voix_Decay `ui 675  ]
+"283
+[e =- . *U _this 0 _Voix_Decay ]
+[e $U 676  ]
+"284
+[e :U 675 ]
+"285
+[e = . *U _this 0 -> -> 0 `i `us ]
+[e :U 676 ]
+"286
+[e :UE 674 ]
+}
+"288
 [v _Voix_int_Step `(uc ~T0 @X0 1 ef1`*S657 ]
-"178
+"289
 {
 [e :U _Voix_int_Step ]
-"177
+"288
 [v _this `*S657 ~T0 @X0 1 r1 ]
-"178
+"289
 [f ]
-"179
+"290
 [v _out `uc ~T0 @X0 1 a ]
-[e = _out -> ? < >> -> . *U _this 3 `ui -> 8 `i -> . *U _this 1 `ui : -> 0 `i -> . *U _this 2 `i `uc ]
-"180
-[e =+ . *U _this 3 . *U _this 0 ]
-"181
+[e = _out -> ? < >> -> . *U _this 3 `ui -> 8 `i -> . *U _this 2 `ui : -> -> 0 `i `ui >> -> . *U _this 0 `ui -> 8 `i `uc ]
+"291
+[e =+ . *U _this 3 . *U _this 1 ]
+"292
 [e ) _out ]
-[e $UE 668  ]
-"182
-[e :UE 668 ]
+[e $UE 677  ]
+"293
+[e :UE 677 ]
 }

@@ -1,7 +1,7 @@
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-                                                                                                           Sun Oct 29 10:50:49 2017
+                                                                                                           Sun Oct 29 13:38:07 2017
 
 
      1                           
@@ -73,19 +73,19 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
     67                           
     68                           ; jump to start
     69                           	ljmp	start
-    70  0000  281C               
+    70  0000  2834               
     71                           
     72                           	psect	init
     73                           start
-    74  001C                     
+    74  0034                     
     75                           ;Initialize the stack pointer (FSR1)
-    76                           ;Stack space: 02000h-020EFh (240 bytes)
+    76                           ;Stack space: 02024h-020EFh (204 bytes)
     77                           
     78                           	fsr1l	equ	6
     79  0006                     	fsr1h	equ	7
     80  0007                     	global stacklo, stackhi
-    81                           	stacklo	equ	02000h
-    82  2000                     	stackhi	equ	020EFh
+    81                           	stacklo	equ	02024h
+    82  2024                     	stackhi	equ	020EFh
     83  20EF                     
     84                           
     85                           	psect	stack,class=STACK,space=2,noexec
@@ -96,7 +96,7 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
     90                           	psect	end_init
     91                           	global start_initialization
     92                           	ljmp start_initialization	;jump to C runtime clear & initialization
-    93  001C  281D               
+    93  0034  2835               
     94                           ; Config register CONFIG1 @ 0x8007
     95                           ;	FEXTOSC External Oscillator mode Selection bits
     96                           ;	FEXTOSC = OFF, Oscillator not enabled
@@ -162,9 +162,9 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-Symbol Table                                                                                               Sun Oct 29 10:50:49 2017
+Symbol Table                                                                                               Sun Oct 29 13:38:07 2017
 
-               ___sp 0000                 _main 0025                 start 001C               stackhi 20EF  
-             stacklo 2000  start_initialization 001D             ___int_sp 0000             intlevel0 0000  
+               ___sp 0000                 _main 0148                 start 0034               stackhi 20EF  
+             stacklo 2024  start_initialization 0035             ___int_sp 0000             intlevel0 0000  
            intlevel1 0000             intlevel2 0000             intlevel3 0000             intlevel4 0000  
            intlevel5 0000             reset_vec 0000  
