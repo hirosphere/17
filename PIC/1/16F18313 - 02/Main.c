@@ -67,7 +67,7 @@ typedef	unsigned char	bool;
 #define	PPS_out_CCP1	0x0C
 #define	CCP_mode_PWM		0x0F
 
-//	Voix
+//	Voix, Seq, Con
 
 typedef struct
 {
@@ -87,18 +87,21 @@ uint8 Voix_int_Step( Voix * this );
 
 typedef struct
 {
-	uint8	Output;
 	uint8 * Start;
 	uint8 * Cur;
+	uint8	Trans;
 	uint8	Time;
 }
   Seq;
 
-void Seq_Init( Seq * this, uint8 * start );
-void Seq_Step( Seq * this );
+void  Seq_Init( Seq * this, uint8 * start );
+bool  Seq_Step( Seq * this, uint8 * output );
 
-void Con_Init( void );
-void Con_Step( void );
+uint8	Con_Tempo = 105;
+uint16	Con_Tempo_Phase = 0;
+
+void  Con_Init( void );
+void  Con_Step( void );
 
 //	
 
@@ -135,8 +138,8 @@ void main( void )
 	PR2	= 250 - 1;			//  32kHz	= 8MHz / 250
 	TMR2	= 0;
 	T2CON =
-		1	<< _T2CON_T2CKPS_POSITION 	|
-		0	<< _T2CON_T2OUTPS_POSITION	|
+		0	<< _T2CON_T2CKPS_POSITION 	|
+		1	<< _T2CON_T2OUTPS_POSITION	|
 		On 	<< _T2CON_TMR2ON_POSITION
 	;
 	
@@ -185,7 +188,7 @@ void interrupt ISR( void )
 		
 		if( -- MidTick_DivCtr == 0 )
 		{
-			MidTick_DivCtr = 32;
+			MidTick_DivCtr = 64;
 			MidTick_Task ++;
 		}
 		
@@ -199,16 +202,65 @@ void interrupt ISR( void )
 
 //		Con
 
+uint8	Con_Output[ 2 ] ;
+
+#define   n_(  len, key  )		(  ( len ) << 5 | ( key )  )
+#define   n_trans(  oct,  key  )	0x01, (  (oct) * 12 + (key)  )
+#define   n_oct(  oct  )		0x10
+#define   n_end		0x00
+
 uint8	Seq_A_1[] =
 {
+	n_trans(  2,  8  ),
 	
-	0xFF
+	n_(  6,  9  ),	n_(  6,  16  ),	n_(  6,  16  ),	n_(  6,  14  ),
+	n_(  6,  14  ),	n_(  6,  16  ),	n_(  6,  12  ),	n_(  6,  11  ),
+	n_(  5,  11  ),	n_(  5,  12  ),	n_(  6,  14  ),	n_(  6,  12  ),	n_(  6,  11  ),
+	n_(  7,  9  ),	n_(  7,  9  ),
+	
+	n_(  6,  9  ),	n_(  6,  16  ),	n_(  6,  16  ),	n_(  6,  14  ),
+	n_(  6,  14  ),	n_(  6,  16  ),	n_(  6,  12  ),	n_(  6,  11  ),
+	n_(  5,  11  ),	n_(  5,  12  ),	n_(  6,  14  ),	n_(  6,  12  ),	n_(  6,  11  ),
+	n_(  7,  9  ),	n_(  7,  9  ),
+	
+	n_(  6,  9  ),	n_(  6,  21  ),	n_(  6,  21  ),	n_(  6,  19  ),
+	n_(  6,  19  ),	n_(  6,  21  ),	n_(  6,  17  ),	n_(  6,  16  ),
+	n_(  5,  16  ),	n_(  5,  17  ),	n_(  6,  19  ),	n_(  6,  16  ),	n_(  6,  14  ),
+	n_(  7,  14  ),	n_(  7,  13  ),
+	
+	n_(  6,  14  ),	n_(  6,  17  ),	n_(  5,  17  ),	n_(  5,  16  ),	n_(  6,  14  ),
+	n_(  6,  12  ),	n_(  6,  16  ),	n_(  6,  16  ),	n_(  6,  12  ),
+	n_(  5,  11  ),	n_(  5,  12  ),	n_(  6,  14  ),	n_(  6,  12  ),	n_(  6,  11  ),
+	n_(  7,  9  ),	n_(  7,  9  ),
+	
+	n_end
 };
 
 uint8	Seq_A_2[] =
 {
+	n_trans(  0,  8  ),
+
+	n_(  7,  21  ),	n_(  7,  17  ),
+	n_(  7,  19  ),	n_(  7,  16  ),
+	n_(  7,  17  ),	n_(  7,  14  ),
+	n_(  6,  12  ),	n_(  6,  11  ),	n_(  6,  9  ),	n_(  6,  16  ),
 	
-	0xFF
+	n_(  7,  21  ),	n_(  7,  17  ),
+	n_(  7,  19  ),	n_(  7,  16  ),
+	n_(  7,  17  ),	n_(  7,  14  ),
+	n_(  6,  12  ),	n_(  6,  11  ),	n_(  6,  9  ),	n_(  6,  16  ),
+	
+	n_(  7,  26  ),	n_(  7,  23  ),
+	n_(  7,  24  ),	n_(  7,  21  ),
+	n_(  7,  22  ),	n_(  7,  19  ),
+	n_(  6,  21  ),	n_(  6,  13  ),	n_(  6,  21  ),	n_(  6,  25  ),
+	
+	n_(  7,  26  ),	n_(  7,  20  ),
+	n_(  7,  21  ),	n_(  7,  17  ),
+	n_(  7,  18  ),	n_(  7,  20  ),
+	n_(  7,  17  ),	n_(  6,  14  ),	n_(  6,  17  ),
+	
+	n_end
 };
 
 void Con_Init( void )
@@ -218,15 +270,27 @@ void Con_Init( void )
 	
 	Voix_Init( & Vo_1 );
 	Voix_Init( & Vo_2 );
-	
-	Voix_Trigger( & Vo_1, 55 );
-	Voix_Trigger( & Vo_2, 64 );
 }
 
 void Con_Step( void )
 {
-	Seq_Step( & Seq_1 );
-	Seq_Step( & Seq_2 );
+	Con_Tempo_Phase += Con_Tempo;
+	
+	if( Con_Tempo_Phase >= 2500 )
+	{
+		Con_Tempo_Phase -= 2500;
+		
+		if( Seq_Step( & Seq_1, & Con_Output[ 0 ] ) )
+		{
+			Voix_Trigger( & Vo_1,  Con_Output[ 0 ] );
+		}
+		
+		if( Seq_Step( & Seq_2, & Con_Output[ 1 ] ) )
+		{
+			Voix_Trigger( & Vo_2,  Con_Output[ 1 ] );
+		}
+		
+	}
 	
 	Voix_Step( & Vo_1 );
 	Voix_Step( & Vo_2 );
@@ -237,13 +301,49 @@ void Con_Step( void )
 
 void Seq_Init( Seq * this, uint8 * start )
 {
-	this->Output = 0;
 	this->Cur = this->Start = start;
+	this->Trans = 32;
 	this->Time = 1;
 }
 
-void Seq_Step( Seq * this )
+uint8 Seq_Len_Table[ 8 ] = {  1, 1, 1, 1, 3, 6, 12, 24  };
+
+bool Seq_Step( Seq * this, uint8 * output )
 {
+	if( -- this->Time > 0 )   return  false;
+	
+	while( true )
+	{
+		uint8 data = * ( this->Cur ++ );
+		
+		//	Note	//
+		
+		if( data > 0x20 )
+		{
+			this->Time = Seq_Len_Table[  data >> 5  ];
+		
+			output[ 0 ] =  this->Trans + ( data & 0x1F );
+			return  true;
+		}
+		
+		//	End	//
+		
+		if(  data == n_end  )
+		{
+			this->Cur = this->Start;
+			continue;
+		}
+		
+		//	Transpose	//
+		
+		if(  data == 0x01  )
+		{
+			this->Trans = * this->Cur ++;
+			continue;
+		}
+		
+	}
+	return  false;
 }
 
 
@@ -266,7 +366,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 	this->Freq = 0;
-	this->Width = 128;
+	this->Width = 100;
 	this->Env = 0;
 	this->Phase = 0;
 }
