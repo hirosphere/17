@@ -783,7 +783,7 @@ psect	stringtext
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 	line	254
 _Voix_Decay:
-	retlw	020h
+	retlw	080h
 	retlw	0
 
 	global __end_of_Voix_Decay
@@ -859,7 +859,7 @@ global __CFG_CP$OFF
 __CFG_CP$OFF equ 0x0
 global __CFG_CPD$OFF
 __CFG_CPD$OFF equ 0x0
-	file	"Output\16F18313 -01.as"
+	file	"Output\16F18313 -02.as"
 	line	#
 psect cinit,class=CODE,delta=2
 global start_initialization
@@ -910,7 +910,7 @@ psect	dataBANK0
 _Seq_A_1:
        ds      1
 
-	file	"Output\16F18313 -01.as"
+	file	"Output\16F18313 -02.as"
 	line	#
 ; Initialize objects allocated to COMMON
 	global __pidataCOMMON,__pdataCOMMON
@@ -2230,40 +2230,44 @@ u11_20:
 	line	184
 	
 i1l761:	
+	bcf	(137/8),(137)&7	;volatile
+	line	186
+	
+i1l763:	
 	movlw	01h
 	subwf	(_MidTick_DivCtr),f
 	btfss	status,2
 	goto	u12_21
 	goto	u12_20
 u12_21:
-	goto	i1l767
+	goto	i1l769
 u12_20:
-	line	186
+	line	188
 	
-i1l763:	
-	movlw	low(040h)
+i1l765:	
+	movlw	low(020h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	movwf	(_MidTick_DivCtr)
-	line	187
+	line	189
 	
-i1l765:	
+i1l767:	
 	movlw	low(01h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	addwf	(_MidTick_Task),f
-	goto	i1l767
-	line	188
-	
-i1l72:	
+	goto	i1l769
 	line	190
 	
-i1l767:	
-	clrf	(ISR@acc)
-	clrf	(ISR@acc+1)
-	line	191
+i1l72:	
+	line	192
 	
 i1l769:	
+	clrf	(ISR@acc)
+	clrf	(ISR@acc+1)
+	line	193
+	
+i1l771:	
 	movlw	(low(_Vo_1|((0x0)<<8)))&0ffh
 	fcall	_Voix_int_Step
 	movwf	(??_ISR+0)+0
@@ -2272,9 +2276,9 @@ i1l769:
 	addwf	(ISR@acc),f
 	movf	1+(??_ISR+0)+0,w
 	addwfc	(ISR@acc+1),f
-	line	192
+	line	194
 	
-i1l771:	
+i1l773:	
 	movlw	(low(_Vo_2|((0x0)<<8)))&0ffh
 	fcall	_Voix_int_Step
 	movwf	(??_ISR+0)+0
@@ -2283,19 +2287,14 @@ i1l771:
 	addwf	(ISR@acc),f
 	movf	1+(??_ISR+0)+0,w
 	addwfc	(ISR@acc+1),f
-	line	193
+	line	195
 	
-i1l773:	
+i1l775:	
 	movf	(ISR@acc+1),w
 	movlb 5	; select bank5
 	movwf	(657+1)^0280h	;volatile
 	movf	(ISR@acc),w
 	movwf	(657)^0280h	;volatile
-	line	195
-	
-i1l775:	
-	movlb 0	; select bank0
-	bcf	(137/8),(137)&7	;volatile
 	goto	i1l73
 	line	196
 	
@@ -2304,6 +2303,7 @@ i1l71:
 	
 i1l73:	
 	movf	(??_ISR+2),w
+	movlb 0	; select bank0
 	movwf	btemp+1
 	bcf int$flags,0 ;clear compiler interrupt flag (level 1)
 	retfie

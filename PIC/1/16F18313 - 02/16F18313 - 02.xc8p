@@ -1,7 +1,7 @@
 {
 	Title: "PIC16F18313 - 01",
 	Chip: "16F18313",
-	Output: "16F18313 -01.hex",
+	Output: "16F18313 -02.hex",
 	OutDir: "{PrjDir}\\Output",
 	ObjDir: "{PrjDir}\\Temp",
 	IPaths:

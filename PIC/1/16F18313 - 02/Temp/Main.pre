@@ -6815,9 +6815,11 @@ void interrupt ISR( void )
 {
 if( TMR2IF )
 {
+TMR2IF = 0;
+
 if( -- MidTick_DivCtr == 0 )
 {
-MidTick_DivCtr = 64;
+MidTick_DivCtr = 32;
 MidTick_Task ++;
 }
 
@@ -6825,8 +6827,6 @@ uint16 acc = 0;
 acc += Voix_int_Step( & Vo_1 );
 acc += Voix_int_Step( & Vo_2 );
 CCPR1 = acc;
-
-TMR2IF = 0;
 }
 }
 
@@ -6881,7 +6881,7 @@ void Seq_Step( Seq * this )
 }
 
 # 254
-const uint16 Voix_Decay = 0x0020;
+const uint16 Voix_Decay = 0x0080;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
