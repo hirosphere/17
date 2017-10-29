@@ -17,55 +17,64 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISA `Vuc ~T0 @X0 0 e@140 ]
 "1975
 [v _LATA `Vuc ~T0 @X0 0 e@268 ]
+"10459
+[v _RA4PPS `Vuc ~T0 @X0 0 e@3732 ]
 "1344
 [v _PR2 `Vuc ~T0 @X0 0 e@30 ]
 "1325
 [v _TMR2 `Vuc ~T0 @X0 0 e@29 ]
 "1363
 [v _T2CON `Vuc ~T0 @X0 0 e@31 ]
+"4756
+[v _CCPR1 `Vus ~T0 @X0 0 e@657 ]
+"4800
+[v _CCP1CON `Vuc ~T0 @X0 0 e@659 ]
 "1509
 [v _PIE1 `Vuc ~T0 @X0 0 e@145 ]
 "335
 [v _INTCON `Vuc ~T0 @X0 0 e@11 ]
-"55 C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c
+"89 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _MidTick_Step `(v ~T0 @X0 0 ef ]
 "14497 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _TMR2IF `Vb ~T0 @X0 0 e@137 ]
-"3 C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c
+"73 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+[s S657 `us 1 `uc 1 `uc 1 `us 1 ]
+[n S657 . Freq Width Amp Phase ]
+"21 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [p x FEXTOSC=OFF ]
-"4
+"22
 [p x RSTOSC=HFINT32 ]
-"5
-[p x CLKOUTEN=OFF ]
-"6
-[p x CSWEN=ON ]
-"7
-[p x FCMEN=OFF ]
-"11
-[p x MCLRE=OFF ]
-"12
-[p x PWRTE=ON ]
-"13
-[p x WDTE=OFF ]
-"14
-[p x LPBOREN=OFF ]
-"15
-[p x BOREN=ON ]
-"16
-[p x BORV=LOW ]
-"17
-[p x PPS1WAY=OFF ]
-"18
-[p x STVREN=ON ]
-"19
-[p x DEBUG=OFF ]
 "23
-[p x WRT=OFF ]
+[p x CLKOUTEN=OFF ]
 "24
-[p x LVP=OFF ]
-"28
-[p x CP=OFF ]
+[p x CSWEN=ON ]
+"25
+[p x FCMEN=OFF ]
 "29
+[p x MCLRE=OFF ]
+"30
+[p x PWRTE=ON ]
+"31
+[p x WDTE=OFF ]
+"32
+[p x LPBOREN=OFF ]
+"33
+[p x BOREN=ON ]
+"34
+[p x BORV=LOW ]
+"35
+[p x PPS1WAY=OFF ]
+"36
+[p x STVREN=ON ]
+"37
+[p x DEBUG=OFF ]
+"41
+[p x WRT=OFF ]
+"42
+[p x LVP=OFF ]
+"46
+[p x CP=OFF ]
+"47
 [p x CPD=OFF ]
 "51 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [; <" INDF0 equ 00h ;# ">
@@ -549,109 +558,155 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSL equ 0FEEh ;# ">
 "12794
 [; <" TOSH equ 0FEFh ;# ">
-"53 C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c
+"87 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _MidTick_DivCtr `uc ~T0 @X0 1 e ]
 [i _MidTick_DivCtr
 -> -> 1 `i `uc
 ]
-"54
+"88
 [v _MidTick_Task `uc ~T0 @X0 1 e ]
 [i _MidTick_Task
 -> -> 0 `i `uc
 ]
-"56
+"90
 [v _LED_Ctr `us ~T0 @X0 1 e ]
 [i _LED_Ctr
 -> -> 0 `i `us
 ]
-"58
+"92
 [v _main `(v ~T0 @X0 1 ef ]
-"59
+"93
 {
 [e :U _main ]
 [f ]
-"60
+"94
 [e = . . _OSCFRQbits 0 0 -> -> 7 `i `uc ]
-"64
-[e = _ANSELA -> -> 0 `i `uc ]
-"65
-[e = _TRISA -> -> 3 `i `uc ]
-"66
-[e = _LATA -> -> 32 `i `uc ]
-"70
-[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
-"71
-[e = _TMR2 -> -> 0 `i `uc ]
-"76
-[e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
-"80
-[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
-"84
-[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
-"86
-[e :U 659 ]
-"87
-{
-"88
-[e $ ! != -> _MidTick_Task `i -> -> -> 0 `i `uc `i 661  ]
-"89
-{
-"90
-[e -- _MidTick_Task -> -> 1 `i `uc ]
-"91
-[e ( _MidTick_Step ..  ]
-"92
-}
-[e :U 661 ]
-"93
-}
-[e :U 658 ]
-"86
-[e $U 659  ]
-[e :U 660 ]
-"95
-[e :UE 657 ]
-}
-"97
-[v _MidTick_Step `(v ~T0 @X0 1 ef ]
 "98
+[e = _ANSELA -> -> 0 `i `uc ]
+"99
+[e = _TRISA -> -> 3 `i `uc ]
+"100
+[e = _LATA -> -> 32 `i `uc ]
+"102
+[e = _RA4PPS -> -> 12 `i `uc ]
+"106
+[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
+"107
+[e = _TMR2 -> -> 0 `i `uc ]
+"112
+[e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
+"114
+[e = _CCPR1 -> -> 128 `i `us ]
+"119
+[e = _CCP1CON -> | << -> 1 `i -> 7 `i << -> 15 `i -> 0 `i `uc ]
+"125
+[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
+"129
+[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
+"131
+[e :U 660 ]
+"132
+{
+"133
+[e $ ! != -> _MidTick_Task `i -> -> -> 0 `i `uc `i 662  ]
+"134
+{
+"135
+[e -- _MidTick_Task -> -> 1 `i `uc ]
+"136
+[e ( _MidTick_Step ..  ]
+"137
+}
+[e :U 662 ]
+"138
+}
+[e :U 659 ]
+"131
+[e $U 660  ]
+[e :U 661 ]
+"140
+[e :UE 658 ]
+}
+"142
+[v _MidTick_Step `(v ~T0 @X0 1 ef ]
+"143
 {
 [e :U _MidTick_Step ]
 [f ]
-"99
+"144
 [e =+ _LED_Ctr -> -> 131 `i `us ]
-"100
+"145
 [e = _LATA -> >> -> _LED_Ctr `ui -> 10 `i `uc ]
-"101
-[e :UE 662 ]
+"146
+[e :UE 663 ]
 }
-[v F5257 `(v ~T0 @X0 1 tf ]
-"104
-[v _ISR `IF5257 ~T0 @X0 1 e ]
-"105
+[v F5267 `(v ~T0 @X0 1 tf ]
+"149
+[v _ISR `IF5267 ~T0 @X0 1 e ]
+"150
 {
 [e :U _ISR ]
 [f ]
-"106
-[e $ ! _TMR2IF 664  ]
-"107
+"151
+[e $ ! _TMR2IF 665  ]
+"152
 {
-"108
-[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 665  ]
-"109
+"153
+[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 666  ]
+"154
 {
-"110
+"155
 [e = _MidTick_DivCtr -> -> 64 `i `uc ]
-"111
+"156
 [e ++ _MidTick_Task -> -> 1 `i `uc ]
-"112
+"159
+}
+[e :U 666 ]
+"160
+[e = _TMR2IF -> -> 0 `i `b ]
+"161
 }
 [e :U 665 ]
-"113
-[e = _TMR2IF -> -> 0 `i `b ]
-"114
+"162
+[e :UE 664 ]
 }
-[e :U 664 ]
-"115
-[e :UE 663 ]
+"169
+[v _Voix_Init `(v ~T0 @X0 1 ef1`*S657 ]
+"170
+{
+[e :U _Voix_Init ]
+"169
+[v _this `*S657 ~T0 @X0 1 r1 ]
+"170
+[f ]
+"171
+[e = . *U _this 0 -> / * -> -> 440 `i `l -> 65536 `l -> -> 32000 `i `l `us ]
+"172
+[e = . *U _this 1 -> -> 100 `i `uc ]
+"173
+[e = . *U _this 2 -> -> 120 `i `uc ]
+"174
+[e = . *U _this 3 -> -> 0 `i `us ]
+"175
+[e :UE 667 ]
+}
+"177
+[v _Voix_int_Step `(uc ~T0 @X0 1 ef1`*S657 ]
+"178
+{
+[e :U _Voix_int_Step ]
+"177
+[v _this `*S657 ~T0 @X0 1 r1 ]
+"178
+[f ]
+"179
+[v _out `uc ~T0 @X0 1 a ]
+[e = _out -> ? < >> -> . *U _this 3 `ui -> 8 `i -> . *U _this 1 `ui : -> 0 `i -> . *U _this 2 `i `uc ]
+"180
+[e =+ . *U _this 3 . *U _this 0 ]
+"181
+[e ) _out ]
+[e $UE 668  ]
+"182
+[e :UE 668 ]
 }

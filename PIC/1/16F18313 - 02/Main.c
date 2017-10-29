@@ -1,3 +1,21 @@
+/*
+	PIC16F18313
+	
+	Pin		Type	Func
+	
+	1	Pow	VCC
+	2	Out	Piyo LED 2
+	3	Out	Piyo LED 1
+	4	
+	
+	8	Pow	VSS
+	7	ICSP	DAT
+	6	ICSP	CLK
+	5	Out	Sound
+	
+	
+*/
+
 //	Config 1
 
 #pragma config  FEXTOSC = OFF
@@ -46,8 +64,23 @@ typedef	unsigned char	bool;
 
 #include <xc.h>
 
-void wait_ms( uint16 time );
+#define	PPS_out_CCP1	0x0C
+#define	CCP_mode_PWM		0x0F
 
+//
+
+typedef struct
+{
+	uint16		Freq;
+	uint8		Width;
+	uint8		Amp;
+	
+	uint16		Phase;
+}
+  Voix;
+
+void Voix_Init( Voix * this );
+uint8 Voix_int_Step( Voix * this );
 
 //	
 
@@ -66,6 +99,8 @@ void main( void )
 	TRISA		= 0b000011;
 	LATA		= 0b100000;
 	
+	RA4PPS = PPS_out_CCP1;
+	
 	//  Timer, PWM  //
 	
 	PR2	= 250 - 1;			//  32kHz	= 8MHz / 250
@@ -75,6 +110,15 @@ void main( void )
 		0	<< _T2CON_T2OUTPS_POSITION	|
 		On 	<< _T2CON_TMR2ON_POSITION
 	;
+	
+	CCPR1 = 0x080;
+	
+	CCP1CON =
+		On						<< _CCP1CON_CCP1EN_POSITION		|
+		CCP_mode_PWM		<< _CCP1CON_CCP1MODE_POSITION
+	;
+	
+	//	Interrupt
 	
 	PIE1 =
 		On 	<< _PIE1_TMR2IE_POSITION
@@ -89,12 +133,8 @@ void main( void )
 		if( MidTick_Task )
 		{
 			MidTick_Task --;
-			//MidTick_Step();
+			MidTick_Step();
 		}
-		
-		wait_ms( 1000 );
-		
-		MidTick_Step();
 	}
 	
 }
@@ -106,8 +146,6 @@ void MidTick_Step( void )
 }
 
 
-//
-
 void interrupt ISR( void )
 {
 	if( TMR2IF )
@@ -116,20 +154,31 @@ void interrupt ISR( void )
 		{
 			MidTick_DivCtr = 64;
 			MidTick_Task ++;
+			
+			
 		}
 		TMR2IF = Off;
 	}
 }
 
-//
 
-void wait_ms( uint16 time )
+//		Voix
+
+#define	Voix_Freq( freq )	( ( freq ) * 65536 / 32000 )
+
+void Voix_Init( Voix * this )
 {
-	while( -- time )
-	{
-		uint8 c = 100;
-		while( -- c ) ;
-	}
+	this->Freq = Voix_Freq( 440 );
+	this->Width = 100;
+	this->Amp = 120;
+	this->Phase = 0;
+}
+
+uint8 Voix_int_Step( Voix * this )
+{
+	uint8 out = ( this->Phase >> 8 ) < this->Width ?  0  :  this->Amp;
+	this->Phase += this->Freq;
+	return out;
 }
 
 

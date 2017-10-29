@@ -519,7 +519,6 @@ TOSL equ 0FEEh ;#
 # 12794 "C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h"
 TOSH equ 0FEFh ;# 
 	FNCALL	_main,_MidTick_Step
-	FNCALL	_main,_wait_ms
 	FNROOT	_main
 	FNCALL	intlevel1,_ISR
 	global	intlevel1
@@ -528,8 +527,8 @@ TOSH equ 0FEFh ;#
 psect	idataCOMMON,class=CODE,space=0,delta=2,noexec
 global __pidataCOMMON
 __pidataCOMMON:
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	54
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	87
 
 ;initializer for _MidTick_DivCtr
 	retlw	01h
@@ -553,8 +552,14 @@ _TRISA	set	0x8C
 _LATA	set	0x10C
 	global	_ANSELA
 _ANSELA	set	0x18C
+	global	_CCPR1
+_CCPR1	set	0x291
+	global	_CCP1CON
+_CCP1CON	set	0x293
 	global	_OSCFRQbits
 _OSCFRQbits	set	0x91F
+	global	_RA4PPS
+_RA4PPS	set	0xE94
 ; #config settings
 global __CFG_FEXTOSC$OFF
 __CFG_FEXTOSC$OFF equ 0x0
@@ -612,8 +617,8 @@ _MidTick_Task:
 psect	dataCOMMON,class=COMMON,space=1,noexec
 global __pdataCOMMON
 __pdataCOMMON:
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	54
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	87
 _MidTick_DivCtr:
        ds      1
 
@@ -649,17 +654,9 @@ __pcstackCOMMON:
 ?_ISR:	; 1 bytes @ 0x0
 ??_ISR:	; 1 bytes @ 0x0
 	ds	2
-?_wait_ms:	; 1 bytes @ 0x2
 ??_MidTick_Step:	; 1 bytes @ 0x2
-	global	wait_ms@time
-wait_ms@time:	; 2 bytes @ 0x2
 	ds	2
-??_wait_ms:	; 1 bytes @ 0x4
-	ds	1
-	global	wait_ms@c
-wait_ms@c:	; 1 bytes @ 0x5
-	ds	1
-??_main:	; 1 bytes @ 0x6
+??_main:	; 1 bytes @ 0x4
 ;!
 ;!Data Sizes:
 ;!    Strings     0
@@ -671,7 +668,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!
 ;!Auto Spaces:
 ;!    Space          Size  Autos    Used
-;!    COMMON           14      6      10
+;!    COMMON           14      4       8
 ;!    BANK0            80      0       0
 ;!    BANK1            80      0       0
 ;!    BANK2            80      0       0
@@ -685,7 +682,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!
 ;!Critical Paths under _main in COMMON
 ;!
-;!    _main->_wait_ms
+;!    _main->_MidTick_Step
 ;!
 ;!Critical Paths under _ISR in COMMON
 ;!
@@ -725,12 +722,8 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (0) _main                                                 0     0      0      98
+;! (0) _main                                                 0     0      0       0
 ;!                       _MidTick_Step
-;!                            _wait_ms
-;! ---------------------------------------------------------------------------------
-;! (1) _wait_ms                                              4     2      2      98
-;!                                              2 COMMON     4     2      2
 ;! ---------------------------------------------------------------------------------
 ;! (1) _MidTick_Step                                         2     2      0       0
 ;!                                              2 COMMON     2     2      0
@@ -749,7 +742,6 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!
 ;! _main (ROOT)
 ;!   _MidTick_Step
-;!   _wait_ms
 ;!
 ;! _ISR (ROOT)
 ;!
@@ -764,7 +756,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!BITCOMMON            E      0       0       1        0.0%
 ;!BITSFR0              0      0       0       1        0.0%
 ;!SFR0                 0      0       0       1        0.0%
-;!COMMON               E      6       A       2       71.4%
+;!COMMON               E      4       8       2       57.1%
 ;!BITSFR1              0      0       0       2        0.0%
 ;!SFR1                 0      0       0       2        0.0%
 ;!BITSFR2              0      0       0       3        0.0%
@@ -772,7 +764,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!STACK                0      0       0       3        0.0%
 ;!BITSFR3              0      0       0       4        0.0%
 ;!SFR3                 0      0       0       4        0.0%
-;!ABS                  0      0       A       4        0.0%
+;!ABS                  0      0       8       4        0.0%
 ;!BITBANK0            50      0       0       5        0.0%
 ;!BITSFR4              0      0       0       5        0.0%
 ;!SFR4                 0      0       0       5        0.0%
@@ -793,7 +785,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;!SFR9                 0      0       0      10        0.0%
 ;!BITSFR10             0      0       0      11        0.0%
 ;!SFR10                0      0       0      11        0.0%
-;!DATA                 0      0       A      11        0.0%
+;!DATA                 0      0       8      11        0.0%
 ;!BITSFR11             0      0       0      12        0.0%
 ;!SFR11                0      0       0      12        0.0%
 ;!BITSFR12             0      0       0      13        0.0%
@@ -841,7 +833,7 @@ wait_ms@c:	; 1 bytes @ 0x5
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 59 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
+;;		line 92 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -863,19 +855,18 @@ wait_ms@c:	; 1 bytes @ 0x5
 ;; Hardware stack levels required when called:    2
 ;; This function calls:
 ;;		_MidTick_Step
-;;		_wait_ms
 ;; This function is called by:
 ;;		Startup code after reset
 ;; This function uses a non-reentrant model
 ;;
 psect	maintext,global,class=CODE,delta=2,merge=1,split=1,group=0
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	59
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	92
 global __pmaintext
 __pmaintext:	;psect for function _main
 psect	maintext
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	59
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	92
 	global	__size_of_main
 	__size_of_main	equ	__end_of_main-_main
 	
@@ -883,219 +874,122 @@ _main:
 ;incstack = 0
 	opt	stack 14
 ; Regs used in _main: [wreg+status,2+status,0+pclath+cstack]
-	line	61
+	line	94
 	
-l566:	
+l521:	
 	movlb 18	; select bank18
 	movf	(2335)^0900h,w	;volatile
 	andlw	not (((1<<4)-1)<<0)
 	iorlw	(07h & ((1<<4)-1))<<0
 	movwf	(2335)^0900h	;volatile
-	line	65
+	line	98
 	
-l568:	
+l523:	
 	movlb 3	; select bank3
 	clrf	(396)^0180h	;volatile
-	line	66
+	line	99
 	
-l570:	
+l525:	
 	movlw	low(03h)
 	movlb 1	; select bank1
 	movwf	(140)^080h	;volatile
-	line	67
+	line	100
 	
-l572:	
+l527:	
 	movlw	low(020h)
 	movlb 2	; select bank2
 	movwf	(268)^0100h	;volatile
-	line	71
+	line	102
 	
-l574:	
+l529:	
+	movlw	low(0Ch)
+	movlb 29	; select bank29
+	movwf	(3732)^0E80h	;volatile
+	line	106
+	
+l531:	
 	movlw	low(0F9h)
 	movlb 0	; select bank0
 	movwf	(30)	;volatile
-	line	72
+	line	107
 	
-l576:	
+l533:	
 	clrf	(29)	;volatile
-	line	77
+	line	112
 	
-l578:	
+l535:	
 	movlw	low(04h)
 	movwf	(31)	;volatile
-	line	81
+	line	114
 	
-l580:	
+l537:	
+	movlw	0
+	movlb 5	; select bank5
+	movwf	(657+1)^0280h	;volatile
+	movlw	080h
+	movwf	(657)^0280h	;volatile
+	line	119
+	
+l539:	
+	movlw	low(08Fh)
+	movwf	(659)^0280h	;volatile
+	line	125
+	
+l541:	
 	movlw	low(02h)
 	movlb 1	; select bank1
 	movwf	(145)^080h	;volatile
-	line	85
+	line	129
 	
-l582:	
+l543:	
 	movlw	low(0C0h)
 	movwf	(11)	;volatile
-	line	87
-	
-l33:	
-	line	89
-	movf	((_MidTick_Task)),w
-	btfsc	status,2
-	goto	u91
-	goto	u90
-u91:
-	goto	l586
-u90:
-	line	91
-	
-l584:	
-	movlw	01h
-	subwf	(_MidTick_Task),f
-	goto	l586
-	line	93
-	
-l34:	
-	line	95
-	
-l586:	
-	movlw	0E8h
-	movwf	(wait_ms@time)
-	movlw	03h
-	movwf	((wait_ms@time))+1
-	fcall	_wait_ms
-	line	97
-	
-l588:	
-	fcall	_MidTick_Step
-	goto	l33
-	line	98
-	
-l35:	
-	line	87
-	goto	l33
-	
-l36:	
-	line	100
+	line	131
 	
 l37:	
+	line	133
+	movf	((_MidTick_Task)),w
+	btfsc	status,2
+	goto	u21
+	goto	u20
+u21:
+	goto	l37
+u20:
+	line	135
+	
+l545:	
+	movlw	01h
+	subwf	(_MidTick_Task),f
+	line	136
+	
+l547:	
+	fcall	_MidTick_Step
+	goto	l37
+	line	137
+	
+l38:	
+	goto	l37
+	line	138
+	
+l39:	
+	line	131
+	goto	l37
+	
+l40:	
+	line	140
+	
+l41:	
 	global	start
 	ljmp	start
 	opt stack 0
 GLOBAL	__end_of_main
 	__end_of_main:
 	signat	_main,89
-	global	_wait_ms
-
-;; *************** function _wait_ms *****************
-;; Defined at:
-;;		line 126 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-;; Parameters:    Size  Location     Type
-;;  time            2    2[COMMON] unsigned short 
-;; Auto vars:     Size  Location     Type
-;;  c               1    5[COMMON] unsigned char 
-;; Return value:  Size  Location     Type
-;;                  1    wreg      void 
-;; Registers used:
-;;		wreg, status,2, status,0
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2
-;;      Params:         2       0       0       0
-;;      Locals:         1       0       0       0
-;;      Temps:          1       0       0       0
-;;      Totals:         4       0       0       0
-;;Total ram usage:        4 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    1
-;; This function calls:
-;;		Nothing
-;; This function is called by:
-;;		_main
-;; This function uses a non-reentrant model
-;;
-psect	text1,local,class=CODE,delta=2,merge=1,group=0
-	line	126
-global __ptext1
-__ptext1:	;psect for function _wait_ms
-psect	text1
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	126
-	global	__size_of_wait_ms
-	__size_of_wait_ms	equ	__end_of_wait_ms-_wait_ms
-	
-_wait_ms:	
-;incstack = 0
-	opt	stack 14
-; Regs used in _wait_ms: [wreg+status,2+status,0]
-	line	128
-	
-l558:	
-	goto	l564
-	
-l49:	
-	line	130
-	
-l560:	
-	movlw	low(064h)
-	movwf	(??_wait_ms+0)+0
-	movf	(??_wait_ms+0)+0,w
-	movwf	(wait_ms@c)
-	line	131
-	goto	l562
-	
-l51:	
-	goto	l562
-	
-l50:	
-	
-l562:	
-	movlw	01h
-	subwf	(wait_ms@c),f
-	btfss	status,2
-	goto	u71
-	goto	u70
-u71:
-	goto	l562
-u70:
-	goto	l564
-	
-l52:	
-	goto	l564
-	line	132
-	
-l48:	
-	line	128
-	
-l564:	
-	movlw	01h
-	subwf	(wait_ms@time),f
-	movlw	0
-	subwfb	(wait_ms@time+1),f
-	movf	(((wait_ms@time))),w
-iorwf	(((wait_ms@time+1))),w
-	btfss	status,2
-	goto	u81
-	goto	u80
-u81:
-	goto	l560
-u80:
-	goto	l54
-	
-l53:	
-	line	133
-	
-l54:	
-	return
-	opt stack 0
-GLOBAL	__end_of_wait_ms
-	__end_of_wait_ms:
-	signat	_wait_ms,4217
 	global	_MidTick_Step
 
 ;; *************** function _MidTick_Step *****************
 ;; Defined at:
-;;		line 102 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
+;;		line 142 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1122,13 +1016,13 @@ GLOBAL	__end_of_wait_ms
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text2,local,class=CODE,delta=2,merge=1,group=0
-	line	102
-global __ptext2
-__ptext2:	;psect for function _MidTick_Step
-psect	text2
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	102
+psect	text1,local,class=CODE,delta=2,merge=1,group=0
+	line	142
+global __ptext1
+__ptext1:	;psect for function _MidTick_Step
+psect	text1
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	142
 	global	__size_of_MidTick_Step
 	__size_of_MidTick_Step	equ	__end_of_MidTick_Step-_MidTick_Step
 	
@@ -1136,32 +1030,32 @@ _MidTick_Step:
 ;incstack = 0
 	opt	stack 14
 ; Regs used in _MidTick_Step: [wreg+status,2+status,0]
-	line	104
+	line	144
 	
-l520:	
+l517:	
 	movlw	083h
 	addwf	(_LED_Ctr),f
 	movlw	0
 	addwfc	(_LED_Ctr+1),f
-	line	105
+	line	145
 	
-l522:	
+l519:	
 	movf	(_LED_Ctr+1),w
 	movwf	(??_MidTick_Step+0)+0+1
 	movf	(_LED_Ctr),w
 	movwf	(??_MidTick_Step+0)+0
 	movlw	0Ah
-u35:
+u15:
 	lsrf	(??_MidTick_Step+0)+1,f
 	rrf	(??_MidTick_Step+0)+0,f
 	decfsz	wreg,f
-	goto	u35
+	goto	u15
 	movf	0+(??_MidTick_Step+0)+0,w
 	movlb 2	; select bank2
 	movwf	(268)^0100h	;volatile
-	line	106
+	line	146
 	
-l40:	
+l44:	
 	return
 	opt stack 0
 GLOBAL	__end_of_MidTick_Step
@@ -1171,7 +1065,7 @@ GLOBAL	__end_of_MidTick_Step
 
 ;; *************** function _ISR *****************
 ;; Defined at:
-;;		line 111 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
+;;		line 149 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1201,8 +1095,8 @@ psect	intentry,class=CODE,delta=2
 global __pintentry
 __pintentry:
 psect	intentry
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c"
-	line	111
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	149
 	global	__size_of_ISR
 	__size_of_ISR	equ	__end_of_ISR-_ISR
 	
@@ -1216,55 +1110,55 @@ psect	intentry
 	movlb 0	; select bank0
 	movf	btemp+1,w
 	movwf	(??_ISR+1)
-	line	113
+	line	151
 	
-i1l548:	
+i1l549:	
 	btfss	(137/8),(137)&7	;volatile
-	goto	u5_21
-	goto	u5_20
-u5_21:
-	goto	i1l45
-u5_20:
-	line	115
+	goto	u3_21
+	goto	u3_20
+u3_21:
+	goto	i1l49
+u3_20:
+	line	153
 	
-i1l550:	
+i1l551:	
 	movlw	01h
 	subwf	(_MidTick_DivCtr),f
 	btfss	status,2
-	goto	u6_21
-	goto	u6_20
-u6_21:
-	goto	i1l556
-u6_20:
-	line	117
+	goto	u4_21
+	goto	u4_20
+u4_21:
+	goto	i1l557
+u4_20:
+	line	155
 	
-i1l552:	
+i1l553:	
 	movlw	low(040h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	movwf	(_MidTick_DivCtr)
-	line	118
+	line	156
 	
-i1l554:	
+i1l555:	
 	movlw	low(01h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	addwf	(_MidTick_Task),f
-	goto	i1l556
-	line	119
+	goto	i1l557
+	line	159
 	
-i1l44:	
-	line	120
+i1l48:	
+	line	160
 	
-i1l556:	
+i1l557:	
 	bcf	(137/8),(137)&7	;volatile
-	goto	i1l45
-	line	121
+	goto	i1l49
+	line	161
 	
-i1l43:	
-	line	122
+i1l47:	
+	line	162
 	
-i1l45:	
+i1l49:	
 	movf	(??_ISR+1),w
 	movwf	btemp+1
 	bcf int$flags,0 ;clear compiler interrupt flag (level 1)

@@ -1,7 +1,8 @@
 
-# 1 "C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c"
+# 1 "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 
 
+# 21
 #pragma config FEXTOSC = OFF
 #pragma config RSTOSC = HFINT32
 #pragma config CLKOUTEN = OFF
@@ -6701,7 +6702,22 @@ extern unsigned char __resetbits;
 extern __bit __powerdown;
 extern __bit __timeout;
 
-# 53 "C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c"
+# 72 "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+typedef struct
+{
+uint16 Freq;
+uint8 Width;
+uint8 Amp;
+
+uint16 Phase;
+}
+Voix;
+
+void Voix_Init( Voix * this );
+uint8 Voix_int_Step( Voix * this );
+
+
+
 uint8 MidTick_DivCtr = 1;
 uint8 MidTick_Task = 0;
 void MidTick_Step( void );
@@ -6717,6 +6733,8 @@ ANSELA = 0b000000;
 TRISA = 0b000011;
 LATA = 0b100000;
 
+RA4PPS = 0x0C;
+
 
 
 PR2 = 250 - 1;
@@ -6726,6 +6744,15 @@ T2CON =
 0 << 0x3 |
 1 << 0x2
 ;
+
+CCPR1 = 0x080;
+
+CCP1CON =
+1 << 0x7 |
+0x0F << 0x0
+;
+
+
 
 PIE1 =
 1 << 0x1
@@ -6761,8 +6788,26 @@ if( -- MidTick_DivCtr == 0 )
 {
 MidTick_DivCtr = 64;
 MidTick_Task ++;
+
+
 }
 TMR2IF = 0;
 }
+}
+
+# 169
+void Voix_Init( Voix * this )
+{
+this->Freq = ( ( 440 ) * 65536 / 32000 );
+this->Width = 100;
+this->Amp = 120;
+this->Phase = 0;
+}
+
+uint8 Voix_int_Step( Voix * this )
+{
+uint8 out = ( this->Phase >> 8 ) < this->Width ? 0 : this->Amp;
+this->Phase += this->Freq;
+return out;
 }
 

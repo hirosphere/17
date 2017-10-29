@@ -8,8 +8,9 @@
 	; Compiler options:
 	;
 	; --CHIP=16F18313 -O16F18313 -01.hex \
-	; --OUTDIR=C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Output \
-	; C:\17\D\GitHub\17\PIC\1\PIC16F18313 - 01\Main.c
+	; --OUTDIR=C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output \
+	; --OBJDIR=C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Temp \
+	; C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 	;
 
 

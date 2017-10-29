@@ -3,14 +3,12 @@
 [d edition pro ]
 [d chip 16F18313 ]
 [d frameptr 6 ]
-"59 C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c
+"92 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _main main `(v  1 e 1 0 ]
-"102
+"142
 [v _MidTick_Step MidTick_Step `(v  1 e 1 0 ]
-"111
+"149
 [v _ISR ISR `II(v  1 e 1 0 ]
-"126
-[v _wait_ms wait_ms `(v  1 e 1 0 ]
 "62 C:\Program Files (x86)\Microchip\xc8\v1.41\sources\common\float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
 "86 C:\Program Files (x86)\Microchip\xc8\v1.41\sources\common\ftadd.c
@@ -19,11 +17,11 @@
 [v _eecpymem eecpymem `(v  1 e 1 0 ]
 "39
 [v _memcpyee memcpyee `(v  1 e 1 0 ]
-"54 C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c
+"87 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _MidTick_DivCtr MidTick_DivCtr `uc  1 e 1 0 ]
-"55
+"88
 [v _MidTick_Task MidTick_Task `uc  1 e 1 0 ]
-"57
+"90
 [v _LED_Ctr LED_Ctr `us  1 e 2 0 ]
 "335 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _INTCON INTCON `VEuc  1 e 1 @11 ]
@@ -41,6 +39,10 @@
 [v _LATA LATA `VEuc  1 e 1 @268 ]
 "2371
 [v _ANSELA ANSELA `VEuc  1 e 1 @396 ]
+"4756
+[v _CCPR1 CCPR1 `VEus  1 e 2 @657 ]
+"4800
+[v _CCP1CON CCP1CON `VEuc  1 e 1 @659 ]
 [s S19 . 1 `uc 1 HFFRQ 1 0 :4:0 
 ]
 "9289
@@ -51,29 +53,22 @@
 ]
 [u S26 . 1 `S19 1 . 1 0 `S21 1 . 1 0 ]
 [v _OSCFRQbits OSCFRQbits `VES26  1 e 1 @2335 ]
+"10459
+[v _RA4PPS RA4PPS `VEuc  1 e 1 @3732 ]
 "14497
 [v _TMR2IF TMR2IF `VEb  1 e 0 @137 ]
-"59 C:\17\D\GitHub\17\PIC\1\16F18313 - 01\Main.c
+"92 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"100
+"140
 } 0
-"126
-[v _wait_ms wait_ms `(v  1 e 1 0 ]
-{
-"130
-[v wait_ms@c c `uc  1 a 1 5 ]
-"126
-[v wait_ms@time time `us  1 p 2 2 ]
-"133
-} 0
-"102
+"142
 [v _MidTick_Step MidTick_Step `(v  1 e 1 0 ]
 {
-"106
+"146
 } 0
-"111
+"149
 [v _ISR ISR `II(v  1 e 1 0 ]
 {
-"122
+"162
 } 0
