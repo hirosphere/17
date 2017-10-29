@@ -1,12 +1,12 @@
 /*
-	PIC16F18313
+	PIC16F18313		Melody	< Happy End >
 	
 	Pin		Type	Func
 	
 	1	Pow	VCC
 	2	Out	Piyo LED 2
 	3	Out	Piyo LED 1
-	4	
+	4	ICSP	VPP
 	
 	8	Pow	VSS
 	7	ICSP	DAT
