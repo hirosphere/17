@@ -580,7 +580,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "100 C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 [v _Con_Tempo `uc ~T0 @X0 1 e ]
 [i _Con_Tempo
--> -> 105 `i `uc
+-> -> 118 `i `uc
 ]
 "101
 [v _Con_Tempo_Phase `us ~T0 @X0 1 e ]
@@ -617,7 +617,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _main ]
 [f ]
 "122
-[e = . . _OSCFRQbits 0 0 -> -> 7 `i `uc ]
+[e = . . _OSCFRQbits 0 0 -> -> 6 `i `uc ]
 "126
 [e ( _Con_Init ..  ]
 "130
@@ -633,7 +633,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "139
 [e = _TMR2 -> -> 0 `i `uc ]
 "144
-[e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 1 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
+[e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
 "146
 [e = _CCPR1 -> -> 0 `i `us ]
 "151
@@ -866,10 +866,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> | << -> 7 `i -> 5 `i -> 21 `i `uc
 -> | << -> 7 `i -> 5 `i -> 17 `i `uc
 "260
--> | << -> 7 `i -> 5 `i -> 18 `i `uc
--> | << -> 7 `i -> 5 `i -> 20 `i `uc
+-> | << -> 7 `i -> 5 `i -> 14 `i `uc
+-> | << -> 7 `i -> 5 `i -> 16 `i `uc
 "261
--> | << -> 7 `i -> 5 `i -> 17 `i `uc
+-> | << -> 6 `i -> 5 `i -> 17 `i `uc
+-> | << -> 6 `i -> 5 `i -> 16 `i `uc
 -> | << -> 6 `i -> 5 `i -> 14 `i `uc
 -> | << -> 6 `i -> 5 `i -> 17 `i `uc
 "264
@@ -1041,7 +1042,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "354
 [v _Voix_Decay `Cus ~T0 @X0 1 e ]
 [i _Voix_Decay
--> -> 128 `i `us
+-> -> 136 `i `us
 ]
 "356
 [v _Voix_Key_Table `Cus ~T0 @X0 -> 72 `i e ]
@@ -1140,7 +1141,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "368
 [e = . *U _this 1 -> -> 0 `i `us ]
 "369
-[e = . *U _this 2 -> -> 100 `i `uc ]
+[e = . *U _this 2 -> -> 106 `i `uc ]
 "370
 [e = . *U _this 0 -> -> 0 `i `us ]
 "371

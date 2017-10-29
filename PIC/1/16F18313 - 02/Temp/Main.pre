@@ -6731,7 +6731,7 @@ Seq;
 void Seq_Init( Seq * this, uint8 * start );
 bool Seq_Step( Seq * this, uint8 * output );
 
-uint8 Con_Tempo = 105;
+uint8 Con_Tempo = 118;
 uint16 Con_Tempo_Phase = 0;
 
 void Con_Init( void );
@@ -6753,7 +6753,7 @@ Seq Seq_2;
 
 void main( void )
 {
-OSCFRQbits.HFFRQ = 7;
+OSCFRQbits.HFFRQ = 6;
 
 
 
@@ -6773,7 +6773,7 @@ PR2 = 250 - 1;
 TMR2 = 0;
 T2CON =
 0 << 0x0 |
-1 << 0x3 |
+0 << 0x3 |
 1 << 0x2
 ;
 
@@ -6887,8 +6887,8 @@ uint8 Seq_A_2[] =
 
 ( ( 7 ) << 5 | ( 26 ) ), ( ( 7 ) << 5 | ( 20 ) ),
 ( ( 7 ) << 5 | ( 21 ) ), ( ( 7 ) << 5 | ( 17 ) ),
-( ( 7 ) << 5 | ( 18 ) ), ( ( 7 ) << 5 | ( 20 ) ),
-( ( 7 ) << 5 | ( 17 ) ), ( ( 6 ) << 5 | ( 14 ) ), ( ( 6 ) << 5 | ( 17 ) ),
+( ( 7 ) << 5 | ( 14 ) ), ( ( 7 ) << 5 | ( 16 ) ),
+( ( 6 ) << 5 | ( 17 ) ), ( ( 6 ) << 5 | ( 16 ) ), ( ( 6 ) << 5 | ( 14 ) ), ( ( 6 ) << 5 | ( 17 ) ),
 
 0x00
 };
@@ -6977,7 +6977,7 @@ return 0;
 }
 
 # 354
-const uint16 Voix_Decay = 0x0080;
+const uint16 Voix_Decay = 0x0088;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
@@ -6992,7 +6992,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 this->Freq = 0;
-this->Width = 100;
+this->Width = 106;
 this->Env = 0;
 this->Phase = 0;
 }

@@ -17,31 +17,31 @@ end_init CODE 0 34 34 1 2
 config CONFIG 0 8007 8007 4 2
 $Output\16F18313 -02.obj
 cinit CODE 0 35 35 29 2
-text1 CODE 0 30E 30E 13 2
+text1 CODE 0 30F 30F 13 2
 text2 CODE 0 1EA 1EA 39 2
-text3 CODE 0 2A8 2A8 27 2
+text3 CODE 0 2A9 2A9 27 2
 text4 CODE 0 223 223 32 2
 text5 CODE 0 F0 F0 7A 2
-text6 CODE 0 321 321 13 2
-text7 CODE 0 2EF 2EF 1F 2
-text8 CODE 0 2CF 2CF 20 2
+text6 CODE 0 322 322 13 2
+text7 CODE 0 2F0 2F0 1F 2
+text8 CODE 0 2D0 2D0 20 2
 text10 CODE 0 1AA 1AA 40 2
-idataCOMMON CODE 0 349 349 1 2
-maintext CODE 0 27F 27F 29 2
+idataCOMMON CODE 0 34A 34A 1 2
+maintext CODE 0 280 280 29 2
 cstackCOMMON COMMON 1 70 70 D 1
 cstackBANK0 BANK0 1 41 41 C 1
-inittext CODE 0 33D 33D 6 2
+inittext CODE 0 33E 33E 6 2
 intentry CODE 0 4 4 30 2
 bssBANK0 BANK0 1 20 20 21 1
 stringtext STRCODE 0 5E 5E 92 2
-idataBANK0 CODE 0 334 334 9 2
-idataBANK1 CODE 0 255 255 2A 2
+idataBANK0 CODE 0 335 335 9 2
+idataBANK1 CODE 0 255 255 2B 2
 idataBANK2 CODE 0 16A 16A 40 2
 dataBANK0 BANK0 1 4D 4D 9 1
-dataBANK1 BANK1 1 A0 A0 2A 1
+dataBANK1 BANK1 1 A0 A0 2B 1
 dataBANK2 BANK2 1 120 120 40 1
 dataCOMMON COMMON 1 7D 7D 1 1
-clrtext CODE 0 343 343 6 2
+clrtext CODE 0 344 344 6 2
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
 # is described on a single line as follows:
@@ -49,15 +49,15 @@ clrtext CODE 0 343 343 6 2
 # Addresses given in the range are in hexadecimal and units of delta.
 %UNUSED
 RAM 56-6F 1
-RAM CA-EF 1
+RAM CB-EF 1
 RAM 160-16F 1
 BANK0 56-6F 1
-BANK1 CA-EF 1
+BANK1 CB-EF 1
 BANK2 160-16F 1
 CONST 1-3 2
-CONST 34A-7FF 2
+CONST 34B-7FF 2
 ENTRY 1-3 2
-ENTRY 34A-7FF 2
+ENTRY 34B-7FF 2
 IDLOC 8000-8003 2
 SFR10 500-56F 1
 SFR11 580-5EF 1
@@ -81,9 +81,9 @@ SFR28 E00-E6F 1
 SFR29 E80-EEF 1
 SFR30 F00-F6F 1
 SFR31 F80-FEF 1
-STACK 207A-209F 1
+STACK 207B-209F 1
 CODE 1-3 2
-CODE 34A-7FF 2
+CODE 34B-7FF 2
 SFR0 0-1F 1
 SFR1 80-9F 1
 SFR2 100-11F 1
@@ -97,9 +97,9 @@ SFR9 480-4EF 1
 BIGRAM 2000-20EF 1
 EEDATA F000-F0FF 2
 STRCODE 1-3 2
-STRCODE 34A-7FF 2
+STRCODE 34B-7FF 2
 STRING 1-3 2
-STRING 34A-7FF 2
+STRING 34B-7FF 2
 # %LINETAB Section
 # This section enumerates the file/line to address mappings.
 # The beginning of the section is indicated by %LINETAB.
@@ -125,50 +125,50 @@ $Temp\startup.obj
 0 reset_vec CODE >65:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Temp\startup.as
 0 reset_vec CODE >70:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Temp\startup.as
 $Output\16F18313 -02.obj
-35 cinit CODE >987:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-35 cinit CODE >990:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-35 cinit CODE >1071:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-36 cinit CODE >1072:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-37 cinit CODE >1076:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-38 cinit CODE >1077:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-39 cinit CODE >1078:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3A cinit CODE >1079:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3B cinit CODE >1080:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3C cinit CODE >1081:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3D cinit CODE >1082:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3E cinit CODE >1083:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-3F cinit CODE >1084:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-40 cinit CODE >1085:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-41 cinit CODE >1089:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-42 cinit CODE >1090:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-43 cinit CODE >1091:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-44 cinit CODE >1092:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-45 cinit CODE >1093:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-46 cinit CODE >1094:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-47 cinit CODE >1095:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-48 cinit CODE >1096:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-49 cinit CODE >1097:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4A cinit CODE >1098:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4B cinit CODE >1102:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4C cinit CODE >1103:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4D cinit CODE >1104:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4E cinit CODE >1105:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-4F cinit CODE >1106:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-50 cinit CODE >1107:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-51 cinit CODE >1108:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-52 cinit CODE >1109:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-53 cinit CODE >1110:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-54 cinit CODE >1111:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-55 cinit CODE >1128:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-56 cinit CODE >1129:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-57 cinit CODE >1130:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-58 cinit CODE >1131:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-59 cinit CODE >1132:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-5A cinit CODE >1133:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-5B cinit CODE >1139:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-5B cinit CODE >1141:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-5C cinit CODE >1142:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-5D cinit CODE >1143:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+35 cinit CODE >988:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+35 cinit CODE >991:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+35 cinit CODE >1072:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+36 cinit CODE >1073:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+37 cinit CODE >1077:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+38 cinit CODE >1078:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+39 cinit CODE >1079:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3A cinit CODE >1080:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3B cinit CODE >1081:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3C cinit CODE >1082:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3D cinit CODE >1083:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3E cinit CODE >1084:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+3F cinit CODE >1085:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+40 cinit CODE >1086:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+41 cinit CODE >1090:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+42 cinit CODE >1091:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+43 cinit CODE >1092:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+44 cinit CODE >1093:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+45 cinit CODE >1094:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+46 cinit CODE >1095:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+47 cinit CODE >1096:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+48 cinit CODE >1097:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+49 cinit CODE >1098:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4A cinit CODE >1099:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4B cinit CODE >1103:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4C cinit CODE >1104:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4D cinit CODE >1105:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4E cinit CODE >1106:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+4F cinit CODE >1107:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+50 cinit CODE >1108:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+51 cinit CODE >1109:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+52 cinit CODE >1110:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+53 cinit CODE >1111:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+54 cinit CODE >1112:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+55 cinit CODE >1129:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+56 cinit CODE >1130:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+57 cinit CODE >1131:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+58 cinit CODE >1132:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+59 cinit CODE >1133:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+5A cinit CODE >1134:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+5B cinit CODE >1140:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+5B cinit CODE >1142:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+5C cinit CODE >1143:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+5D cinit CODE >1144:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 4 intentry CODE >183:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 9 intentry CODE >185:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 B intentry CODE >187:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
@@ -184,23 +184,23 @@ C intentry CODE >189:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1AB text10 CODE >390:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1DA text10 CODE >391:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1E8 text10 CODE >392:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2CF text8 CODE >302:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2D1 text8 CODE >304:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2E0 text8 CODE >305:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2E8 text8 CODE >306:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2EE text8 CODE >307:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2EF text7 CODE >366:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2F1 text7 CODE >368:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2F8 text7 CODE >369:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-300 text7 CODE >370:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-306 text7 CODE >371:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-30D text7 CODE >372:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-321 text6 CODE >266:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-321 text6 CODE >268:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-328 text6 CODE >269:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-32F text6 CODE >271:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-331 text6 CODE >272:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-333 text6 CODE >273:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2D0 text8 CODE >302:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2D2 text8 CODE >304:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2E1 text8 CODE >305:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2E9 text8 CODE >306:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2EF text8 CODE >307:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2F0 text7 CODE >366:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2F2 text7 CODE >368:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2F9 text7 CODE >369:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+301 text7 CODE >370:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+307 text7 CODE >371:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+30E text7 CODE >372:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+322 text6 CODE >266:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+322 text6 CODE >268:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+329 text6 CODE >269:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+330 text6 CODE >271:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+332 text6 CODE >272:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+334 text6 CODE >273:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 F0 text5 CODE >311:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 F2 text5 CODE >313:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 FC text5 CODE >317:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
@@ -218,10 +218,10 @@ FC text5 CODE >317:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 225 text4 CODE >382:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 23C text4 CODE >383:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 24E text4 CODE >385:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2A8 text3 CODE >374:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2AA text3 CODE >376:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2C7 text3 CODE >377:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2CE text3 CODE >378:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2A9 text3 CODE >374:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2AB text3 CODE >376:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2C8 text3 CODE >377:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2CF text3 CODE >378:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1EA text2 CODE >275:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1EA text2 CODE >277:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 1F2 text2 CODE >279:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
@@ -235,45 +235,45 @@ FC text5 CODE >317:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 21E text2 CODE >295:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 220 text2 CODE >296:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
 222 text2 CODE >297:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-30E text1 CODE >174:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-30E text1 CODE >176:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-313 text1 CODE >177:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-31F text1 CODE >179:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-320 text1 CODE >180:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-27F maintext CODE >120:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-27F maintext CODE >122:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-284 maintext CODE >126:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-285 maintext CODE >130:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-287 maintext CODE >131:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-28A maintext CODE >132:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-28D maintext CODE >134:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-290 maintext CODE >138:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-293 maintext CODE >139:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-294 maintext CODE >144:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-296 maintext CODE >146:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-299 maintext CODE >151:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-29B maintext CODE >157:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-29E maintext CODE >161:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2A0 maintext CODE >165:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2A4 maintext CODE >167:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2A6 maintext CODE >168:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-2A7 maintext CODE >163:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
-343 clrtext CODE >1117:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-343 clrtext CODE >1118:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+30F text1 CODE >174:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+30F text1 CODE >176:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+314 text1 CODE >177:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+320 text1 CODE >179:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+321 text1 CODE >180:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+280 maintext CODE >120:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+280 maintext CODE >122:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+285 maintext CODE >126:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+286 maintext CODE >130:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+288 maintext CODE >131:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+28B maintext CODE >132:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+28E maintext CODE >134:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+291 maintext CODE >138:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+294 maintext CODE >139:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+295 maintext CODE >144:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+297 maintext CODE >146:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+29A maintext CODE >151:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+29C maintext CODE >157:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+29F maintext CODE >161:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2A1 maintext CODE >165:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2A5 maintext CODE >167:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2A7 maintext CODE >168:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+2A8 maintext CODE >163:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c
+344 clrtext CODE >1118:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 344 clrtext CODE >1119:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-344 clrtext CODE >1120:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+345 clrtext CODE >1120:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 345 clrtext CODE >1121:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 346 clrtext CODE >1122:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 347 clrtext CODE >1123:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 348 clrtext CODE >1124:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-33D inittext CODE >1060:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-33D inittext CODE >1061:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+349 clrtext CODE >1125:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+33E inittext CODE >1061:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 33E inittext CODE >1062:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
-33E inittext CODE >1063:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+33F inittext CODE >1063:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 33F inittext CODE >1064:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 340 inittext CODE >1065:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 341 inittext CODE >1066:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 342 inittext CODE >1067:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
+343 inittext CODE >1068:C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Output\16F18313 -02.as
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -307,7 +307,7 @@ _TMR2 1D 0 ABS 0 - Output\16F18313 -02.obj
 _Vo_1 2C 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
 _Vo_2 25 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
 ___sp 0 0 STACK 2 stack Temp\startup.obj
-_main 4FE 0 CODE 0 maintext Output\16F18313 -02.obj
+_main 500 0 CODE 0 maintext Output\16F18313 -02.obj
 btemp 7E 0 ABS 0 - Output\16F18313 -02.obj
 start 68 0 CODE 0 init Temp\startup.obj
 _Seq_A_1 120 0 BANK2 1 dataBANK2 Output\16F18313 -02.obj
@@ -337,15 +337,15 @@ wtemp0 7E 0 ABS 0 - Output\16F18313 -02.obj
 __Hfunctab 0 0 CODE 0 functab -
 Voix_int_Step@out 76 0 COMMON 1 cstackCOMMON Output\16F18313 -02.obj
 __Hclrtext 0 0 ABS 0 clrtext -
-__pidataCOMMON 692 0 CODE 0 idataCOMMON Output\16F18313 -02.obj
+__pidataCOMMON 694 0 CODE 0 idataCOMMON Output\16F18313 -02.obj
 _ANSELA 18C 0 ABS 0 - Output\16F18313 -02.obj
-_Seq_Init 59E 0 CODE 0 text8 Output\16F18313 -02.obj
+_Seq_Init 5A0 0 CODE 0 text8 Output\16F18313 -02.obj
 _Seq_Step 1E0 0 CODE 0 text5 Output\16F18313 -02.obj
 __LdataCOMMON 0 0 ABS 0 dataCOMMON -
 _Seq_Len_Table 4D 0 BANK0 1 dataBANK0 Output\16F18313 -02.obj
 _Voix_Key_Table BC 0 STRCODE 0 stringtext Output\16F18313 -02.obj
 Seq_Init@this 44 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
-__end_of_Seq_Init 5DE 0 CODE 0 text8 Output\16F18313 -02.obj
+__end_of_Seq_Init 5E0 0 CODE 0 text8 Output\16F18313 -02.obj
 __end_of_Seq_Step 2D4 0 CODE 0 text5 Output\16F18313 -02.obj
 __Lmaintext 0 0 ABS 0 maintext -
 __CFG_FEXTOSC$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
@@ -362,7 +362,7 @@ __CFG_MCLRE$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
 start_initialization 6A 0 CODE 0 cinit Output\16F18313 -02.obj
 __end_of_Voix_Key_Table 1DC 0 STRCODE 0 stringtext Output\16F18313 -02.obj
 _RA2PPS E92 0 ABS 0 - Output\16F18313 -02.obj
-clear_ram0 686 0 CODE 0 clrtext Output\16F18313 -02.obj
+clear_ram0 688 0 CODE 0 clrtext Output\16F18313 -02.obj
 __pcstackBANK0 41 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 _TMR2IF 89 0 ABS 0 - Output\16F18313 -02.obj
 ___int_sp 0 0 STACK 2 stack Temp\startup.obj
@@ -378,7 +378,7 @@ __Hbank8 0 0 BANK8 1 bank8 -
 __Hbank9 0 0 BANK9 1 bank9 -
 __Hcinit BC 0 CODE 0 cinit -
 __Hidloc 0 0 IDLOC 0 idloc -
-_Voix_Trigger 550 0 CODE 0 text3 Output\16F18313 -02.obj
+_Voix_Trigger 552 0 CODE 0 text3 Output\16F18313 -02.obj
 __Hsfr10 0 0 ABS 0 sfr10 -
 __Hsfr11 0 0 ABS 0 sfr11 -
 __Hsfr12 0 0 ABS 0 sfr12 -
@@ -402,7 +402,7 @@ __Hsfr29 0 0 ABS 0 sfr29 -
 __Hsfr30 0 0 ABS 0 sfr30 -
 __Hsfr31 0 0 ABS 0 sfr31 -
 __Hstack 0 0 STACK 2 stack -
-_Con_Init 642 0 CODE 0 text6 Output\16F18313 -02.obj
+_Con_Init 644 0 CODE 0 text6 Output\16F18313 -02.obj
 _Con_Step 3D4 0 CODE 0 text2 Output\16F18313 -02.obj
 _Voix_int_Step$184 74 0 COMMON 1 cstackCOMMON Output\16F18313 -02.obj
 __Hbank10 0 0 BANK10 1 bank10 -
@@ -431,7 +431,7 @@ __Hbigram 0 0 ABS 0 bigram -
 __Hmaintext 0 0 ABS 0 maintext -
 __Hcommon 0 0 ABS 0 common -
 __Hconfig 10016 0 CONFIG 0 config -
-__end_of_Con_Init 668 0 CODE 0 text6 Output\16F18313 -02.obj
+__end_of_Con_Init 66A 0 CODE 0 text6 Output\16F18313 -02.obj
 __end_of_Con_Step 446 0 CODE 0 text2 Output\16F18313 -02.obj
 __Lbank0 0 0 ABS 0 bank0 -
 __Lbank1 0 0 ABS 0 bank1 -
@@ -468,7 +468,7 @@ __Lsfr29 0 0 ABS 0 sfr29 -
 __Lsfr30 0 0 ABS 0 sfr30 -
 __Lsfr31 0 0 ABS 0 sfr31 -
 __Lstack 0 0 STACK 2 stack -
-init_ram 67A 0 CODE 0 inittext Output\16F18313 -02.obj
+init_ram 67C 0 CODE 0 inittext Output\16F18313 -02.obj
 __Linittext 0 0 ABS 0 inittext -
 __Habs1 0 0 ABS 0 abs1 -
 __Hcode 0 0 ABS 0 code -
@@ -515,7 +515,7 @@ __CFG_BOREN$ON 0 0 ABS 0 - Output\16F18313 -02.obj
 __CFG_BORV$LOW 0 0 ABS 0 - Output\16F18313 -02.obj
 __Lintentry 8 0 CODE 0 intentry -
 reset_vec 0 0 CODE 0 reset_vec Temp\startup.obj
-__end_of_Voix_Trigger 59E 0 CODE 0 text3 Output\16F18313 -02.obj
+__end_of_Voix_Trigger 5A0 0 CODE 0 text3 Output\16F18313 -02.obj
 __pdataBANK0 4D 0 BANK0 1 dataBANK0 Output\16F18313 -02.obj
 __pdataBANK1 A0 0 BANK1 1 dataBANK1 Output\16F18313 -02.obj
 __pdataBANK2 120 0 BANK2 1 dataBANK2 Output\16F18313 -02.obj
@@ -544,7 +544,7 @@ __Lbank28 0 0 BANK28 1 bank28 -
 __Lbank29 0 0 BANK29 1 bank29 -
 __Lbank30 0 0 BANK30 1 bank30 -
 __Lbank31 0 0 BANK31 1 bank31 -
-__pmaintext 4FE 0 CODE 0 maintext Output\16F18313 -02.obj
+__pmaintext 500 0 CODE 0 maintext Output\16F18313 -02.obj
 __Lbigram 0 0 ABS 0 bigram -
 Voix_Trigger@key 41 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 __Lcommon 0 0 ABS 0 common -
@@ -554,7 +554,7 @@ __CFG_WDTE$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
 __Hinittext 0 0 ABS 0 inittext -
 _LED_Ctr 20 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
 stackhi 209F 0 ABS 0 - Temp\startup.obj
-stacklo 207A 0 ABS 0 - Temp\startup.obj
+stacklo 207B 0 ABS 0 - Temp\startup.obj
 Voix_Step@this 45 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 __CFG_LVP$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
 __Lspace_0 0 0 ABS 0 - -
@@ -575,15 +575,15 @@ ISR@acc 7B 0 COMMON 1 cstackCOMMON Output\16F18313 -02.obj
 Voix_Trigger@this 48 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 __Hreset_vec 2 0 CODE 0 reset_vec -
 __HbssBANK0 0 0 ABS 0 bssBANK0 -
-__ptext1 61C 0 CODE 0 text1 Output\16F18313 -02.obj
+__ptext1 61E 0 CODE 0 text1 Output\16F18313 -02.obj
 __ptext2 3D4 0 CODE 0 text2 Output\16F18313 -02.obj
-__ptext3 550 0 CODE 0 text3 Output\16F18313 -02.obj
+__ptext3 552 0 CODE 0 text3 Output\16F18313 -02.obj
 __ptext4 446 0 CODE 0 text4 Output\16F18313 -02.obj
 __ptext5 1E0 0 CODE 0 text5 Output\16F18313 -02.obj
-__ptext6 642 0 CODE 0 text6 Output\16F18313 -02.obj
-__ptext7 5DE 0 CODE 0 text7 Output\16F18313 -02.obj
-__ptext8 59E 0 CODE 0 text8 Output\16F18313 -02.obj
-_MidTick_Step 61C 0 CODE 0 text1 Output\16F18313 -02.obj
+__ptext6 644 0 CODE 0 text6 Output\16F18313 -02.obj
+__ptext7 5E0 0 CODE 0 text7 Output\16F18313 -02.obj
+__ptext8 5A0 0 CODE 0 text8 Output\16F18313 -02.obj
+_MidTick_Step 61E 0 CODE 0 text1 Output\16F18313 -02.obj
 _MidTick_Task 24 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
 Seq_Step@output 41 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 __Lpowerup 0 0 CODE 0 powerup -
@@ -596,7 +596,7 @@ __CFG_CLKOUTEN$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
 __end_of__initialization B6 0 CODE 0 cinit Output\16F18313 -02.obj
 Voix_Init@this 42 0 BANK0 1 cstackBANK0 Output\16F18313 -02.obj
 __Lfunctab 0 0 CODE 0 functab -
-__pidataBANK0 668 0 CODE 0 idataBANK0 Output\16F18313 -02.obj
+__pidataBANK0 66A 0 CODE 0 idataBANK0 Output\16F18313 -02.obj
 __pidataBANK1 4AA 0 CODE 0 idataBANK1 Output\16F18313 -02.obj
 __pidataBANK2 2D4 0 CODE 0 idataBANK2 Output\16F18313 -02.obj
 __Lclrtext 0 0 ABS 0 clrtext -
@@ -604,9 +604,9 @@ __size_of_MidTick_Step 0 0 ABS 0 - Output\16F18313 -02.obj
 __CFG_PWRTE$ON 0 0 ABS 0 - Output\16F18313 -02.obj
 __pcstackCOMMON 70 0 COMMON 1 cstackCOMMON Output\16F18313 -02.obj
 __Hend_init 6A 0 CODE 0 end_init -
-__end_of_main 550 0 CODE 0 maintext Output\16F18313 -02.obj
+__end_of_main 552 0 CODE 0 maintext Output\16F18313 -02.obj
 _CCPR1 291 0 ABS 0 - Output\16F18313 -02.obj
-__end_of_Voix_Init 61C 0 CODE 0 text7 Output\16F18313 -02.obj
+__end_of_Voix_Init 61E 0 CODE 0 text7 Output\16F18313 -02.obj
 __end_of_Voix_Step 4AA 0 CODE 0 text4 Output\16F18313 -02.obj
 _T2CON 1F 0 ABS 0 - Output\16F18313 -02.obj
 _Seq_1 39 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
@@ -617,7 +617,7 @@ __Lram 0 0 ABS 0 ram -
 __size_of_Voix_Init 0 0 ABS 0 - Output\16F18313 -02.obj
 __size_of_Voix_Step 0 0 ABS 0 - Output\16F18313 -02.obj
 __CFG_CPD$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
-__end_of_MidTick_Step 642 0 CODE 0 text1 Output\16F18313 -02.obj
+__end_of_MidTick_Step 644 0 CODE 0 text1 Output\16F18313 -02.obj
 _CCP1CON 293 0 ABS 0 - Output\16F18313 -02.obj
 __pintentry 8 0 CODE 0 intentry Output\16F18313 -02.obj
 __size_of_ISR 0 0 ABS 0 - Output\16F18313 -02.obj
@@ -629,7 +629,7 @@ __pbssBANK0 20 0 BANK0 1 bssBANK0 Output\16F18313 -02.obj
 __pdataCOMMON 7D 0 COMMON 1 dataCOMMON Output\16F18313 -02.obj
 __Hstringtext 0 0 ABS 0 stringtext -
 __CFG_WRT$OFF 0 0 ABS 0 - Output\16F18313 -02.obj
-_Voix_Init 5DE 0 CODE 0 text7 Output\16F18313 -02.obj
+_Voix_Init 5E0 0 CODE 0 text7 Output\16F18313 -02.obj
 _Voix_Step 446 0 CODE 0 text4 Output\16F18313 -02.obj
 # %SPLITSTAB Section
 # This section enumerates all the psect splits performed by the assembler.
@@ -656,12 +656,12 @@ _Voix_Step 446 0 CODE 0 text4 Output\16F18313 -02.obj
 # and size are in units of delta. The file address is in units of bytes.
 # All other numeric quantities are in decimal.
 %SEGMENTS
-text5 0 F0 1E0 25A 2
+text5 0 F0 1E0 25B 2
 cstackCOMMON 1 70 70 E 1
 intentry 0 4 8 5A 2
 reset_vec 0 0 0 1 2
 bssBANK0 1 20 20 36 1
 stringtext 0 5E BC 92 2
-dataBANK1 1 A0 A0 2A 1
+dataBANK1 1 A0 A0 2B 1
 dataBANK2 1 120 120 40 1
 config 0 8007 1000E 4 2

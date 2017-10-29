@@ -97,7 +97,7 @@ typedef struct
 void  Seq_Init( Seq * this, uint8 * start );
 bool  Seq_Step( Seq * this, uint8 * output );
 
-uint8	Con_Tempo = 105;
+uint8	Con_Tempo = 118;
 uint16	Con_Tempo_Phase = 0;
 
 void  Con_Init( void );
@@ -119,7 +119,7 @@ Seq	Seq_2;
 
 void main( void )
 {
-	OSCFRQbits.HFFRQ = 7;			//	32MHz
+	OSCFRQbits.HFFRQ = 6;			//	32MHz
 	
 	//  Instances  //
 	
@@ -139,7 +139,7 @@ void main( void )
 	TMR2	= 0;
 	T2CON =
 		0	<< _T2CON_T2CKPS_POSITION 	|
-		1	<< _T2CON_T2OUTPS_POSITION	|
+		0	<< _T2CON_T2OUTPS_POSITION	|
 		On 	<< _T2CON_TMR2ON_POSITION
 	;
 	
@@ -257,8 +257,8 @@ uint8	Seq_A_2[] =
 	
 	n_(  7,  26  ),	n_(  7,  20  ),
 	n_(  7,  21  ),	n_(  7,  17  ),
-	n_(  7,  18  ),	n_(  7,  20  ),
-	n_(  7,  17  ),	n_(  6,  14  ),	n_(  6,  17  ),
+	n_(  7,  14  ),	n_(  7,  16  ),
+	n_(  6,  17  ),	n_(  6,  16  ),	n_(  6,  14  ),	n_(  6,  17  ),
 	
 	n_end
 };
@@ -351,7 +351,7 @@ bool Seq_Step( Seq * this, uint8 * output )
 //		Voix
 
 #define	Voix_Freq( freq )	( ( freq ) * 65536 / 32000 )
-const uint16 Voix_Decay = 0x0080;
+const uint16 Voix_Decay = 0x0088;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
@@ -366,7 +366,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 	this->Freq = 0;
-	this->Width = 100;
+	this->Width = 106;
 	this->Env = 0;
 	this->Phase = 0;
 }

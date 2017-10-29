@@ -561,7 +561,7 @@ __pidataBANK0:
 	line	100
 
 ;initializer for _Con_Tempo
-	retlw	069h
+	retlw	076h
 psect	idataBANK1,class=CODE,space=0,delta=2,noexec
 global __pidataBANK1
 __pidataBANK1:
@@ -604,9 +604,10 @@ __pidataBANK1:
 	retlw	0F4h
 	retlw	0F5h
 	retlw	0F1h
-	retlw	0F2h
-	retlw	0F4h
-	retlw	0F1h
+	retlw	0EEh
+	retlw	0F0h
+	retlw	0D1h
+	retlw	0D0h
 	retlw	0CEh
 	retlw	0D1h
 	retlw	low(0)
@@ -910,7 +911,7 @@ psect	stringtext
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 	line	354
 _Voix_Decay:
-	retlw	080h
+	retlw	088h
 	retlw	0
 
 	global __end_of_Voix_Decay
@@ -1051,7 +1052,7 @@ __pdataBANK1:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 	line	239
 _Seq_A_2:
-       ds      42
+       ds      43
 
 psect	dataBANK2,class=BANK2,space=1,noexec
 global __pdataBANK2
@@ -1102,7 +1103,7 @@ psect cinit,class=CODE,delta=2,merge=1
 	movwf fsr1l
 	movlw high(__pdataBANK1)
 	movwf fsr1h
-	movlw 02Ah
+	movlw 02Bh
 	fcall init_ram
 ; Initialize objects allocated to BANK2
 	global __pidataBANK2,__pdataBANK2
@@ -1222,7 +1223,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!Data Sizes:
 ;!    Strings     0
 ;!    Constant    146
-;!    Data        116
+;!    Data        117
 ;!    BSS         33
 ;!    Persistent  0
 ;!    Stack       0
@@ -1231,7 +1232,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!    Space          Size  Autos    Used
 ;!    COMMON           14     13      14
 ;!    BANK0            80     12      54
-;!    BANK1            80      0      42
+;!    BANK1            80      0      43
 ;!    BANK2            80      0      64
 
 ;!
@@ -1253,43 +1254,43 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!		 -> Con_Output(BANK0[2]), 
 ;!
 ;!    Seq_Step@this.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Step@this.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Step@this	PTR struct . size(1) Largest target is 6
 ;!		 -> Seq_2(BANK0[6]), Seq_1(BANK0[6]), 
 ;!
 ;!    Seq_Init@this.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@this.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@this	PTR struct . size(1) Largest target is 6
 ;!		 -> Seq_2(BANK0[6]), Seq_1(BANK0[6]), 
 ;!
 ;!    Seq_2.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_2.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    S24$Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_1.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    S24$Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_1.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
 ;!
 
 
@@ -1420,7 +1421,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!STACK                0      0       0       3        0.0%
 ;!BITSFR3              0      0       0       4        0.0%
 ;!SFR3                 0      0       0       4        0.0%
-;!ABS                  0      0      AE       4        0.0%
+;!ABS                  0      0      AF       4        0.0%
 ;!BITBANK0            50      0       0       5        0.0%
 ;!BITSFR4              0      0       0       5        0.0%
 ;!SFR4                 0      0       0       5        0.0%
@@ -1430,7 +1431,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!BITBANK1            50      0       0       7        0.0%
 ;!BITSFR6              0      0       0       7        0.0%
 ;!SFR6                 0      0       0       7        0.0%
-;!BANK1               50      0      2A       8       52.5%
+;!BANK1               50      0      2B       8       53.8%
 ;!BITSFR7              0      0       0       8        0.0%
 ;!SFR7                 0      0       0       8        0.0%
 ;!BITBANK2            50      0       0       9        0.0%
@@ -1441,7 +1442,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!SFR9                 0      0       0      10        0.0%
 ;!BITSFR10             0      0       0      11        0.0%
 ;!SFR10                0      0       0      11        0.0%
-;!DATA                 0      0      AE      11        0.0%
+;!DATA                 0      0      AF      11        0.0%
 ;!BITSFR11             0      0       0      12        0.0%
 ;!SFR11                0      0       0      12        0.0%
 ;!BITSFR12             0      0       0      13        0.0%
@@ -1537,7 +1538,7 @@ l801:
 	movlb 18	; select bank18
 	movf	(2335)^0900h,w	;volatile
 	andlw	not (((1<<4)-1)<<0)
-	iorlw	(07h & ((1<<4)-1))<<0
+	iorlw	(06h & ((1<<4)-1))<<0
 	movwf	(2335)^0900h	;volatile
 	line	126
 	
@@ -1579,7 +1580,7 @@ l815:
 	line	144
 	
 l817:	
-	movlw	low(0Ch)
+	movlw	low(04h)
 	movwf	(31)	;volatile
 	line	146
 	
@@ -2528,7 +2529,7 @@ l773:
 	movwi	[0]fsr1
 	movwi	[1]fsr1
 	line	369
-	movlw	low(064h)
+	movlw	low(06Ah)
 	movwf	(??_Voix_Init+0)+0
 	movf	(Voix_Init@this),w
 	addlw	04h
@@ -2575,7 +2576,7 @@ GLOBAL	__end_of_Voix_Init
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
 ;;  start           2    0[BANK0 ] PTR unsigned char 
-;;		 -> Seq_A_2(42), Seq_A_1(64), 
+;;		 -> Seq_A_2(43), Seq_A_1(64), 
 ;; Auto vars:     Size  Location     Type
 ;;  this            1    3[BANK0 ] PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
