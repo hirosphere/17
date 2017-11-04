@@ -1,0 +1,33 @@
+{
+	Title: "PIC16F18313 - 01",
+	Chip: "16F18313",
+	Output: "16F18313  Compile Test1.hex",
+	OutDir: "{PrjDir}\\Output",
+	ObjDir: "{PrjDir}\\Temp",
+	Options:
+	[
+		"-M",
+		"--ASMLIST"
+	],
+	IPaths:
+	[
+		// "{PrjDir}\\..\\Lib"
+	],
+	Srcs:
+	[
+		{
+			Dir: "{PrjDir}",
+			Items:
+			[
+				"16F18313 Main.c"
+			]
+		},
+		{
+			Dir: "{PrjDir}\\..\\Lib",
+			Items:
+			[
+				// "Prime.c"
+			]
+		}
+	]
+}

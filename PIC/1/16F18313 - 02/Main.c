@@ -71,11 +71,9 @@ typedef	unsigned char	bool;
 
 typedef struct
 {
-	uint16		Env;
-	
 	uint16		Freq;
 	uint8		Width;
-	
+	uint16		Env;
 	uint16		Phase;
 }
   Voix;
@@ -97,8 +95,9 @@ typedef struct
 void  Seq_Init( Seq * this, uint8 * start );
 bool  Seq_Step( Seq * this, uint8 * output );
 
-uint8	Con_Tempo = 118;
+uint8	Con_Tempo = 128;
 uint16	Con_Tempo_Phase = 0;
+uint8	Con_Noise = 0;
 
 void  Con_Init( void );
 void  Con_Step( void );
@@ -173,7 +172,7 @@ void main( void )
 
 void MidTick_Step( void )
 {
-	LED_Ctr += 131;
+	LED_Ctr += 33;
 	LATA = LED_Ctr >> 10;
 	
 	Con_Step();
@@ -211,7 +210,7 @@ uint8	Con_Output[ 2 ] ;
 
 uint8	Seq_A_1[] =
 {
-	n_trans(  2,  8  ),
+	n_trans(  2,  10  ),
 	
 	n_(  6,  9  ),	n_(  6,  16  ),	n_(  6,  16  ),	n_(  6,  14  ),
 	n_(  6,  14  ),	n_(  6,  16  ),	n_(  6,  12  ),	n_(  6,  11  ),
@@ -238,7 +237,7 @@ uint8	Seq_A_1[] =
 
 uint8	Seq_A_2[] =
 {
-	n_trans(  0,  8  ),
+	n_trans(  0,  10  ),
 
 	n_(  7,  21  ),	n_(  7,  17  ),
 	n_(  7,  19  ),	n_(  7,  16  ),
@@ -258,10 +257,24 @@ uint8	Seq_A_2[] =
 	n_(  7,  26  ),	n_(  7,  20  ),
 	n_(  7,  21  ),	n_(  7,  17  ),
 	n_(  7,  14  ),	n_(  7,  16  ),
-	n_(  6,  17  ),	n_(  6,  16  ),	n_(  6,  14  ),	n_(  6,  17  ),
+	n_(  7,  17  ),	n_(  6,  14  ),	n_(  6,  17  ),
 	
 	n_end
 };
+
+uint32 Noise_Seed = 0x1;
+
+void Noise_Step( uint8 bits )
+{
+	while( -- bits )
+	{
+		Noise_Seed <<= 1;
+		bool  a = ( Noise_Seed & 0x100000 ) > 0;
+		bool  b = ( Noise_Seed & 0x400000 ) > 0;
+		
+		if(  ( !a && b ) || ( a && !b )  )	Noise_Seed |= 1;
+	}
+}
 
 void Con_Init( void )
 {
@@ -292,6 +305,8 @@ void Con_Step( void )
 		
 	}
 	
+	Noise_Step( 4 );
+	Con_Noise = Noise_Seed & 0xFF;
 	Voix_Step( & Vo_1 );
 	Voix_Step( & Vo_2 );
 }
@@ -351,7 +366,7 @@ bool Seq_Step( Seq * this, uint8 * output )
 //		Voix
 
 #define	Voix_Freq( freq )	( ( freq ) * 65536 / 32000 )
-const uint16 Voix_Decay = 0x0088;
+const uint16 Voix_Decay = 0x0308;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
@@ -387,8 +402,13 @@ void Voix_Step( Voix * this )
 
 uint8 Voix_int_Step( Voix * this )
 {
-	uint8 out = ( this->Phase >> 8 ) < this->Width ?  0  :  this->Env >> 8;
-	this->Phase += this->Freq;
+	uint8 amp = this->Env >> 8;
+	uint8 out = ( this->Phase >> 8 ) < this->Width ?  0  :  amp;
+	
+	//uint8 noise = Con_Noise;
+	//uint16 freq = this->Freq + noise;
+	uint16 freq = this->Freq;
+	this->Phase += freq;
 	return out;
 }
 

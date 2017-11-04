@@ -521,6 +521,7 @@ TOSH equ 0FEFh ;#
 	FNCALL	_main,_Con_Init
 	FNCALL	_main,_MidTick_Step
 	FNCALL	_MidTick_Step,_Con_Step
+	FNCALL	_Con_Step,_Noise_Step
 	FNCALL	_Con_Step,_Seq_Step
 	FNCALL	_Con_Step,_Voix_Step
 	FNCALL	_Con_Step,_Voix_Trigger
@@ -531,23 +532,17 @@ TOSH equ 0FEFh ;#
 	FNCALL	intlevel1,_ISR
 	global	intlevel1
 	FNROOT	intlevel1
-	global	_MidTick_DivCtr
 	global	_Seq_Len_Table
+	global	_Noise_Seed
+	global	_MidTick_DivCtr
 	global	_Con_Tempo
 	global	_Seq_A_2
 	global	_Seq_A_1
-psect	idataCOMMON,class=CODE,space=0,delta=2,noexec
-global __pidataCOMMON
-__pidataCOMMON:
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	108
-
-;initializer for _MidTick_DivCtr
-	retlw	01h
 psect	idataBANK0,class=CODE,space=0,delta=2,noexec
 global __pidataBANK0
 __pidataBANK0:
-	line	309
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	324
 
 ;initializer for _Seq_Len_Table
 	retlw	01h
@@ -558,18 +553,30 @@ __pidataBANK0:
 	retlw	06h
 	retlw	0Ch
 	retlw	018h
-	line	100
+	line	265
+
+;initializer for _Noise_Seed
+	retlw	01h
+	retlw	0
+	retlw	0
+	retlw	0
+
+	line	107
+
+;initializer for _MidTick_DivCtr
+	retlw	01h
+	line	98
 
 ;initializer for _Con_Tempo
-	retlw	076h
+	retlw	080h
 psect	idataBANK1,class=CODE,space=0,delta=2,noexec
 global __pidataBANK1
 __pidataBANK1:
-	line	239
+	line	238
 
 ;initializer for _Seq_A_2
 	retlw	01h
-	retlw	08h
+	retlw	0Ah
 	retlw	0F5h
 	retlw	0F1h
 	retlw	0F3h
@@ -606,19 +613,18 @@ __pidataBANK1:
 	retlw	0F1h
 	retlw	0EEh
 	retlw	0F0h
-	retlw	0D1h
-	retlw	0D0h
+	retlw	0F1h
 	retlw	0CEh
 	retlw	0D1h
 	retlw	low(0)
 psect	idataBANK2,class=CODE,space=0,delta=2,noexec
 global __pidataBANK2
 __pidataBANK2:
-	line	212
+	line	211
 
 ;initializer for _Seq_A_1
 	retlw	01h
-	retlw	020h
+	retlw	022h
 	retlw	0C9h
 	retlw	0D0h
 	retlw	0D0h
@@ -686,7 +692,7 @@ psect	stringtext,class=STRCODE,delta=2,noexec
 global __pstringtext
 __pstringtext:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	356
+	line	371
 _Voix_Key_Table:
 	retlw	086h
 	retlw	0
@@ -909,10 +915,10 @@ __end_of_Voix_Key_Table:
 	global	_Voix_Decay
 psect	stringtext
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	354
+	line	369
 _Voix_Decay:
-	retlw	088h
-	retlw	0
+	retlw	08h
+	retlw	03h
 
 	global __end_of_Voix_Decay
 __end_of_Voix_Decay:
@@ -921,6 +927,7 @@ __end_of_Voix_Decay:
 	global	_LED_Ctr
 	global	_Con_Tempo_Phase
 	global	_MidTick_Task
+	global	_Con_Noise
 	global	_Vo_2
 	global	_Vo_1
 	global	_Seq_2
@@ -997,14 +1004,6 @@ start_initialization:
 
 global __initialization
 __initialization:
-psect	dataCOMMON,class=COMMON,space=1,noexec
-global __pdataCOMMON
-__pdataCOMMON:
-	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	108
-_MidTick_DivCtr:
-       ds      1
-
 psect	bssBANK0,class=BANK0,space=1,noexec
 global __pbssBANK0
 __pbssBANK0:
@@ -1015,6 +1014,9 @@ _Con_Tempo_Phase:
        ds      2
 
 _MidTick_Task:
+       ds      1
+
+_Con_Noise:
        ds      1
 
 _Vo_2:
@@ -1036,13 +1038,25 @@ psect	dataBANK0,class=BANK0,space=1,noexec
 global __pdataBANK0
 __pdataBANK0:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	309
+	line	324
 _Seq_Len_Table:
        ds      8
 
 psect	dataBANK0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	100
+	line	265
+_Noise_Seed:
+       ds      4
+
+psect	dataBANK0
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	107
+_MidTick_DivCtr:
+       ds      1
+
+psect	dataBANK0
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	98
 _Con_Tempo:
        ds      1
 
@@ -1050,15 +1064,15 @@ psect	dataBANK1,class=BANK1,space=1,noexec
 global __pdataBANK1
 __pdataBANK1:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	239
+	line	238
 _Seq_A_2:
-       ds      43
+       ds      42
 
 psect	dataBANK2,class=BANK2,space=1,noexec
 global __pdataBANK2
 __pdataBANK2:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	212
+	line	211
 _Seq_A_1:
        ds      64
 
@@ -1074,11 +1088,6 @@ initloop:
 	decfsz btemp
 	goto initloop
 	retlw 0
-; Initialize objects allocated to COMMON
-	global __pidataCOMMON,__pdataCOMMON
-psect cinit,class=CODE,delta=2,merge=1
-	fcall	__pidataCOMMON+0		;fetch initializer
-	movwf	__pdataCOMMON+0&07fh		
 ; Initialize objects allocated to BANK0
 	global __pidataBANK0,__pdataBANK0
 psect cinit,class=CODE,delta=2,merge=1
@@ -1090,7 +1099,7 @@ psect cinit,class=CODE,delta=2,merge=1
 	movwf fsr1l
 	movlw high(__pdataBANK0)
 	movwf fsr1h
-	movlw 09h
+	movlw 0Eh
 	fcall init_ram
 ; Initialize objects allocated to BANK1
 	global __pidataBANK1,__pdataBANK1
@@ -1103,7 +1112,7 @@ psect cinit,class=CODE,delta=2,merge=1
 	movwf fsr1l
 	movlw high(__pdataBANK1)
 	movwf fsr1h
-	movlw 02Bh
+	movlw 02Ah
 	fcall init_ram
 ; Initialize objects allocated to BANK2
 	global __pidataBANK2,__pdataBANK2
@@ -1138,7 +1147,7 @@ psect cinit,class=CODE,delta=2,merge=1
 	movwf	fsr0l
 	movlw	high(__pbssBANK0)
 	movwf	fsr0h
-	movlw	021h
+	movlw	022h
 	fcall	clear_ram0
 psect cinit,class=CODE,delta=2,merge=1
 global end_of_initialization,__end_of__initialization
@@ -1162,77 +1171,91 @@ __pcstackCOMMON:
 ?_Voix_Step:	; 1 bytes @ 0x0
 ?_main:	; 1 bytes @ 0x0
 ?_ISR:	; 1 bytes @ 0x0
+?_Noise_Step:	; 1 bytes @ 0x0
 	ds	4
-	global	_Voix_int_Step$184
-_Voix_int_Step$184:	; 2 bytes @ 0x4
+	global	Voix_int_Step@freq
+Voix_int_Step@freq:	; 2 bytes @ 0x4
 	ds	2
+	global	_Voix_int_Step$192
+_Voix_int_Step$192:	; 2 bytes @ 0x6
+	ds	2
+	global	Voix_int_Step@amp
+Voix_int_Step@amp:	; 1 bytes @ 0x8
+	ds	1
 	global	Voix_int_Step@out
-Voix_int_Step@out:	; 1 bytes @ 0x6
+Voix_int_Step@out:	; 1 bytes @ 0x9
 	ds	1
 	global	Voix_int_Step@this
-Voix_int_Step@this:	; 1 bytes @ 0x7
+Voix_int_Step@this:	; 1 bytes @ 0xA
 	ds	1
-??_ISR:	; 1 bytes @ 0x8
+??_ISR:	; 1 bytes @ 0xB
 	ds	3
-	global	ISR@acc
-ISR@acc:	; 2 bytes @ 0xB
-	ds	2
 psect	cstackBANK0,class=BANK0,space=1,noexec
 global __pcstackBANK0
 __pcstackBANK0:
-?_Seq_Init:	; 1 bytes @ 0x0
-??_Voix_Init:	; 1 bytes @ 0x0
-?_Seq_Step:	; 1 bytes @ 0x0
-?_Voix_Trigger:	; 1 bytes @ 0x0
-??_Voix_Step:	; 1 bytes @ 0x0
+	global	ISR@acc
+ISR@acc:	; 2 bytes @ 0x0
+	ds	2
+?_Seq_Init:	; 1 bytes @ 0x2
+??_Voix_Init:	; 1 bytes @ 0x2
+?_Seq_Step:	; 1 bytes @ 0x2
+?_Voix_Trigger:	; 1 bytes @ 0x2
+??_Voix_Step:	; 1 bytes @ 0x2
+??_Noise_Step:	; 1 bytes @ 0x2
 	global	Seq_Step@output
-Seq_Step@output:	; 1 bytes @ 0x0
+Seq_Step@output:	; 1 bytes @ 0x2
 	global	Voix_Trigger@key
-Voix_Trigger@key:	; 1 bytes @ 0x0
+Voix_Trigger@key:	; 1 bytes @ 0x2
 	global	Seq_Init@start
-Seq_Init@start:	; 2 bytes @ 0x0
+Seq_Init@start:	; 2 bytes @ 0x2
 	ds	1
-??_Seq_Step:	; 1 bytes @ 0x1
-??_Voix_Trigger:	; 1 bytes @ 0x1
+??_Seq_Step:	; 1 bytes @ 0x3
+??_Voix_Trigger:	; 1 bytes @ 0x3
+	global	Noise_Step@bits
+Noise_Step@bits:	; 1 bytes @ 0x3
 	global	Voix_Init@this
-Voix_Init@this:	; 1 bytes @ 0x1
+Voix_Init@this:	; 1 bytes @ 0x3
 	ds	1
-??_Seq_Init:	; 1 bytes @ 0x2
+??_Seq_Init:	; 1 bytes @ 0x4
+	global	Noise_Step@a
+Noise_Step@a:	; 1 bytes @ 0x4
 	ds	1
+	global	Noise_Step@b
+Noise_Step@b:	; 1 bytes @ 0x5
 	global	Seq_Init@this
-Seq_Init@this:	; 1 bytes @ 0x3
+Seq_Init@this:	; 1 bytes @ 0x5
 	ds	1
-??_Con_Init:	; 1 bytes @ 0x4
+??_Con_Init:	; 1 bytes @ 0x6
 	global	Seq_Step@data
-Seq_Step@data:	; 1 bytes @ 0x4
+Seq_Step@data:	; 1 bytes @ 0x6
 	global	Voix_Step@this
-Voix_Step@this:	; 1 bytes @ 0x4
+Voix_Step@this:	; 1 bytes @ 0x6
 	ds	1
 	global	Seq_Step@this
-Seq_Step@this:	; 1 bytes @ 0x5
+Seq_Step@this:	; 1 bytes @ 0x7
 	ds	2
 	global	Voix_Trigger@this
-Voix_Trigger@this:	; 1 bytes @ 0x7
+Voix_Trigger@this:	; 1 bytes @ 0x9
 	ds	1
-??_Con_Step:	; 1 bytes @ 0x8
+??_Con_Step:	; 1 bytes @ 0xA
 	ds	2
-??_MidTick_Step:	; 1 bytes @ 0xA
+??_MidTick_Step:	; 1 bytes @ 0xC
 	ds	2
-??_main:	; 1 bytes @ 0xC
+??_main:	; 1 bytes @ 0xE
 ;!
 ;!Data Sizes:
 ;!    Strings     0
 ;!    Constant    146
-;!    Data        117
-;!    BSS         33
+;!    Data        120
+;!    BSS         34
 ;!    Persistent  0
 ;!    Stack       0
 ;!
 ;!Auto Spaces:
 ;!    Space          Size  Autos    Used
-;!    COMMON           14     13      14
-;!    BANK0            80     12      54
-;!    BANK1            80      0      43
+;!    COMMON           14     14      14
+;!    BANK0            80     14      62
+;!    BANK1            80      0      42
 ;!    BANK2            80      0      64
 
 ;!
@@ -1254,43 +1277,43 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!		 -> Con_Output(BANK0[2]), 
 ;!
 ;!    Seq_Step@this.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Step@this.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Step@this	PTR struct . size(1) Largest target is 6
 ;!		 -> Seq_2(BANK0[6]), Seq_1(BANK0[6]), 
 ;!
 ;!    Seq_Init@this.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@this.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_Init@this	PTR struct . size(1) Largest target is 6
 ;!		 -> Seq_2(BANK0[6]), Seq_1(BANK0[6]), 
 ;!
 ;!    Seq_2.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_2.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    S24$Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_1.Cur	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    S24$Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 ;!    Seq_1.Start	PTR unsigned char  size(2) Largest target is 64
-;!		 -> Seq_A_2(BANK1[43]), Seq_A_1(BANK2[64]), 
+;!		 -> Seq_A_2(BANK1[42]), Seq_A_1(BANK2[64]), 
 ;!
 
 
@@ -1340,49 +1363,54 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (0) _main                                                 0     0      0    1271
+;! (0) _main                                                 0     0      0    1383
 ;!                           _Con_Init
 ;!                       _MidTick_Step
 ;! ---------------------------------------------------------------------------------
-;! (1) _MidTick_Step                                         2     2      0     859
-;!                                             10 BANK0      2     2      0
+;! (1) _MidTick_Step                                         2     2      0     971
+;!                                             12 BANK0      2     2      0
 ;!                           _Con_Step
 ;! ---------------------------------------------------------------------------------
-;! (2) _Con_Step                                             2     2      0     859
-;!                                              8 BANK0      2     2      0
+;! (2) _Con_Step                                             2     2      0     971
+;!                                             10 BANK0      2     2      0
+;!                         _Noise_Step
 ;!                           _Seq_Step
 ;!                          _Voix_Step
 ;!                       _Voix_Trigger
 ;! ---------------------------------------------------------------------------------
 ;! (3) _Voix_Trigger                                         8     7      1     226
-;!                                              0 BANK0      8     7      1
+;!                                              2 BANK0      8     7      1
 ;! ---------------------------------------------------------------------------------
 ;! (3) _Voix_Step                                            5     5      0     120
-;!                                              0 BANK0      5     5      0
+;!                                              2 BANK0      5     5      0
 ;! ---------------------------------------------------------------------------------
 ;! (3) _Seq_Step                                             6     5      1     513
-;!                                              0 BANK0      6     5      1
+;!                                              2 BANK0      6     5      1
+;! ---------------------------------------------------------------------------------
+;! (3) _Noise_Step                                           4     4      0     112
+;!                                              2 BANK0      4     4      0
 ;! ---------------------------------------------------------------------------------
 ;! (1) _Con_Init                                             0     0      0     412
 ;!                           _Seq_Init
 ;!                          _Voix_Init
 ;! ---------------------------------------------------------------------------------
 ;! (2) _Voix_Init                                            2     2      0     142
-;!                                              0 BANK0      2     2      0
+;!                                              2 BANK0      2     2      0
 ;! ---------------------------------------------------------------------------------
 ;! (2) _Seq_Init                                             4     2      2     270
-;!                                              0 BANK0      4     2      2
+;!                                              2 BANK0      4     2      2
 ;! ---------------------------------------------------------------------------------
 ;! Estimated maximum stack depth 3
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (4) _ISR                                                  5     5      0     236
-;!                                              8 COMMON     5     5      0
+;! (4) _ISR                                                  5     5      0     282
+;!                                             11 COMMON     3     3      0
+;!                                              0 BANK0      2     2      0
 ;!                      _Voix_int_Step
 ;! ---------------------------------------------------------------------------------
-;! (5) _Voix_int_Step                                        8     8      0     211
-;!                                              0 COMMON     8     8      0
+;! (5) _Voix_int_Step                                       11    11      0     257
+;!                                              0 COMMON    11    11      0
 ;! ---------------------------------------------------------------------------------
 ;! Estimated maximum stack depth 5
 ;! ---------------------------------------------------------------------------------
@@ -1395,6 +1423,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!     _Voix_Init
 ;!   _MidTick_Step
 ;!     _Con_Step
+;!       _Noise_Step
 ;!       _Seq_Step
 ;!       _Voix_Step
 ;!       _Voix_Trigger
@@ -1413,7 +1442,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!BITCOMMON            E      0       0       1        0.0%
 ;!BITSFR0              0      0       0       1        0.0%
 ;!SFR0                 0      0       0       1        0.0%
-;!COMMON               E      D       E       2      100.0%
+;!COMMON               E      E       E       2      100.0%
 ;!BITSFR1              0      0       0       2        0.0%
 ;!SFR1                 0      0       0       2        0.0%
 ;!BITSFR2              0      0       0       3        0.0%
@@ -1421,17 +1450,17 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!STACK                0      0       0       3        0.0%
 ;!BITSFR3              0      0       0       4        0.0%
 ;!SFR3                 0      0       0       4        0.0%
-;!ABS                  0      0      AF       4        0.0%
+;!ABS                  0      0      B6       4        0.0%
 ;!BITBANK0            50      0       0       5        0.0%
 ;!BITSFR4              0      0       0       5        0.0%
 ;!SFR4                 0      0       0       5        0.0%
-;!BANK0               50      C      36       6       67.5%
+;!BANK0               50      E      3E       6       77.5%
 ;!BITSFR5              0      0       0       6        0.0%
 ;!SFR5                 0      0       0       6        0.0%
 ;!BITBANK1            50      0       0       7        0.0%
 ;!BITSFR6              0      0       0       7        0.0%
 ;!SFR6                 0      0       0       7        0.0%
-;!BANK1               50      0      2B       8       53.8%
+;!BANK1               50      0      2A       8       52.5%
 ;!BITSFR7              0      0       0       8        0.0%
 ;!SFR7                 0      0       0       8        0.0%
 ;!BITBANK2            50      0       0       9        0.0%
@@ -1442,7 +1471,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;!SFR9                 0      0       0      10        0.0%
 ;!BITSFR10             0      0       0      11        0.0%
 ;!SFR10                0      0       0      11        0.0%
-;!DATA                 0      0      AF      11        0.0%
+;!DATA                 0      0      B6      11        0.0%
 ;!BITSFR11             0      0       0      12        0.0%
 ;!SFR11                0      0       0      12        0.0%
 ;!BITSFR12             0      0       0      13        0.0%
@@ -1490,7 +1519,7 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 120 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 119 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1519,12 +1548,12 @@ Voix_Trigger@this:	; 1 bytes @ 0x7
 ;;
 psect	maintext,global,class=CODE,delta=2,merge=1,split=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	120
+	line	119
 global __pmaintext
 __pmaintext:	;psect for function _main
 psect	maintext
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	120
+	line	119
 	global	__size_of_main
 	__size_of_main	equ	__end_of_main-_main
 	
@@ -1532,117 +1561,117 @@ _main:
 ;incstack = 0
 	opt	stack 11
 ; Regs used in _main: [wreg-fsr1h+status,2+status,0+pclath+cstack]
-	line	122
+	line	121
 	
-l801:	
+l876:	
 	movlb 18	; select bank18
 	movf	(2335)^0900h,w	;volatile
 	andlw	not (((1<<4)-1)<<0)
 	iorlw	(06h & ((1<<4)-1))<<0
 	movwf	(2335)^0900h	;volatile
-	line	126
+	line	125
 	
-l803:	
+l878:	
 	fcall	_Con_Init
-	line	130
+	line	129
 	
-l805:	
+l880:	
 	movlb 3	; select bank3
 	clrf	(396)^0180h	;volatile
-	line	131
+	line	130
 	
-l807:	
+l882:	
 	movlw	low(03h)
 	movlb 1	; select bank1
 	movwf	(140)^080h	;volatile
-	line	132
+	line	131
 	
-l809:	
+l884:	
 	movlw	low(020h)
 	movlb 2	; select bank2
 	movwf	(268)^0100h	;volatile
-	line	134
+	line	133
 	
-l811:	
+l886:	
 	movlw	low(0Ch)
 	movlb 29	; select bank29
 	movwf	(3730)^0E80h	;volatile
-	line	138
+	line	137
 	
-l813:	
+l888:	
 	movlw	low(0F9h)
 	movlb 0	; select bank0
 	movwf	(30)	;volatile
-	line	139
+	line	138
 	
-l815:	
+l890:	
 	clrf	(29)	;volatile
-	line	144
+	line	143
 	
-l817:	
+l892:	
 	movlw	low(04h)
 	movwf	(31)	;volatile
-	line	146
+	line	145
 	
-l819:	
+l894:	
 	movlb 5	; select bank5
 	clrf	(657)^0280h	;volatile
 	clrf	(657+1)^0280h	;volatile
-	line	151
+	line	150
 	
-l821:	
+l896:	
 	movlw	low(08Fh)
 	movwf	(659)^0280h	;volatile
-	line	157
+	line	156
 	
-l823:	
+l898:	
 	movlw	low(02h)
 	movlb 1	; select bank1
 	movwf	(145)^080h	;volatile
-	line	161
+	line	160
 	
-l825:	
+l900:	
 	movlw	low(0C0h)
 	movwf	(11)	;volatile
-	goto	l827
-	line	163
+	goto	l902
+	line	162
 	
-l65:	
-	line	165
+l67:	
+	line	164
 	
-l827:	
+l902:	
 	movlb 0	; select bank0
 	movf	((_MidTick_Task)),w
 	btfsc	status,2
-	goto	u261
-	goto	u260
-u261:
-	goto	l827
-u260:
-	line	167
+	goto	u461
+	goto	u460
+u461:
+	goto	l902
+u460:
+	line	166
 	
-l829:	
+l904:	
 	movlw	01h
 	subwf	(_MidTick_Task),f
+	line	167
+	
+l906:	
+	fcall	_MidTick_Step
+	goto	l902
 	line	168
 	
-l831:	
-	fcall	_MidTick_Step
-	goto	l827
+l68:	
+	goto	l902
 	line	169
 	
-l66:	
-	goto	l827
-	line	170
-	
-l67:	
-	line	163
-	goto	l827
-	
-l68:	
-	line	172
-	
 l69:	
+	line	162
+	goto	l902
+	
+l70:	
+	line	171
+	
+l71:	
 	global	start
 	ljmp	start
 	opt stack 0
@@ -1653,7 +1682,7 @@ GLOBAL	__end_of_main
 
 ;; *************** function _MidTick_Step *****************
 ;; Defined at:
-;;		line 174 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 173 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1681,12 +1710,12 @@ GLOBAL	__end_of_main
 ;; This function uses a non-reentrant model
 ;;
 psect	text1,local,class=CODE,delta=2,merge=1,group=0
-	line	174
+	line	173
 global __ptext1
 __ptext1:	;psect for function _MidTick_Step
 psect	text1
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	174
+	line	173
 	global	__size_of_MidTick_Step
 	__size_of_MidTick_Step	equ	__end_of_MidTick_Step-_MidTick_Step
 	
@@ -1694,37 +1723,37 @@ _MidTick_Step:
 ;incstack = 0
 	opt	stack 11
 ; Regs used in _MidTick_Step: [wreg-fsr1h+status,2+status,0+pclath+cstack]
-	line	176
+	line	175
 	
-l781:	
-	movlw	083h
+l854:	
+	movlw	021h
 	movlb 0	; select bank0
 	addwf	(_LED_Ctr),f
 	movlw	0
 	addwfc	(_LED_Ctr+1),f
-	line	177
+	line	176
 	
-l783:	
+l856:	
 	movf	(_LED_Ctr+1),w
 	movwf	(??_MidTick_Step+0)+0+1
 	movf	(_LED_Ctr),w
 	movwf	(??_MidTick_Step+0)+0
 	movlw	0Ah
-u245:
+u445:
 	lsrf	(??_MidTick_Step+0)+1,f
 	rrf	(??_MidTick_Step+0)+0,f
 	decfsz	wreg,f
-	goto	u245
+	goto	u445
 	movf	0+(??_MidTick_Step+0)+0,w
 	movlb 2	; select bank2
 	movwf	(268)^0100h	;volatile
+	line	178
+	
+l858:	
+	fcall	_Con_Step
 	line	179
 	
-l785:	
-	fcall	_Con_Step
-	line	180
-	
-l72:	
+l74:	
 	return
 	opt stack 0
 GLOBAL	__end_of_MidTick_Step
@@ -1734,7 +1763,7 @@ GLOBAL	__end_of_MidTick_Step
 
 ;; *************** function _Con_Step *****************
 ;; Defined at:
-;;		line 275 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 288 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1756,6 +1785,7 @@ GLOBAL	__end_of_MidTick_Step
 ;; Hardware stack levels used:    1
 ;; Hardware stack levels required when called:    3
 ;; This function calls:
+;;		_Noise_Step
 ;;		_Seq_Step
 ;;		_Voix_Step
 ;;		_Voix_Trigger
@@ -1764,12 +1794,12 @@ GLOBAL	__end_of_MidTick_Step
 ;; This function uses a non-reentrant model
 ;;
 psect	text2,local,class=CODE,delta=2,merge=1,group=0
-	line	275
+	line	288
 global __ptext2
 __ptext2:	;psect for function _Con_Step
 psect	text2
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	275
+	line	288
 	global	__size_of_Con_Step
 	__size_of_Con_Step	equ	__end_of_Con_Step-_Con_Step
 	
@@ -1777,9 +1807,9 @@ _Con_Step:
 ;incstack = 0
 	opt	stack 11
 ; Regs used in _Con_Step: [wreg-fsr1h+status,2+status,0+pclath+cstack]
-	line	277
+	line	290
 	
-l761:	
+l824:	
 	movlb 0	; select bank0
 	movf	(_Con_Tempo),w
 	movwf	(??_Con_Step+0)+0
@@ -1788,28 +1818,28 @@ l761:
 	addwf	(_Con_Tempo_Phase),f
 	movf	1+(??_Con_Step+0)+0,w
 	addwfc	(_Con_Tempo_Phase+1),f
-	line	279
+	line	292
 	movlw	09h
 	subwf	(_Con_Tempo_Phase+1),w
 	movlw	0C4h
 	skipnz
 	subwf	(_Con_Tempo_Phase),w
 	skipc
-	goto	u211
-	goto	u210
-u211:
-	goto	l89
-u210:
-	line	281
+	goto	u411
+	goto	u410
+u411:
+	goto	l834
+u410:
+	line	294
 	
-l763:	
+l826:	
 	movlw	0C4h
 	subwf	(_Con_Tempo_Phase),f
 	movlw	09h
 	subwfb	(_Con_Tempo_Phase+1),f
-	line	283
+	line	296
 	
-l765:	
+l828:	
 	movlw	(low(_Con_Output|((0x0)<<8)))&0ffh
 	movwf	(??_Con_Step+0)+0
 	movf	(??_Con_Step+0)+0,w
@@ -1818,14 +1848,14 @@ l765:
 	fcall	_Seq_Step
 	xorlw	low(0)&0ffh
 	skipnz
-	goto	u221
-	goto	u220
-u221:
-	goto	l90
-u220:
-	line	285
+	goto	u421
+	goto	u420
+u421:
+	goto	l105
+u420:
+	line	298
 	
-l767:	
+l830:	
 	movlb 0	; select bank0
 	movf	(_Con_Output),w
 	movwf	(??_Con_Step+0)+0
@@ -1833,10 +1863,10 @@ l767:
 	movwf	(Voix_Trigger@key)
 	movlw	(low(_Vo_1|((0x0)<<8)))&0ffh
 	fcall	_Voix_Trigger
-	line	286
+	line	299
 	
-l90:	
-	line	288
+l105:	
+	line	301
 	movlw	(low(_Con_Output|((0x0)<<8)+01h))&0ffh
 	movlb 0	; select bank0
 	movwf	(??_Con_Step+0)+0
@@ -1846,14 +1876,14 @@ l90:
 	fcall	_Seq_Step
 	xorlw	low(0)&0ffh
 	skipnz
-	goto	u231
-	goto	u230
-u231:
-	goto	l89
-u230:
-	line	290
+	goto	u431
+	goto	u430
+u431:
+	goto	l834
+u430:
+	line	303
 	
-l769:	
+l832:	
 	movlb 0	; select bank0
 	movf	0+(_Con_Output)+01h,w
 	movwf	(??_Con_Step+0)+0
@@ -1861,22 +1891,40 @@ l769:
 	movwf	(Voix_Trigger@key)
 	movlw	(low(_Vo_2|((0x0)<<8)))&0ffh
 	fcall	_Voix_Trigger
-	goto	l89
-	line	291
+	goto	l834
+	line	304
 	
-l91:	
-	line	293
+l106:	
+	goto	l834
+	line	306
 	
-l89:	
-	line	295
+l104:	
+	line	308
+	
+l834:	
+	movlw	low(04h)
+	fcall	_Noise_Step
+	line	309
+	
+l836:	
+	movlb 0	; select bank0
+	movf	(_Noise_Seed),w
+	movwf	(??_Con_Step+0)+0
+	movf	(??_Con_Step+0)+0,w
+	movwf	(_Con_Noise)
+	line	310
+	
+l838:	
 	movlw	(low(_Vo_1|((0x0)<<8)))&0ffh
 	fcall	_Voix_Step
-	line	296
+	line	311
+	
+l840:	
 	movlw	(low(_Vo_2|((0x0)<<8)))&0ffh
 	fcall	_Voix_Step
-	line	297
+	line	312
 	
-l92:	
+l107:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Con_Step
@@ -1886,13 +1934,13 @@ GLOBAL	__end_of_Con_Step
 
 ;; *************** function _Voix_Trigger *****************
 ;; Defined at:
-;;		line 374 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 389 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
-;;  key             1    0[BANK0 ] unsigned char 
+;;  key             1    2[BANK0 ] unsigned char 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    7[BANK0 ] PTR struct .
+;;  this            1    9[BANK0 ] PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
@@ -1917,12 +1965,12 @@ GLOBAL	__end_of_Con_Step
 ;; This function uses a non-reentrant model
 ;;
 psect	text3,local,class=CODE,delta=2,merge=1,group=0
-	line	374
+	line	389
 global __ptext3
 __ptext3:	;psect for function _Voix_Trigger
 psect	text3
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	374
+	line	389
 	global	__size_of_Voix_Trigger
 	__size_of_Voix_Trigger	equ	__end_of_Voix_Trigger-_Voix_Trigger
 	
@@ -1932,9 +1980,9 @@ _Voix_Trigger:
 ; Regs used in _Voix_Trigger: [wreg-fsr1h+status,2+status,0]
 	movlb 0	; select bank0
 	movwf	(Voix_Trigger@this)
-	line	376
+	line	391
 	
-l751:	
+l814:	
 	movf	(Voix_Trigger@key),w
 	movwf	(??_Voix_Trigger+0)+0
 	clrf	(??_Voix_Trigger+0)+0+1
@@ -1957,7 +2005,6 @@ l751:
 	addwfc	1+(??_Voix_Trigger+4)+0,w
 	movwf	1+fsr1l
 	movf	(Voix_Trigger@this),w
-	addlw	02h
 	movwf	fsr0l
 	clrf fsr0h	
 	
@@ -1965,10 +2012,11 @@ l751:
 	movwi	[0]fsr0
 	moviw	[1]fsr1
 	movwi	[1]fsr0
-	line	377
+	line	392
 	
-l753:	
+l816:	
 	movf	(Voix_Trigger@this),w
+	addlw	03h
 	movwf	fsr1l
 	clrf fsr1h	
 	
@@ -1976,9 +2024,9 @@ l753:
 	movwi	[0]fsr1
 	movlw	0FFh
 	movwi	[1]fsr1
-	line	378
+	line	393
 	
-l117:	
+l132:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_Trigger
@@ -1988,17 +2036,17 @@ GLOBAL	__end_of_Voix_Trigger
 
 ;; *************** function _Voix_Step *****************
 ;; Defined at:
-;;		line 380 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 395 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    4[BANK0 ] PTR struct .
+;;  this            1    6[BANK0 ] PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, pclath
+;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
@@ -2018,25 +2066,26 @@ GLOBAL	__end_of_Voix_Trigger
 ;; This function uses a non-reentrant model
 ;;
 psect	text4,local,class=CODE,delta=2,merge=1,group=0
-	line	380
+	line	395
 global __ptext4
 __ptext4:	;psect for function _Voix_Step
 psect	text4
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	380
+	line	395
 	global	__size_of_Voix_Step
 	__size_of_Voix_Step	equ	__end_of_Voix_Step-_Voix_Step
 	
 _Voix_Step:	
 ;incstack = 0
 	opt	stack 11
-; Regs used in _Voix_Step: [wreg-fsr1h+pclath]
+; Regs used in _Voix_Step: [wreg-fsr1h+status,2+status,0+pclath]
 	movlb 0	; select bank0
 	movwf	(Voix_Step@this)
-	line	382
+	line	397
 	
-l755:	
+l818:	
 	movf	(Voix_Step@this),w
+	addlw	03h
 	movwf	fsr1l
 	clrf fsr1h	
 	
@@ -2055,19 +2104,19 @@ l755:
 	movf	1+(??_Voix_Step+0)+0,w
 	subwf	1+(??_Voix_Step+2)+0,w
 	skipz
-	goto	u205
+	goto	u405
 	movf	0+(??_Voix_Step+0)+0,w
 	subwf	0+(??_Voix_Step+2)+0,w
-u205:
+u405:
 	skipnc
-	goto	u201
-	goto	u200
-u201:
-	goto	l759
-u200:
-	line	383
+	goto	u401
+	goto	u400
+u401:
+	goto	l822
+u400:
+	line	398
 	
-l757:	
+l820:	
 	movlw	low(_Voix_Decay|8000h)
 	movwf	fsr0l
 	movlw	high(_Voix_Decay|8000h)
@@ -2077,6 +2126,7 @@ l757:
 	moviw	[1]fsr0
 	movwf	(??_Voix_Step+0)+0+1
 	movf	(Voix_Step@this),w
+	addlw	03h
 	movwf	fsr1l
 	clrf fsr1h	
 	
@@ -2086,26 +2136,27 @@ l757:
 	movf	1+(??_Voix_Step+0)+0,w
 	subwfb	indf1,f
 	addfsr	fsr1,-1
-	goto	l122
-	line	384
+	goto	l137
+	line	399
 	
-l120:	
-	line	385
+l135:	
+	line	400
 	
-l759:	
+l822:	
 	movf	(Voix_Step@this),w
+	addlw	03h
 	movwf	fsr1l
 	clrf fsr1h	
 	
 	movlw	0
 	movwi	[0]fsr1
 	movwi	[1]fsr1
-	goto	l122
+	goto	l137
 	
-l121:	
-	line	386
+l136:	
+	line	401
 	
-l122:	
+l137:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_Step
@@ -2115,16 +2166,16 @@ GLOBAL	__end_of_Voix_Step
 
 ;; *************** function _Seq_Step *****************
 ;; Defined at:
-;;		line 311 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 326 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
-;;  output          1    0[BANK0 ] PTR unsigned char 
+;;  output          1    2[BANK0 ] PTR unsigned char 
 ;;		 -> Con_Output(2), 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    5[BANK0 ] PTR struct .
+;;  this            1    7[BANK0 ] PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
-;;  data            1    4[BANK0 ] unsigned char 
+;;  data            1    6[BANK0 ] unsigned char 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      unsigned char 
 ;; Registers used:
@@ -2148,12 +2199,12 @@ GLOBAL	__end_of_Voix_Step
 ;; This function uses a non-reentrant model
 ;;
 psect	text5,local,class=CODE,delta=2,merge=1,group=0
-	line	311
+	line	326
 global __ptext5
 __ptext5:	;psect for function _Seq_Step
 psect	text5
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	311
+	line	326
 	global	__size_of_Seq_Step
 	__size_of_Seq_Step	equ	__end_of_Seq_Step-_Seq_Step
 	
@@ -2163,9 +2214,9 @@ _Seq_Step:
 ; Regs used in _Seq_Step: [wreg-fsr1h+status,2+status,0]
 	movlb 0	; select bank0
 	movwf	(Seq_Step@this)
-	line	313
+	line	328
 	
-l723:	
+l786:	
 	movf	(Seq_Step@this),w
 	addlw	05h
 	movwf	fsr1l
@@ -2174,27 +2225,27 @@ l723:
 	movlw	01h
 	subwf	indf1,f
 	btfsc	status,2
-	goto	u151
-	goto	u150
-u151:
-	goto	l729
-u150:
+	goto	u351
+	goto	u350
+u351:
+	goto	l792
+u350:
 	
-l725:	
+l788:	
 	movlw	low(0)
-	goto	l101
+	goto	l116
 	
-l727:	
-	goto	l101
+l790:	
+	goto	l116
 	
-l100:	
-	goto	l729
-	line	315
+l115:	
+	goto	l792
+	line	330
 	
-l102:	
-	line	317
+l117:	
+	line	332
 	
-l729:	
+l792:	
 	movf	(Seq_Step@this),w
 	addlw	02h
 	movwf	fsr1l
@@ -2223,27 +2274,27 @@ l729:
 	addfsr	fsr1,1
 	skipnc
 	incf	indf1,f
-	line	321
+	line	336
 	
-l731:	
+l794:	
 	movlw	low(021h)
 	subwf	(Seq_Step@data),w
 	skipc
-	goto	u161
-	goto	u160
-u161:
-	goto	l739
-u160:
-	line	323
+	goto	u361
+	goto	u360
+u361:
+	goto	l802
+u360:
+	line	338
 	
-l733:	
+l796:	
 	movf	(Seq_Step@data),w
 	movwf	(??_Seq_Step+0)+0
 	movlw	05h
-u175:
+u375:
 	lsrf	(??_Seq_Step+0)+0,f
 	decfsz	wreg,f
-	goto	u175
+	goto	u375
 	movf	0+(??_Seq_Step+0)+0,w
 	addlw	low(_Seq_Len_Table|((0x0)<<8))&0ffh
 	movwf	fsr1l
@@ -2258,7 +2309,7 @@ u175:
 	
 	movf	(??_Seq_Step+1)+0,w
 	movwf	indf1
-	line	325
+	line	340
 	movf	(Seq_Step@this),w
 	addlw	04h
 	movwf	fsr1l
@@ -2274,30 +2325,30 @@ u175:
 	
 	movf	(??_Seq_Step+0)+0,w
 	movwf	indf1
-	line	326
+	line	341
 	
-l735:	
+l798:	
 	movlw	low(01h)
-	goto	l101
+	goto	l116
 	
-l737:	
-	goto	l101
-	line	327
+l800:	
+	goto	l116
+	line	342
 	
-l103:	
-	line	331
+l118:	
+	line	346
 	
-l739:	
+l802:	
 	movf	((Seq_Step@data)),w
 	btfss	status,2
-	goto	u181
-	goto	u180
-u181:
-	goto	l743
-u180:
-	line	333
+	goto	u381
+	goto	u380
+u381:
+	goto	l806
+u380:
+	line	348
 	
-l741:	
+l804:	
 	movf	(Seq_Step@this),w
 	movwf	fsr1l
 	clrf fsr1h	
@@ -2311,24 +2362,24 @@ l741:
 	movwi	[0]fsr0
 	moviw	[1]fsr1
 	movwi	[1]fsr0
-	line	334
-	goto	l729
-	line	335
+	line	349
+	goto	l792
+	line	350
 	
-l104:	
-	line	339
+l119:	
+	line	354
 	
-l743:	
+l806:	
 		decf	((Seq_Step@data)),w
 	btfss	status,2
-	goto	u191
-	goto	u190
-u191:
-	goto	l729
-u190:
-	line	341
+	goto	u391
+	goto	u390
+u391:
+	goto	l792
+u390:
+	line	356
 	
-l745:	
+l808:	
 	movf	(Seq_Step@this),w
 	addlw	02h
 	movwf	fsr1l
@@ -2362,39 +2413,207 @@ l745:
 	addfsr	fsr1,1
 	skipnc
 	incf	indf1,f
-	line	342
-	goto	l729
-	line	343
+	line	357
+	goto	l792
+	line	358
 	
-l106:	
-	goto	l729
-	line	345
+l121:	
+	goto	l792
+	line	360
 	
-l105:	
-	line	315
-	goto	l729
+l120:	
+	line	330
+	goto	l792
 	
-l107:	
-	line	346
+l122:	
+	line	361
 	
-l747:	
+l810:	
 	movlw	low(0)
-	goto	l101
+	goto	l116
 	
-l749:	
-	line	347
+l812:	
+	line	362
 	
-l101:	
+l116:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Seq_Step
 	__end_of_Seq_Step:
 	signat	_Seq_Step,8313
+	global	_Noise_Step
+
+;; *************** function _Noise_Step *****************
+;; Defined at:
+;;		line 267 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;; Parameters:    Size  Location     Type
+;;  bits            1    wreg     unsigned char 
+;; Auto vars:     Size  Location     Type
+;;  bits            1    3[BANK0 ] unsigned char 
+;;  b               1    5[BANK0 ] unsigned char 
+;;  a               1    4[BANK0 ] unsigned char 
+;; Return value:  Size  Location     Type
+;;                  1    wreg      void 
+;; Registers used:
+;;		wreg, status,2, status,0
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+;;      Params:         0       0       0       0
+;;      Locals:         0       3       0       0
+;;      Temps:          0       1       0       0
+;;      Totals:         0       4       0       0
+;;Total ram usage:        4 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    2
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_Con_Step
+;; This function uses a non-reentrant model
+;;
+psect	text6,local,class=CODE,delta=2,merge=1,group=0
+	line	267
+global __ptext6
+__ptext6:	;psect for function _Noise_Step
+psect	text6
+	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+	line	267
+	global	__size_of_Noise_Step
+	__size_of_Noise_Step	equ	__end_of_Noise_Step-_Noise_Step
+	
+_Noise_Step:	
+;incstack = 0
+	opt	stack 11
+; Regs used in _Noise_Step: [wreg+status,2+status,0]
+	movlb 0	; select bank0
+	movwf	(Noise_Step@bits)
+	line	269
+	
+l768:	
+	goto	l784
+	
+l91:	
+	line	271
+	
+l770:	
+	movlw	01h
+u255:
+	lslf	(_Noise_Seed),f
+	rlf	(_Noise_Seed+1),f
+	rlf	(_Noise_Seed+2),f
+	rlf	(_Noise_Seed+3),f
+	decfsz	wreg,f
+	goto	u255
+	line	272
+	
+l772:	
+	btfsc	(_Noise_Seed+2),(20)&7
+	goto	u261
+	goto	u260
+u261:
+	movlw	1
+	goto	u270
+u260:
+	movlw	0
+u270:
+	movwf	(??_Noise_Step+0)+0
+	movf	(??_Noise_Step+0)+0,w
+	movwf	(Noise_Step@a)
+	line	273
+	
+l774:	
+	btfsc	(_Noise_Seed+2),(22)&7
+	goto	u281
+	goto	u280
+u281:
+	movlw	1
+	goto	u290
+u280:
+	movlw	0
+u290:
+	movwf	(??_Noise_Step+0)+0
+	movf	(??_Noise_Step+0)+0,w
+	movwf	(Noise_Step@b)
+	line	275
+	
+l776:	
+	movf	((Noise_Step@a)),w
+	btfss	status,2
+	goto	u301
+	goto	u300
+u301:
+	goto	l780
+u300:
+	
+l778:	
+	movf	((Noise_Step@b)),w
+	btfss	status,2
+	goto	u311
+	goto	u310
+u311:
+	goto	l94
+u310:
+	goto	l780
+	
+l96:	
+	
+l780:	
+	movf	((Noise_Step@a)),w
+	btfsc	status,2
+	goto	u321
+	goto	u320
+u321:
+	goto	l784
+u320:
+	
+l782:	
+	movf	((Noise_Step@b)),w
+	btfss	status,2
+	goto	u331
+	goto	u330
+u331:
+	goto	l784
+u330:
+	
+l94:	
+	bsf	(_Noise_Seed)+(0/8),(0)&7
+	goto	l784
+	
+l92:	
+	goto	l784
+	line	276
+	
+l90:	
+	line	269
+	
+l784:	
+	movlw	01h
+	subwf	(Noise_Step@bits),f
+	btfss	status,2
+	goto	u341
+	goto	u340
+u341:
+	goto	l770
+u340:
+	goto	l98
+	
+l97:	
+	line	277
+	
+l98:	
+	return
+	opt stack 0
+GLOBAL	__end_of_Noise_Step
+	__end_of_Noise_Step:
+	signat	_Noise_Step,4217
 	global	_Con_Init
 
 ;; *************** function _Con_Init *****************
 ;; Defined at:
-;;		line 266 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 279 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -2422,13 +2641,13 @@ GLOBAL	__end_of_Seq_Step
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text6,local,class=CODE,delta=2,merge=1,group=0
-	line	266
-global __ptext6
-__ptext6:	;psect for function _Con_Init
-psect	text6
+psect	text7,local,class=CODE,delta=2,merge=1,group=0
+	line	279
+global __ptext7
+__ptext7:	;psect for function _Con_Init
+psect	text7
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	266
+	line	279
 	global	__size_of_Con_Init
 	__size_of_Con_Init	equ	__end_of_Con_Init-_Con_Init
 	
@@ -2436,9 +2655,9 @@ _Con_Init:
 ;incstack = 0
 	opt	stack 12
 ; Regs used in _Con_Init: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
-	line	268
+	line	281
 	
-l779:	
+l852:	
 	movlw	low(_Seq_A_1)
 	movlb 0	; select bank0
 	movwf	(Seq_Init@start)
@@ -2446,7 +2665,7 @@ l779:
 	movwf	(Seq_Init@start+1)
 	movlw	(low(_Seq_1|((0x0)<<8)))&0ffh
 	fcall	_Seq_Init
-	line	269
+	line	282
 	movlw	low(_Seq_A_2)
 	movlb 0	; select bank0
 	movwf	(Seq_Init@start)
@@ -2454,15 +2673,15 @@ l779:
 	movwf	(Seq_Init@start+1)
 	movlw	(low(_Seq_2|((0x0)<<8)))&0ffh
 	fcall	_Seq_Init
-	line	271
+	line	284
 	movlw	(low(_Vo_1|((0x0)<<8)))&0ffh
 	fcall	_Voix_Init
-	line	272
+	line	285
 	movlw	(low(_Vo_2|((0x0)<<8)))&0ffh
 	fcall	_Voix_Init
-	line	273
+	line	286
 	
-l86:	
+l101:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Con_Init
@@ -2472,12 +2691,12 @@ GLOBAL	__end_of_Con_Init
 
 ;; *************** function _Voix_Init *****************
 ;; Defined at:
-;;		line 366 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 381 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    1[BANK0 ] PTR struct .
+;;  this            1    3[BANK0 ] PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
@@ -2501,13 +2720,13 @@ GLOBAL	__end_of_Con_Init
 ;;		_Con_Init
 ;; This function uses a non-reentrant model
 ;;
-psect	text7,local,class=CODE,delta=2,merge=1,group=0
-	line	366
-global __ptext7
-__ptext7:	;psect for function _Voix_Init
-psect	text7
+psect	text8,local,class=CODE,delta=2,merge=1,group=0
+	line	381
+global __ptext8
+__ptext8:	;psect for function _Voix_Init
+psect	text8
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	366
+	line	381
 	global	__size_of_Voix_Init
 	__size_of_Voix_Init	equ	__end_of_Voix_Init-_Voix_Init
 	
@@ -2517,40 +2736,42 @@ _Voix_Init:
 ; Regs used in _Voix_Init: [wreg+fsr1l+fsr1h+status,2+status,0]
 	movlb 0	; select bank0
 	movwf	(Voix_Init@this)
-	line	368
+	line	383
 	
-l773:	
+l844:	
+	movf	(Voix_Init@this),w
+	movwf	fsr1l
+	clrf fsr1h	
+	
+	movlw	0
+	movwi	[0]fsr1
+	movwi	[1]fsr1
+	line	384
+	
+l846:	
+	movlw	low(06Ah)
+	movwf	(??_Voix_Init+0)+0
 	movf	(Voix_Init@this),w
 	addlw	02h
 	movwf	fsr1l
 	clrf fsr1h	
 	
-	movlw	0
-	movwi	[0]fsr1
-	movwi	[1]fsr1
-	line	369
-	movlw	low(06Ah)
-	movwf	(??_Voix_Init+0)+0
-	movf	(Voix_Init@this),w
-	addlw	04h
-	movwf	fsr1l
-	clrf fsr1h	
-	
 	movf	(??_Voix_Init+0)+0,w
 	movwf	indf1
-	line	370
+	line	385
 	
-l775:	
+l848:	
 	movf	(Voix_Init@this),w
+	addlw	03h
 	movwf	fsr1l
 	clrf fsr1h	
 	
 	movlw	0
 	movwi	[0]fsr1
 	movwi	[1]fsr1
-	line	371
+	line	386
 	
-l777:	
+l850:	
 	movf	(Voix_Init@this),w
 	addlw	05h
 	movwf	fsr1l
@@ -2559,9 +2780,9 @@ l777:
 	movlw	0
 	movwi	[0]fsr1
 	movwi	[1]fsr1
-	line	372
+	line	387
 	
-l114:	
+l129:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_Init
@@ -2571,14 +2792,14 @@ GLOBAL	__end_of_Voix_Init
 
 ;; *************** function _Seq_Init *****************
 ;; Defined at:
-;;		line 302 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 317 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
-;;  start           2    0[BANK0 ] PTR unsigned char 
-;;		 -> Seq_A_2(43), Seq_A_1(64), 
+;;  start           2    2[BANK0 ] PTR unsigned char 
+;;		 -> Seq_A_2(42), Seq_A_1(64), 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    3[BANK0 ] PTR struct .
+;;  this            1    5[BANK0 ] PTR struct .
 ;;		 -> Seq_2(6), Seq_1(6), 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
@@ -2602,13 +2823,13 @@ GLOBAL	__end_of_Voix_Init
 ;;		_Con_Init
 ;; This function uses a non-reentrant model
 ;;
-psect	text8,local,class=CODE,delta=2,merge=1,group=0
-	line	302
-global __ptext8
-__ptext8:	;psect for function _Seq_Init
-psect	text8
+psect	text9,local,class=CODE,delta=2,merge=1,group=0
+	line	317
+global __ptext9
+__ptext9:	;psect for function _Seq_Init
+psect	text9
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	302
+	line	317
 	global	__size_of_Seq_Init
 	__size_of_Seq_Init	equ	__end_of_Seq_Init-_Seq_Init
 	
@@ -2618,9 +2839,9 @@ _Seq_Init:
 ; Regs used in _Seq_Init: [wreg+fsr1l+fsr1h+status,2+status,0]
 	movlb 0	; select bank0
 	movwf	(Seq_Init@this)
-	line	304
+	line	319
 	
-l771:	
+l842:	
 	movf	(Seq_Init@this),w
 	movwf	fsr1l
 	clrf fsr1h	
@@ -2638,7 +2859,7 @@ l771:
 	movwi	[0]fsr1
 	movf	((Seq_Init@start+1)),w
 	movwi	[1]fsr1
-	line	305
+	line	320
 	movlw	low(020h)
 	movwf	(??_Seq_Init+0)+0
 	movf	(Seq_Init@this),w
@@ -2648,7 +2869,7 @@ l771:
 	
 	movf	(??_Seq_Init+0)+0,w
 	movwf	indf1
-	line	306
+	line	321
 	movf	(Seq_Init@this),w
 	addlw	05h
 	movwf	fsr1l
@@ -2656,9 +2877,9 @@ l771:
 	
 	clrf	indf1
 	incf	indf1,f
-	line	307
+	line	322
 	
-l95:	
+l110:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Seq_Init
@@ -2668,24 +2889,24 @@ GLOBAL	__end_of_Seq_Init
 
 ;; *************** function _ISR *****************
 ;; Defined at:
-;;		line 183 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 182 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
-;;  acc             2   11[COMMON] unsigned short 
+;;  acc             2    0[BANK0 ] unsigned short 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
 ;;      Params:         0       0       0       0
-;;      Locals:         2       0       0       0
+;;      Locals:         0       2       0       0
 ;;      Temps:          3       0       0       0
-;;      Totals:         5       0       0       0
+;;      Totals:         3       2       0       0
 ;;Total ram usage:        5 bytes
 ;; Hardware stack levels used:    1
 ;; Hardware stack levels required when called:    1
@@ -2700,7 +2921,7 @@ global __pintentry
 __pintentry:
 psect	intentry
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	183
+	line	182
 	global	__size_of_ISR
 	__size_of_ISR	equ	__end_of_ISR-_ISR
 	
@@ -2708,96 +2929,100 @@ _ISR:
 ;incstack = 0
 	opt	stack 11
 	bsf int$flags,0 ;set compiler interrupt flag (level 1)
-; Regs used in _ISR: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+; Regs used in _ISR: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
 psect	intentry
 	pagesel	$
 	movlb 0	; select bank0
 	movf	btemp+1,w
 	movwf	(??_ISR+2)
-	line	185
+	line	184
 	
-i1l833:	
+i1l908:	
 	btfss	(137/8),(137)&7	;volatile
-	goto	u27_21
-	goto	u27_20
-u27_21:
-	goto	i1l77
-u27_20:
-	line	187
+	goto	u47_21
+	goto	u47_20
+u47_21:
+	goto	i1l79
+u47_20:
+	line	186
 	
-i1l835:	
+i1l910:	
 	bcf	(137/8),(137)&7	;volatile
-	line	189
+	line	188
 	
-i1l837:	
+i1l912:	
 	movlw	01h
 	subwf	(_MidTick_DivCtr),f
 	btfss	status,2
-	goto	u28_21
-	goto	u28_20
-u28_21:
-	goto	i1l843
-u28_20:
-	line	191
+	goto	u48_21
+	goto	u48_20
+u48_21:
+	goto	i1l918
+u48_20:
+	line	190
 	
-i1l839:	
+i1l914:	
 	movlw	low(040h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	movwf	(_MidTick_DivCtr)
-	line	192
+	line	191
 	
-i1l841:	
+i1l916:	
 	movlw	low(01h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	addwf	(_MidTick_Task),f
-	goto	i1l843
-	line	193
+	goto	i1l918
+	line	192
 	
-i1l76:	
-	line	195
+i1l78:	
+	line	194
 	
-i1l843:	
+i1l918:	
 	clrf	(ISR@acc)
 	clrf	(ISR@acc+1)
-	line	196
+	line	195
 	
-i1l845:	
+i1l920:	
 	movlw	(low(_Vo_1|((0x0)<<8)))&0ffh
 	fcall	_Voix_int_Step
 	movwf	(??_ISR+0)+0
 	clrf	(??_ISR+0)+0+1
 	movf	0+(??_ISR+0)+0,w
+	movlb 0	; select bank0
 	addwf	(ISR@acc),f
 	movf	1+(??_ISR+0)+0,w
 	addwfc	(ISR@acc+1),f
-	line	197
+	line	196
 	
-i1l847:	
+i1l922:	
 	movlw	(low(_Vo_2|((0x0)<<8)))&0ffh
 	fcall	_Voix_int_Step
 	movwf	(??_ISR+0)+0
 	clrf	(??_ISR+0)+0+1
 	movf	0+(??_ISR+0)+0,w
+	movlb 0	; select bank0
 	addwf	(ISR@acc),f
 	movf	1+(??_ISR+0)+0,w
 	addwfc	(ISR@acc+1),f
-	line	198
+	line	197
 	
-i1l849:	
+i1l924:	
 	movf	(ISR@acc+1),w
 	movlb 5	; select bank5
 	movwf	(657+1)^0280h	;volatile
+	movlb 0	; select bank0
 	movf	(ISR@acc),w
+	movlb 5	; select bank5
 	movwf	(657)^0280h	;volatile
-	goto	i1l77
-	line	199
-	
-i1l75:	
-	line	200
+	goto	i1l79
+	line	198
 	
 i1l77:	
+	line	199
+	
+i1l79:	
 	movf	(??_ISR+2),w
 	movlb 0	; select bank0
 	movwf	btemp+1
@@ -2811,28 +3036,30 @@ GLOBAL	__end_of_ISR
 
 ;; *************** function _Voix_int_Step *****************
 ;; Defined at:
-;;		line 388 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
+;;		line 403 in file "C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
 ;; Parameters:    Size  Location     Type
 ;;  this            1    wreg     PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
 ;; Auto vars:     Size  Location     Type
-;;  this            1    7[COMMON] PTR struct .
+;;  this            1   10[COMMON] PTR struct .
 ;;		 -> Vo_2(7), Vo_1(7), 
-;;  out             1    6[COMMON] unsigned char 
+;;  freq            2    4[COMMON] unsigned short 
+;;  out             1    9[COMMON] unsigned char 
+;;  amp             1    8[COMMON] unsigned char 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      unsigned char 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0
+;;		wreg, fsr1l, fsr1h, status,2, status,0
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
 ;;      Params:         0       0       0       0
-;;      Locals:         4       0       0       0
+;;      Locals:         7       0       0       0
 ;;      Temps:          4       0       0       0
-;;      Totals:         8       0       0       0
-;;Total ram usage:        8 bytes
+;;      Totals:        11       0       0       0
+;;Total ram usage:       11 bytes
 ;; Hardware stack levels used:    1
 ;; This function calls:
 ;;		Nothing
@@ -2840,26 +3067,40 @@ GLOBAL	__end_of_ISR
 ;;		_ISR
 ;; This function uses a non-reentrant model
 ;;
-psect	text10,local,class=CODE,delta=2,merge=1,group=0
-	line	388
-global __ptext10
-__ptext10:	;psect for function _Voix_int_Step
-psect	text10
+psect	text11,local,class=CODE,delta=2,merge=1,group=0
+	line	403
+global __ptext11
+__ptext11:	;psect for function _Voix_int_Step
+psect	text11
 	file	"C:\17\D\GitHub\17\PIC\1\16F18313 - 02\Main.c"
-	line	388
+	line	403
 	global	__size_of_Voix_int_Step
 	__size_of_Voix_int_Step	equ	__end_of_Voix_int_Step-_Voix_int_Step
 	
 _Voix_int_Step:	
 ;incstack = 0
 	opt	stack 11
-; Regs used in _Voix_int_Step: [wreg-fsr1h+status,2+status,0]
+; Regs used in _Voix_int_Step: [wreg+fsr1l+fsr1h+status,2+status,0]
 	movwf	(Voix_int_Step@this)
-	line	390
+	line	405
 	
-i1l787:	
+i1l860:	
 	movf	(Voix_int_Step@this),w
-	addlw	04h
+	addlw	03h
+	movwf	fsr1l
+	clrf fsr1h	
+	
+	moviw	[0]fsr1
+	movwf	(??_Voix_int_Step+0)+0
+	moviw	[1]fsr1
+	movwf	(??_Voix_int_Step+0)+0+1
+	movf	1+(??_Voix_int_Step+0)+0,w
+	movwf	(??_Voix_int_Step+2)+0
+	movf	(??_Voix_int_Step+2)+0,w
+	movwf	(Voix_int_Step@amp)
+	line	406
+	movf	(Voix_int_Step@this),w
+	addlw	02h
 	movwf	fsr1l
 	clrf fsr1h	
 	
@@ -2881,78 +3122,76 @@ i1l787:
 	movf	1+(??_Voix_int_Step+0)+0,w
 	subwf	1+(??_Voix_int_Step+2)+0,w
 	skipz
-	goto	u25_25
+	goto	u45_25
 	movf	0+(??_Voix_int_Step+0)+0,w
 	subwf	0+(??_Voix_int_Step+2)+0,w
-u25_25:
+u45_25:
 	skipc
-	goto	u25_21
-	goto	u25_20
-u25_21:
-	goto	i1l791
-u25_20:
+	goto	u45_21
+	goto	u45_20
+u45_21:
+	goto	i1l864
+u45_20:
 	
-i1l789:	
-	movf	(Voix_int_Step@this),w
-	movwf	fsr1l
-	clrf fsr1h	
-	
-	moviw	[0]fsr1
+i1l862:	
+	movf	(Voix_int_Step@amp),w
 	movwf	(??_Voix_int_Step+0)+0
-	moviw	[1]fsr1
-	movwf	(??_Voix_int_Step+0)+0+1
-	movf	(??_Voix_int_Step+0)+1,w
-	movwf	(??_Voix_int_Step+0)+0
-	clrf	(??_Voix_int_Step+0)+1
+	clrf	(??_Voix_int_Step+0)+0+1
 	movf	0+(??_Voix_int_Step+0)+0,w
-	movwf	(_Voix_int_Step$184)
+	movwf	(_Voix_int_Step$192)
 	movf	1+(??_Voix_int_Step+0)+0,w
-	movwf	(_Voix_int_Step$184+1)
-	goto	i1l793
+	movwf	(_Voix_int_Step$192+1)
+	goto	i1l866
 	
-i1l126:	
+i1l141:	
 	
-i1l791:	
-	clrf	(_Voix_int_Step$184)
-	clrf	(_Voix_int_Step$184+1)
-	goto	i1l793
+i1l864:	
+	clrf	(_Voix_int_Step$192)
+	clrf	(_Voix_int_Step$192+1)
+	goto	i1l866
 	
-i1l128:	
+i1l143:	
 	
-i1l793:	
-	movf	(_Voix_int_Step$184),w
+i1l866:	
+	movf	(_Voix_int_Step$192),w
 	movwf	(??_Voix_int_Step+0)+0
 	movf	(??_Voix_int_Step+0)+0,w
 	movwf	(Voix_int_Step@out)
-	line	391
+	line	410
 	
-i1l795:	
+i1l868:	
 	movf	(Voix_int_Step@this),w
-	addlw	02h
 	movwf	fsr1l
 	clrf fsr1h	
 	
+	moviw	[0]fsr1
+	movwf	(Voix_int_Step@freq)
+	moviw	[1]fsr1
+	movwf	(Voix_int_Step@freq+1)
+	line	411
+	
+i1l870:	
 	movf	(Voix_int_Step@this),w
 	addlw	05h
-	movwf	fsr0l
-	clrf fsr0h	
+	movwf	fsr1l
+	clrf fsr1h	
 	
-	moviw	[0]fsr1
-	addwf	indf0,f
-	addfsr	fsr0,1
-	moviw	[1]fsr1
-	addwfc	indf0,f
-	addfsr	fsr0,-1
-	line	392
+	movf	(Voix_int_Step@freq),w
+	addwf	indf1,f
+	addfsr	fsr1,1
+	movf	(Voix_int_Step@freq+1),w
+	addwfc	indf1,f
+	addfsr	fsr1,-1
+	line	412
 	
-i1l797:	
+i1l872:	
 	movf	(Voix_int_Step@out),w
-	goto	i1l129
+	goto	i1l144
 	
-i1l799:	
-	line	393
+i1l874:	
+	line	413
 	
-i1l129:	
+i1l144:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_int_Step

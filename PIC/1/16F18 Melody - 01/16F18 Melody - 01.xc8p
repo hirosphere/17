@@ -1,0 +1,30 @@
+{
+	Title: "PIC16F18 Melody - 01",
+	Chip: "16F18313",
+	Output: " Melody - 01 - 16F18313.hex",
+	OutDir: "{PrjDir}\\Output",
+	ObjDir: "{PrjDir}\\Temp",
+	IPaths:
+	[
+		// "{PrjDir}\\..\\Lib"
+	],
+	Srcs:
+	[
+		{
+			Dir: "{PrjDir}",
+			Items:
+			[
+				"Main.c",
+				"Voix.c",
+				"Config.c"
+			]
+		},
+		{
+			Dir: "{PrjDir}\\..\\Lib",
+			Items:
+			[
+				// "Prime.c"
+			]
+		}
+	]
+}
