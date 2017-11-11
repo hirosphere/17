@@ -111,7 +111,7 @@ var TextHDPane = class_def
 				location.href.replace( location.hash, "" ) + hash;
 			
 			var twlink = encodeURIComponent( link );
-			var twtext = encodeURIComponent( "ハッシュドック Hashdoc" );
+			var twtext = encodeURIComponent( this.Doc.Value.Title + "" );
 			
 			this.Tweet.href = "http://twitter.com/intent/tweet?" +
 				"original_referer=" + twlink +
