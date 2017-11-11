@@ -15,6 +15,7 @@ a
 <script src="../Lib/Prime17.js"></script>
 <body>
 
+<a href="">Tweet</a>
 
 <div id= "App1"></div>
 <script>
@@ -36,22 +37,11 @@ var TextHDPane = class_def
 			
 			
 			var d2 = $.Create( "div", e, null );
-			this.Text_Edit = $.Create
-			(
-				"textarea",
-				d2, { },
-				{ width: "50em", height: "8em", margin: "0 10px 10px" }
-			);
-			
-			var upd_bu = $.Create_t( "button", d2, "反映", {  onclick: function() { self.Cure(); }  } );
-			
-
-			var d2 = $.Create( "div", e, null );
 			this.JSON_Edit = $.Create
 			(
 				"textarea",
 				d2, { },
-				{ width: "50em", height: "8em", margin: "0 10px 10px" }
+				{ width: "60em", height: "12em", margin: "0 10px 10px" }
 			);
 			
 			var upd_bu = $.Create_t( "button", d2, "反映" );
@@ -62,7 +52,7 @@ var TextHDPane = class_def
 			(
 				"textarea",
 				d3,  null,
-				{ width: "50em", height: "5em", margin: "0 10px 10px" }
+				{ width: "60em", height: "5em", margin: "0 10px 10px" }
 			);
 			
 			var d4 = $.Create( "div", e );
@@ -95,7 +85,6 @@ var TextHDPane = class_def
 		{
 			document.title = this.Doc.Value.Title + " -- Hashdoc";
 			$.Text( this.Title, this.Doc.Value.Title );
-			this.Text_Edit.value = this.Doc.Value.Title;
 			this.Title.style.font = this.Doc.Value.Font;
 			
 			this.JSON_Edit.value = this.Doc.JSON;
@@ -121,12 +110,7 @@ var TextHDPane = class_def
 			
 			this.Hash_Edit.value += "\r\n" + this.Tweet.href;
 			
-		};
-		
-		this.Cure = function()
-		{
-			this.Doc.Value.Title = this.Text_Edit.value;
-			this.Doc.GoNext();
+			// location.hash = "#" + hash;
 		};
 	}
 );
@@ -140,9 +124,8 @@ var TextHD = class_def
 		{
 			base.Initiate.call( this );
 			
-			this.Hash = "";
 			this.JSON = "";
-			this.Value = { Title: "", Text: "", Font: "" };
+			this.Value = { Title: "", Font: "" };
 			
 			var self = this;
 			window.addEventListener( "hashchange", function() { self.Update(); } ,  false );
@@ -152,29 +135,16 @@ var TextHD = class_def
 		
 		this.Update = function()
 		{
-			this.Hash = location.hash.substr( 1 );
-			this.JSON = decodeURIComponent( this.Hash );
+			this.JSON = decodeURIComponent( location.hash.substr( 1 ) );
 			var value = $.FromJSON( this.JSON );
 			this.Value =
 			{
 				Title: value && value[ 1 ] || "--",
-				Text: value && value[ 2 ] || "",
-				Font: value && value[ 3 ] || ""
+				Font: value && value[ 2 ] || ""
 			};
 			this.Notify( "ValueChange" );
 		};
 		
-		this.GoNext = function()
-		{
-			var ar =
-			[
-				91,
-				this.Value.Title,
-				this.Value.Text,
-				this.Value.Font,
-			];
-			location.hash = "#" + $.ToJSON( ar );
-		};
 	}
 );
 

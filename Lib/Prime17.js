@@ -257,8 +257,40 @@ var $ = new function()
 		}
 	};
 	
-	this.ToJSON = function( value )
-	{
+	this.ToJSON = json_value;
 	
-	};
+	function json_value( value )
+	{
+		if( value === undefined )  return "undefined";
+		if( value === null )  return "null";
+		if( value.constructor == Number )  return value.toString();
+		if( value.constructor == String )  return json_str( value );
+		if( value === true )  return "true";
+		if( value === false )  return "false";
+		if( value.constructor == Array )  return json_array( value );
+		if( value.constructor == Object )  return json_obj( value );
+		
+		return "";
+	}
+	
+	function json_str( value )
+	{
+		var json = value;
+		return "\"" + json + "\"";
+	}
+	
+	function json_array( value )
+	{
+		var rt = [];
+		for( var i = 0; i < value.length; i ++ )
+		{
+			rt.push( json_value( value[ i ] ) );
+		}
+		return "[" + rt.join( "," ) + "]";
+	}
+	
+	function json_obj( value )
+	{
+		return "{}";
+	}
 };
