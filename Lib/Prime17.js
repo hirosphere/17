@@ -79,7 +79,7 @@ var $ = new function()
 	
 	this.hp = function( plain )
 	{
-		return ( "" + plain ).replace( /<|>|&|  | |\t|\r\n|\r|\n/, hp_rep );
+		return ( "" + plain ).replace( /<|>|&|  | |\t|\r\n|\r|\n/g, hp_rep );
 	};
 	
 	var ht_rep_tab =
@@ -275,9 +275,15 @@ var $ = new function()
 	
 	function json_str( value )
 	{
-		var json = value;
-		return "\"" + json + "\"";
+		return "\"" + value.replace( /\r|\n|"/g, json_str_rep ) + "\"";
 	}
+		
+		var json_str_tbl = { "\"": "\"\"", "\r": "\\r", "\n": "\\n" };
+		
+		function json_str_rep( m )
+		{
+			return json_str_tbl[ m ];
+		}
 	
 	function json_array( value )
 	{
