@@ -1,6 +1,6 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
-"35 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+"36 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
 [v _App_Init `(v ~T0 @X0 0 ef ]
 "22
 [v _Chip_Init `(v ~T0 @X0 0 ef ]
@@ -8,13 +8,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _MidTick_Step `(v ~T0 @X0 0 ef ]
 "1975 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"36 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+"37 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
 [v _App_Step `(v ~T0 @X0 0 ef ]
 "14497 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _TMR2IF `Vb ~T0 @X0 0 e@137 ]
 "4756
 [v _CCPR1 `Vus ~T0 @X0 0 e@657 ]
-"30 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+"31 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
 [v _Voix_int_Step `(us ~T0 @X0 0 ef ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
@@ -5082,9 +5082,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 23: void ADC_Go( void );
 [; ;App.h: 24: uint8 ADC_Res( void );
 [; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: uint16 Voix_int_Step( void );
-[; ;App.h: 35: void App_Init( void );
-[; ;App.h: 36: void App_Step( void );
+[; ;App.h: 30: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 31: uint16 Voix_int_Step( void );
+[; ;App.h: 36: void App_Init( void );
+[; ;App.h: 37: void App_Step( void );
 "7 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c
 [v _MidTick_DivCtr `uc ~T0 @X0 1 e ]
 [i _MidTick_DivCtr
@@ -5172,9 +5173,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 "37
 [e :UE 662 ]
 }
-[v F5271 `(v ~T0 @X0 1 tf ]
+[v F5273 `(v ~T0 @X0 1 tf ]
 "40
-[v _ISR `IF5271 ~T0 @X0 1 e ]
+[v _ISR `IF5273 ~T0 @X0 1 e ]
 "41
 {
 [; ;Main.c: 40: void interrupt ISR( void )

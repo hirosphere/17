@@ -5104,9 +5104,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 23: void ADC_Go( void );
 [; ;App.h: 24: uint8 ADC_Res( void );
 [; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: uint16 Voix_int_Step( void );
-[; ;App.h: 35: void App_Init( void );
-[; ;App.h: 36: void App_Step( void );
+[; ;App.h: 30: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 31: uint16 Voix_int_Step( void );
+[; ;App.h: 36: void App_Init( void );
+[; ;App.h: 37: void App_Step( void );
 "27 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c
 [p x FEXTOSC=OFF ]
 "28

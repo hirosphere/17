@@ -29,12 +29,14 @@ uint16 Vo_2_Phase = 0;
 
 uint8	Vo_WT_1[ 8 ] ;
 
+void Voix_Set_Speed( uint16 speed )
+{
+	Vo_1_Freq = speed >> 6;
+	Vo_2_Freq = ( speed >> 6 ) + ( speed >> 4 );
+}
+
 uint16 Voix_int_Step( void )
 {
-	uint8 i;
-	for( i = 0; i < sizeof( Vo_WT_1 ); i ++ )
-		Vo_WT_1[ i ] = 0x99;
-	
 	
 	uint16 rt = 0;
 	//Vo_1_Phase += 550;

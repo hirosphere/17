@@ -5065,9 +5065,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 23: void ADC_Go( void );
 [; ;App.h: 24: uint8 ADC_Res( void );
 [; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: uint16 Voix_int_Step( void );
-[; ;App.h: 35: void App_Init( void );
-[; ;App.h: 36: void App_Step( void );
+[; ;App.h: 30: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 31: uint16 Voix_int_Step( void );
+[; ;App.h: 36: void App_Init( void );
+[; ;App.h: 37: void App_Step( void );
 "4 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c
 [v _Noise_Seed `ul ~T0 @X0 1 e ]
 [i _Noise_Seed
@@ -5151,84 +5152,86 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Vo_WT_1 `uc ~T0 @X0 -> 8 `i e ]
 [; ;Voix.c: 30: uint8 Vo_WT_1[ 8 ] ;
 "32
-[v _Voix_int_Step `(us ~T0 @X0 1 ef ]
+[v _Voix_Set_Speed `(v ~T0 @X0 1 ef1`us ]
 "33
 {
-[; ;Voix.c: 32: uint16 Voix_int_Step( void )
+[; ;Voix.c: 32: void Voix_Set_Speed( uint16 speed )
 [; ;Voix.c: 33: {
+[e :U _Voix_Set_Speed ]
+"32
+[v _speed `us ~T0 @X0 1 r1 ]
+"33
+[f ]
+[; ;Voix.c: 34: Vo_1_Freq = speed >> 6;
+"34
+[e = _Vo_1_Freq -> >> -> _speed `ui -> 6 `i `us ]
+[; ;Voix.c: 35: Vo_2_Freq = ( speed >> 6 ) + ( speed >> 4 );
+"35
+[e = _Vo_2_Freq -> + >> -> _speed `ui -> 6 `i >> -> _speed `ui -> 4 `i `us ]
+[; ;Voix.c: 36: }
+"36
+[e :UE 662 ]
+}
+"38
+[v _Voix_int_Step `(us ~T0 @X0 1 ef ]
+"39
+{
+[; ;Voix.c: 38: uint16 Voix_int_Step( void )
+[; ;Voix.c: 39: {
 [e :U _Voix_int_Step ]
 [f ]
-"34
-[v _i `uc ~T0 @X0 1 a ]
-[; ;Voix.c: 34: uint8 i;
-[; ;Voix.c: 35: for( i = 0; i < sizeof( Vo_WT_1 ); i ++ )
-"35
-{
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `ui -> # _Vo_WT_1 `ui 663  ]
-[e $U 664  ]
-"36
-[e :U 663 ]
-[; ;Voix.c: 36: Vo_WT_1[ i ] = 0x99;
-[e = *U + &U _Vo_WT_1 * -> _i `ux -> -> # *U &U _Vo_WT_1 `ui `ux -> -> 153 `i `uc ]
-"35
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `ui -> # _Vo_WT_1 `ui 663  ]
-[e :U 664 ]
-"36
-}
-"39
+"41
 [v _rt `us ~T0 @X0 1 a ]
-[; ;Voix.c: 39: uint16 rt = 0;
+[; ;Voix.c: 41: uint16 rt = 0;
 [e = _rt -> -> 0 `i `us ]
-"43
-"44
-[; <"     clrf (?_Voix_int_Step) ;# ">
 "45
-[; <"   clrf (?_Voix_int_Step+1) ;# ">
 "46
+[; <"     clrf (?_Voix_int_Step) ;# ">
 "47
-[; <"     movlb 0 ; select bank0 ;# ">
+[; <"   clrf (?_Voix_int_Step+1) ;# ">
 "48
 "49
-[; <"     movf (_Vo_1_Freq),w ;# ">
+[; <"     movlb 0 ; select bank0 ;# ">
 "50
-[; <"   addwf (_Vo_1_Phase),f ;# ">
 "51
-[; <"   movf (_Vo_1_Freq+1),w ;# ">
+[; <"     movf (_Vo_1_Freq),w ;# ">
 "52
-[; <"   addwfc (_Vo_1_Phase+1),f ;# ">
+[; <"   addwf (_Vo_1_Phase),f ;# ">
 "53
+[; <"   movf (_Vo_1_Freq+1),w ;# ">
 "54
-[; <"     movf (_Vo_1_Phase+1),w ;# ">
+[; <"   addwfc (_Vo_1_Phase+1),f ;# ">
 "55
-[; <"   addwf (?_Voix_int_Step),f ;# ">
 "56
+[; <"     movf (_Vo_1_Phase+1),w ;# ">
 "57
-[; <"     movf (_Vo_2_Freq),w ;# ">
-"58
-[; <"   addwf (_Vo_2_Phase),f ;# ">
-"59
-[; <"   movf (_Vo_2_Freq+1),w ;# ">
-"60
-[; <"   addwfc (_Vo_2_Phase+1),f ;# ">
-"61
-"62
-[; <"     movf (_Vo_2_Phase+1),w ;# ">
-"63
 [; <"   addwf (?_Voix_int_Step),f ;# ">
+"58
+"59
+[; <"     movf (_Vo_2_Freq),w ;# ">
+"60
+[; <"   addwf (_Vo_2_Phase),f ;# ">
+"61
+[; <"   movf (_Vo_2_Freq+1),w ;# ">
+"62
+[; <"   addwfc (_Vo_2_Phase+1),f ;# ">
+"63
 "64
-[; <"   movlw 0 ;# ">
+[; <"     movf (_Vo_2_Phase+1),w ;# ">
 "65
-[; <"   addwfc (?_Voix_int_Step+1),f ;# ">
+[; <"   addwf (?_Voix_int_Step),f ;# ">
 "66
+[; <"   movlw 0 ;# ">
 "67
+[; <"   addwfc (?_Voix_int_Step+1),f ;# ">
+"68
+"69
 [; <"     return; ;# ">
-[; ;Voix.c: 70: return 0;
-"70
+[; ;Voix.c: 72: return 0;
+"72
 [e ) -> -> 0 `i `us ]
-[e $UE 662  ]
-[; ;Voix.c: 71: }
-"71
-[e :UE 662 ]
+[e $UE 663  ]
+[; ;Voix.c: 73: }
+"73
+[e :UE 663 ]
 }

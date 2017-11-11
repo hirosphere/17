@@ -1,10 +1,18 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"24 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
-[v _ADC_Res `(uc ~T0 @X0 0 ef ]
+"30 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+[v _Voix_Set_Speed `(v ~T0 @X0 0 ef1`us ]
 "28
 [v _Noise_Step `(uc ~T0 @X0 0 ef1`uc ]
 "23
 [v _ADC_Go `(v ~T0 @X0 0 ef ]
+"24
+[v _ADC_Res `(uc ~T0 @X0 0 ef ]
+"7 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c
+[v _Vol_1_Change `(v ~T0 @X0 0 ef ]
+"5
+[v _Train_Step `(v ~T0 @X0 0 ef ]
+"4
+[v _Train_Set_Acc `(v ~T0 @X0 0 ef2`us`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -5071,115 +5079,404 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 23: void ADC_Go( void );
 [; ;App.h: 24: uint8 ADC_Res( void );
 [; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: uint16 Voix_int_Step( void );
-[; ;App.h: 35: void App_Init( void );
-[; ;App.h: 36: void App_Step( void );
-"7 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c
+[; ;App.h: 30: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 31: uint16 Voix_int_Step( void );
+[; ;App.h: 36: void App_Init( void );
+[; ;App.h: 37: void App_Step( void );
+[; ;App.c: 4: void Train_Set_Acc( uint16 acc, bool up );
+[; ;App.c: 5: void Train_Step( void );
+[; ;App.c: 7: void Vol_1_Change( void );
+"11 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c
 [v _App_Tempo `uc ~T0 @X0 1 e ]
 [i _App_Tempo
 -> -> 108 `i `uc
 ]
-[; ;App.c: 7: uint8 App_Tempo = 108;
-"8
+[; ;App.c: 11: uint8 App_Tempo = 108;
+"12
 [v _App_Tempo_Phase `us ~T0 @X0 1 e ]
 [i _App_Tempo_Phase
 -> -> 0 `i `us
 ]
-[; ;App.c: 8: uint16 App_Tempo_Phase = 0;
-"9
+[; ;App.c: 12: uint16 App_Tempo_Phase = 0;
+"13
 [v _App_Noise `uc ~T0 @X0 1 e ]
 [i _App_Noise
 -> -> 0 `i `uc
 ]
-[; ;App.c: 9: uint8 App_Noise = 0;
-"11
+[; ;App.c: 13: uint8 App_Noise = 0;
+"15
 [v _App_Output `uc ~T0 @X0 -> 2 `i e ]
-[; ;App.c: 11: uint8 App_Output[ 2 ] ;
-"13
+[; ;App.c: 15: uint8 App_Output[ 2 ] ;
+"17
 [v _Vol_1 `uc ~T0 @X0 1 e ]
 [i _Vol_1
 -> -> 0 `i `uc
 ]
-[; ;App.c: 13: uint8 Vol_1 = 0;
-"14
+[; ;App.c: 17: uint8 Vol_1 = 0;
+"18
+[v _Vol_1_s `uc ~T0 @X0 1 e ]
+[i _Vol_1_s
+-> -> 0 `i `uc
+]
+[; ;App.c: 18: uint8 Vol_1_s = 0;
+"19
 [v _Vol_margin `Cuc ~T0 @X0 1 e ]
 [i _Vol_margin
 -> -> 2 `i `uc
 ]
-[; ;App.c: 14: const uint8 Vol_margin = 2;
-"17
+[; ;App.c: 19: const uint8 Vol_margin = 2;
+"22
 [v _App_Init `(v ~T0 @X0 1 ef ]
-"18
+"23
 {
-[; ;App.c: 17: void App_Init( void )
-[; ;App.c: 18: {
+[; ;App.c: 22: void App_Init( void )
+[; ;App.c: 23: {
 [e :U _App_Init ]
 [f ]
-[; ;App.c: 19: }
-"19
+[; ;App.c: 24: Voix_Set_Speed( 0 );
+"24
+[e ( _Voix_Set_Speed (1 -> -> 0 `i `us ]
+[; ;App.c: 25: }
+"25
 [e :UE 657 ]
 }
-"21
+"27
 [v _App_Step `(v ~T0 @X0 1 ef ]
-"22
+"28
 {
-[; ;App.c: 21: void App_Step( void )
-[; ;App.c: 22: {
+[; ;App.c: 27: void App_Step( void )
+[; ;App.c: 28: {
 [e :U _App_Step ]
 [f ]
-[; ;App.c: 23: App_Tempo_Phase += App_Tempo;
-"23
+"29
+[v F5279 `uc ~T0 @X0 1 s phase ]
+[i F5279
+-> -> 0 `i `uc
+]
+[; ;App.c: 29: static uint8 phase = 0;
+[; ;App.c: 31: App_Noise = Noise_Step( 4 ) & 0xFF;
+"31
+[e = _App_Noise -> & -> ( _Noise_Step (1 -> -> 4 `i `uc `i -> 255 `i `uc ]
+[; ;App.c: 32: App_Tempo_Phase += App_Tempo;
+"32
 [e =+ _App_Tempo_Phase -> _App_Tempo `us ]
-[; ;App.c: 25: if( App_Tempo_Phase >= 2500 )
-"25
+[; ;App.c: 34: if( App_Tempo_Phase >= 2500 )
+"34
 [e $ ! >= -> _App_Tempo_Phase `ui -> -> 2500 `i `ui 659  ]
-[; ;App.c: 26: {
-"26
+[; ;App.c: 35: {
+"35
 {
-[; ;App.c: 27: App_Tempo_Phase -= 2500;
-"27
+[; ;App.c: 36: App_Tempo_Phase -= 2500;
+"36
 [e =- _App_Tempo_Phase -> -> 2500 `i `us ]
-"28
+"37
 }
 [e :U 659 ]
-"30
+"39
 [v _vol `uc ~T0 @X0 1 a ]
-[; ;App.c: 28: }
-[; ;App.c: 30: uint8 vol = ADC_Res();
-[e = _vol ( _ADC_Res ..  ]
-[; ;App.c: 31: if( vol > ( Vol_1 + Vol_margin ) )
-"31
-[e $ ! > -> _vol `i + -> _Vol_1 `i -> _Vol_margin `i 660  ]
-[; ;App.c: 32: {
-"32
+[; ;App.c: 37: }
+[; ;App.c: 39: uint8 vol;
+[; ;App.c: 40: switch( phase ++ )
+"40
+[e $U 661  ]
+[; ;App.c: 41: {
+"41
 {
-[; ;App.c: 33: Vol_1 = vol - Vol_margin;
-"33
-[e = _Vol_1 -> - -> _vol `i -> _Vol_margin `i `uc ]
-"34
-}
-[e :U 660 ]
-[; ;App.c: 34: }
-[; ;App.c: 35: if( vol < Vol_1 )
-"35
-[e $ ! < -> _vol `i -> _Vol_1 `i 661  ]
-[; ;App.c: 36: {
-"36
-{
-[; ;App.c: 37: Vol_1 = vol;
-"37
-[e = _Vol_1 _vol ]
-"38
-}
-[e :U 661 ]
-[; ;App.c: 38: }
-[; ;App.c: 43: App_Noise = Noise_Step( 4 ) & 0xFF;
+[; ;App.c: 42: case 0:
+"42
+[e :U 662 ]
+[; ;App.c: 43: ADC_Go();
 "43
-[e = _App_Noise -> & -> ( _Noise_Step (1 -> -> 4 `i `uc `i -> 255 `i `uc ]
-[; ;App.c: 45: ADC_Go();
-"45
 [e ( _ADC_Go ..  ]
-[; ;App.c: 46: }
+[; ;App.c: 44: break;
+"44
+[e $U 660  ]
+[; ;App.c: 46: case 1:
 "46
+[e :U 663 ]
+[; ;App.c: 47: vol = ADC_Res();
+"47
+[e = _vol ( _ADC_Res ..  ]
+[; ;App.c: 48: if( vol > ( Vol_1 + Vol_margin ) )
+"48
+[e $ ! > -> _vol `i + -> _Vol_1 `i -> _Vol_margin `i 664  ]
+[; ;App.c: 49: {
+"49
+{
+[; ;App.c: 50: Vol_1 = vol - Vol_margin;
+"50
+[e = _Vol_1 -> - -> _vol `i -> _Vol_margin `i `uc ]
+[; ;App.c: 51: Vol_1_Change();
+"51
+[e ( _Vol_1_Change ..  ]
+"52
+}
+[e :U 664 ]
+[; ;App.c: 52: }
+[; ;App.c: 53: if( vol < Vol_1 )
+"53
+[e $ ! < -> _vol `i -> _Vol_1 `i 665  ]
+[; ;App.c: 54: {
+"54
+{
+[; ;App.c: 55: Vol_1 = vol;
+"55
+[e = _Vol_1 _vol ]
+[; ;App.c: 56: Vol_1_Change();
+"56
+[e ( _Vol_1_Change ..  ]
+"57
+}
+[e :U 665 ]
+[; ;App.c: 57: }
+[; ;App.c: 58: Train_Step();
+"58
+[e ( _Train_Step ..  ]
+[; ;App.c: 59: break;
+"59
+[e $U 660  ]
+[; ;App.c: 61: case 9:
+"61
+[e :U 666 ]
+[; ;App.c: 62: phase = 0;
+"62
+[e = F5279 -> -> 0 `i `uc ]
+[; ;App.c: 63: break;
+"63
+[e $U 660  ]
+"64
+}
+[; ;App.c: 64: }
+[e $U 660  ]
+"40
+[e :U 661 ]
+[e [\ ++ F5279 -> -> 1 `i `uc , $ -> -> 0 `i `uc 662
+ , $ -> -> 1 `i `uc 663
+ , $ -> -> 9 `i `uc 666
+ 660 ]
+"64
+[e :U 660 ]
+[; ;App.c: 65: }
+"65
 [e :UE 658 ]
+}
+"67
+[v _down_table `us ~T0 @X0 -> 6 `i e ]
+[i _down_table
+:U ..
+"69
+-> / * -> 600 `i -> 256 `i -> 500 `i `us
+"70
+-> / * -> 100 `i -> 256 `i -> 500 `i `us
+"71
+-> / * -> 50 `i -> 256 `i -> 500 `i `us
+"72
+-> / * -> 30 `i -> 256 `i -> 500 `i `us
+"73
+-> / * -> 10 `i -> 256 `i -> 500 `i `us
+"75
+-> -> 1 `i `us
+..
+]
+[; ;App.c: 67: uint16 down_table[ 6 ] =
+[; ;App.c: 68: {
+[; ;App.c: 69: 600 * 256 / 500,
+[; ;App.c: 70: 100 * 256 / 500,
+[; ;App.c: 71: 50 * 256 / 500,
+[; ;App.c: 72: 30 * 256 / 500,
+[; ;App.c: 73: 10 * 256 / 500,
+[; ;App.c: 74: 1
+[; ;App.c: 75: };
+"77
+[v _up_table `us ~T0 @X0 -> 7 `i e ]
+[i _up_table
+:U ..
+"79
+-> / * -> 5 `i -> 256 `i -> 500 `i `us
+"80
+-> / * -> 10 `i -> 256 `i -> 500 `i `us
+"81
+-> / * -> 20 `i -> 256 `i -> 500 `i `us
+"82
+-> / * -> 30 `i -> 256 `i -> 500 `i `us
+"83
+-> / * -> 50 `i -> 256 `i -> 500 `i `us
+"84
+-> / * -> 100 `i -> 256 `i -> 500 `i `us
+"85
+-> / * -> 330 `i -> 256 `i -> 500 `i `us
+..
+]
+[; ;App.c: 77: uint16 up_table[ 7 ] =
+[; ;App.c: 78: {
+[; ;App.c: 79: 5 * 256 / 500,
+[; ;App.c: 80: 10 * 256 / 500,
+[; ;App.c: 81: 20 * 256 / 500,
+[; ;App.c: 82: 30 * 256 / 500,
+[; ;App.c: 83: 50 * 256 / 500,
+[; ;App.c: 84: 100 * 256 / 500,
+[; ;App.c: 85: 330 * 256 / 500,
+[; ;App.c: 86: };
+"88
+[v _Vol_1_Change `(v ~T0 @X0 1 ef ]
+"89
+{
+[; ;App.c: 88: void Vol_1_Change( void )
+[; ;App.c: 89: {
+[e :U _Vol_1_Change ]
+[f ]
+"90
+[v _s `uc ~T0 @X0 1 a ]
+[; ;App.c: 90: uint8 s = Vol_1 >> 4;
+[e = _s -> >> -> _Vol_1 `i -> 4 `i `uc ]
+[; ;App.c: 91: if( s == Vol_1_s ) return;
+"91
+[e $ ! == -> _s `i -> _Vol_1_s `i 668  ]
+[e $UE 667  ]
+[e :U 668 ]
+[; ;App.c: 92: Vol_1_s = s;
+"92
+[e = _Vol_1_s _s ]
+[; ;App.c: 94: if( s > 8 )
+"94
+[e $ ! > -> _s `i -> 8 `i 669  ]
+[; ;App.c: 95: {
+"95
+{
+[; ;App.c: 96: Train_Set_Acc( up_table[ s - 9 ], 1 );
+"96
+[e ( _Train_Set_Acc (2 , *U + &U _up_table * -> -> - -> _s `i -> 9 `i `ui `ux -> -> # *U &U _up_table `ui `ux -> -> 1 `i `uc ]
+"97
+}
+[; ;App.c: 97: }
+[e $U 670  ]
+"98
+[e :U 669 ]
+[; ;App.c: 98: else if( s < 2 )
+[e $ ! < -> _s `i -> 2 `i 671  ]
+[; ;App.c: 99: {
+"99
+{
+"100
+}
+[; ;App.c: 100: }
+[e $U 672  ]
+"101
+[e :U 671 ]
+[; ;App.c: 101: else if( s < 8 )
+[e $ ! < -> _s `i -> 8 `i 673  ]
+[; ;App.c: 102: {
+"102
+{
+[; ;App.c: 103: Train_Set_Acc( down_table[ s - 2 ], 0 );
+"103
+[e ( _Train_Set_Acc (2 , *U + &U _down_table * -> -> - -> _s `i -> 2 `i `ui `ux -> -> # *U &U _down_table `ui `ux -> -> 0 `i `uc ]
+"104
+}
+[e :U 673 ]
+"106
+[e :U 672 ]
+[e :U 670 ]
+[; ;App.c: 104: }
+[; ;App.c: 106: }
+[e :UE 667 ]
+}
+"110
+[v _Train_Speed `us ~T0 @X0 1 e ]
+[i _Train_Speed
+-> -> 256 `i `us
+]
+[; ;App.c: 110: uint16 Train_Speed = 0x100;
+"111
+[v _Train_Acc `us ~T0 @X0 1 e ]
+[i _Train_Acc
+-> -> 0 `i `us
+]
+[; ;App.c: 111: uint16 Train_Acc = 0;
+"112
+[v _Train_Up `uc ~T0 @X0 1 e ]
+[i _Train_Up
+-> -> 0 `i `uc
+]
+[; ;App.c: 112: bool Train_Up = 0;
+"114
+[v _Train_Set_Acc `(v ~T0 @X0 1 ef2`us`uc ]
+"115
+{
+[; ;App.c: 114: void Train_Set_Acc( uint16 acc, bool up )
+[; ;App.c: 115: {
+[e :U _Train_Set_Acc ]
+"114
+[v _acc `us ~T0 @X0 1 r1 ]
+[v _up `uc ~T0 @X0 1 r2 ]
+"115
+[f ]
+[; ;App.c: 116: Train_Acc = acc;
+"116
+[e = _Train_Acc _acc ]
+[; ;App.c: 117: Train_Up = up;
+"117
+[e = _Train_Up _up ]
+[; ;App.c: 118: }
+"118
+[e :UE 674 ]
+}
+"120
+[v _Train_Step `(v ~T0 @X0 1 ef ]
+"121
+{
+[; ;App.c: 120: void Train_Step( void )
+[; ;App.c: 121: {
+[e :U _Train_Step ]
+[f ]
+"122
+[v _s `us ~T0 @X0 1 a ]
+[; ;App.c: 122: uint16 s = Train_Speed;
+[e = _s _Train_Speed ]
+[; ;App.c: 124: if( Train_Up )
+"124
+[e $ ! != -> _Train_Up `i -> -> -> 0 `i `uc `i 676  ]
+[; ;App.c: 125: {
+"125
+{
+[; ;App.c: 126: if( Train_Speed < ( 0xFFFF - Train_Acc ) ) Train_Speed += Train_Acc;
+"126
+[e $ ! < -> _Train_Speed `ui - -> 65535 `ui -> _Train_Acc `ui 677  ]
+[e =+ _Train_Speed _Train_Acc ]
+[e $U 678  ]
+"127
+[e :U 677 ]
+[; ;App.c: 127: else Train_Speed = 0xFFFF;
+[e = _Train_Speed -> -> 65535 `ui `us ]
+[e :U 678 ]
+"128
+}
+[; ;App.c: 128: }
+[e $U 679  ]
+"129
+[e :U 676 ]
+[; ;App.c: 129: else
+[; ;App.c: 130: {
+"130
+{
+[; ;App.c: 131: if( Train_Speed > Train_Acc ) Train_Speed -= Train_Acc;
+"131
+[e $ ! > -> _Train_Speed `ui -> _Train_Acc `ui 680  ]
+[e =- _Train_Speed _Train_Acc ]
+[e $U 681  ]
+"132
+[e :U 680 ]
+[; ;App.c: 132: else Train_Speed = 0;
+[e = _Train_Speed -> -> 0 `i `us ]
+[e :U 681 ]
+"133
+}
+[e :U 679 ]
+[; ;App.c: 133: }
+[; ;App.c: 135: Voix_Set_Speed( Train_Speed );
+"135
+[e ( _Voix_Set_Speed (1 _Train_Speed ]
+[; ;App.c: 136: }
+"136
+[e :UE 675 ]
 }
