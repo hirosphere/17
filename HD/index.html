@@ -97,12 +97,15 @@ var TextHDPane = class_def
 				encodeURIComponent( this.JSON_Edit.value );
 			
 			var twlink = encodeURIComponent( link );
-			var twtext = encodeURIComponent( "Textdoc" );
+			var twtext = encodeURIComponent( "ハッシュドック Hashdoc" );
+			
 			this.Tweet.href = "http://twitter.com/intent/tweet?" +
 				"original_referer=" + twlink +
-				"&url=" +  + twlink +
+				"&url=" +  twlink +
 				"&text=" + twtext
 			;
+			
+			this.Hash_Edit.value += "\r\n" + this.Tweet.href;
 		};
 	}
 );
