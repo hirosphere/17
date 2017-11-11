@@ -1,5 +1,5 @@
 
-# 1 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
+# 1 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.41\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -6687,53 +6687,45 @@ uint16 Voix_int_Step( void );
 void App_Init( void );
 void App_Step( void );
 
-# 7 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
-uint8 MidTick_DivCtr = 1;
-uint8 MidTick_Task = 0;
-void MidTick_Step( void );
+# 7 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+uint8 App_Tempo = 108;
+uint16 App_Tempo_Phase = 0;
+uint8 App_Noise = 0;
 
-uint16 LED_Ctr = 0;
+uint8 App_Output[ 2 ] ;
 
-void main( void )
+uint8 Vol_1 = 0;
+const uint8 Vol_margin = 2;
+
+
+void App_Init( void )
 {
-App_Init();
-Chip_Init();
-
-
-while( 1 )
-{
-if( MidTick_Task )
-{
-MidTick_Task --;
-MidTick_Step();
-}
 }
 
+void App_Step( void )
+{
+App_Tempo_Phase += App_Tempo;
+
+if( App_Tempo_Phase >= 2500 )
+{
+App_Tempo_Phase -= 2500;
+}
+
+uint8 vol = ADC_Res();
+if( vol > ( Vol_1 + Vol_margin ) )
+{
+Vol_1 = vol - Vol_margin;
+}
+if( vol < Vol_1 )
+{
+Vol_1 = vol;
 }
 
 
-void MidTick_Step( void )
-{
-LED_Ctr += 131;
-LATA = LED_Ctr >> 10;
-
-App_Step();
-}
 
 
-void interrupt ISR( void )
-{
-if( TMR2IF )
-{
-TMR2IF = 0;
+App_Noise = Noise_Step( 4 ) & 0xFF;
 
-if( -- MidTick_DivCtr == 0 )
-{
-MidTick_DivCtr = 64;
-MidTick_Task ++;
-}
-
-CCPR1= Voix_int_Step();
-}
+ADC_Go();
 }
 

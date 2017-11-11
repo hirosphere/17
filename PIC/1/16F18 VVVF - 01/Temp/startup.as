@@ -7,12 +7,13 @@
 	;
 	; Compiler options:
 	;
-	; --CHIP=16F18313 -OVVVF - 01 - 16F18313.hex \
-	; --OUTDIR=C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Output \
-	; --OBJDIR=C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Temp \
-	; C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Main.c \
-	; C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Voix.c \
-	; C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Config.c
+	; --CHIP=16F18313 -OVVVF - 01 - 16F18313.hex --ASMLIST \
+	; --OUTDIR=C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Output \
+	; --OBJDIR=C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Temp \
+	; C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c \
+	; C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c \
+	; C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c \
+	; C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c
 	;
 
 
@@ -76,13 +77,13 @@ reset_vec:
 start
 
 ;Initialize the stack pointer (FSR1)
-;Stack space: 0207Ah-0209Fh (38 bytes)
+;Stack space: 02025h-020EFh (203 bytes)
 
 	fsr1l	equ	6
 	fsr1h	equ	7
 	global stacklo, stackhi
-	stacklo	equ	0207Ah
-	stackhi	equ	0209Fh
+	stacklo	equ	02025h
+	stackhi	equ	020EFh
 
 
 	psect	stack,class=STACK,space=2,noexec

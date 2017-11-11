@@ -4,6 +4,24 @@
 
 #ifdef _16F18313
 
+/*
+	PIC16F18313		VVVF - 01
+	
+	Pin		Type	Func
+	
+	1	Pow	VDD
+	2	Out	Sound F
+	3	Out	Sound R
+	4	ICSP	VPP
+	
+	8	Pow	VSS
+	7	ICSP	DAT
+	6	ICSP	CLK
+	5	Out	LED
+	
+	
+*/
+
 //	Config 1
 
 #pragma config  FEXTOSC = OFF
@@ -45,11 +63,17 @@ void Chip_Init( void )
 	
 	//  Port  //
 	
-	ANSELA	= 0b000000;
-	TRISA		= 0b000011;
-	LATA		= 0b010000;
+	ANSELA	= 0b000100;
+	TRISA		= 0b000111;
+	LATA		= 0b000000;
 	
-	RA2PPS = PPS_out_CCP1;
+	RA4PPS = PPS_out_CCP1;
+	
+	//  ADC  //
+	
+	ADCON1 =
+		6  <<		_ADCON1_ADCS_POSN		//	FOSC / 64
+	;
 	
 	//  Timer, PWM  //
 	
@@ -61,7 +85,7 @@ void Chip_Init( void )
 		On 	<< _T2CON_TMR2ON_POSITION
 	;
 	
-	CCPR1 = 0x00;
+	CCPR1 = 0x100;
 	
 	CCP1CON =
 		On						<< _CCP1CON_CCP1EN_POSITION		|
@@ -77,6 +101,20 @@ void Chip_Init( void )
 		On		<< _INTCON_PEIE_POSITION	|
 		On		<< _INTCON_GIE_POSITION
 	;
+}
+
+void ADC_Go()
+{
+	ADCON0 =
+		On  <<  _ADCON0_ADON_POSN	|
+		On  <<  _ADCON0_ADGO_POSN	|
+		2  <<  _ADCON0_CHS_POSN				//	RA2
+	;
+}
+
+uint8 ADC_Res( void )
+{
+	return  ADRESH;
 }
 
 

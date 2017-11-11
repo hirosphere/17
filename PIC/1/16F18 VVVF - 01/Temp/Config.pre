@@ -1,5 +1,5 @@
 
-# 1 "C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Config.c"
+# 1 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.41\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -6663,52 +6663,32 @@ extern unsigned char __resetbits;
 extern __bit __powerdown;
 extern __bit __timeout;
 
-# 4 "C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\App.h"
-void Chip_Init( void );
-
-
-
+# 4 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h"
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 24
-void Noise_Step( uint8 bits );
-
-typedef struct
-{
-uint16 Freq;
-uint8 Width;
-uint16 Env;
-uint16 Phase;
-}
-Voix;
-
-void Voix_Init( Voix * this );
-void Voix_Trigger( Voix * this, uint8 key );
-void Voix_Step( Voix * this );
-uint8 Voix_int_Step( Voix * this );
-
-# 48
-typedef struct
-{
-uint8 * Start;
-uint8 * Cur;
-uint8 Trans;
-uint8 Time;
-}
-Seq;
-
-void Seq_Init( Seq * this, uint8 * start );
-bool Seq_Step( Seq * this, uint8 * output );
-
-void Con_Init( uint8 * seq_1, uint8 * seq_2 );
-void Con_Step( void );
+# 22
+void Chip_Init( void );
+void ADC_Go( void );
+uint8 ADC_Res( void );
 
 
-# 9 "C:\17\D\GitHub\17\PIC\1\16F18qxx VVVF - 01\Config.c"
+
+uint8 Noise_Step( uint8 bits );
+
+uint16 Voix_int_Step( void );
+
+
+
+
+void App_Init( void );
+void App_Step( void );
+
+
+# 27 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
 #pragma config FEXTOSC = OFF
 #pragma config RSTOSC = HFINT32
 #pragma config CLKOUTEN = OFF
@@ -6748,11 +6728,17 @@ OSCFRQbits.HFFRQ = 6;
 
 
 
-ANSELA = 0b000000;
-TRISA = 0b000011;
-LATA = 0b010000;
+ANSELA = 0b000100;
+TRISA = 0b000111;
+LATA = 0b000000;
 
-RA2PPS = 0x0C;
+RA4PPS = 0x0C;
+
+
+
+ADCON1 =
+6 << 0x4
+;
 
 
 
@@ -6764,7 +6750,7 @@ T2CON =
 1 << 0x2
 ;
 
-CCPR1 = 0x00;
+CCPR1 = 0x100;
 
 CCP1CON =
 1 << 0x7 |
@@ -6780,5 +6766,19 @@ INTCON =
 1 << 0x6 |
 1 << 0x7
 ;
+}
+
+void ADC_Go()
+{
+ADCON0 =
+1 << 0x0 |
+1 << 0x1 |
+2 << 0x2
+;
+}
+
+uint8 ADC_Res( void )
+{
+return ADRESH;
 }
 

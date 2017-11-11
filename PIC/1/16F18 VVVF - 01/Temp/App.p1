@@ -1,21 +1,10 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[p mainexit ]
-"35 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
-[v _App_Init `(v ~T0 @X0 0 ef ]
-"22
-[v _Chip_Init `(v ~T0 @X0 0 ef ]
-"9 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c
-[v _MidTick_Step `(v ~T0 @X0 0 ef ]
-"1975 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
-[v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"36 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
-[v _App_Step `(v ~T0 @X0 0 ef ]
-"14497 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
-[v _TMR2IF `Vb ~T0 @X0 0 e@137 ]
-"4756
-[v _CCPR1 `Vus ~T0 @X0 0 e@657 ]
-"30 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
-[v _Voix_int_Step `(us ~T0 @X0 0 ef ]
+"24 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+[v _ADC_Res `(uc ~T0 @X0 0 ef ]
+"28
+[v _Noise_Step `(uc ~T0 @X0 0 ef1`uc ]
+"23
+[v _ADC_Go `(v ~T0 @X0 0 ef ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -5085,135 +5074,112 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 30: uint16 Voix_int_Step( void );
 [; ;App.h: 35: void App_Init( void );
 [; ;App.h: 36: void App_Step( void );
-"7 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c
-[v _MidTick_DivCtr `uc ~T0 @X0 1 e ]
-[i _MidTick_DivCtr
--> -> 1 `i `uc
+"7 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c
+[v _App_Tempo `uc ~T0 @X0 1 e ]
+[i _App_Tempo
+-> -> 108 `i `uc
 ]
-[; ;Main.c: 7: uint8 MidTick_DivCtr = 1;
+[; ;App.c: 7: uint8 App_Tempo = 108;
 "8
-[v _MidTick_Task `uc ~T0 @X0 1 e ]
-[i _MidTick_Task
--> -> 0 `i `uc
-]
-[; ;Main.c: 8: uint8 MidTick_Task = 0;
-[; ;Main.c: 9: void MidTick_Step( void );
-"11
-[v _LED_Ctr `us ~T0 @X0 1 e ]
-[i _LED_Ctr
+[v _App_Tempo_Phase `us ~T0 @X0 1 e ]
+[i _App_Tempo_Phase
 -> -> 0 `i `us
 ]
-[; ;Main.c: 11: uint16 LED_Ctr = 0;
+[; ;App.c: 8: uint16 App_Tempo_Phase = 0;
+"9
+[v _App_Noise `uc ~T0 @X0 1 e ]
+[i _App_Noise
+-> -> 0 `i `uc
+]
+[; ;App.c: 9: uint8 App_Noise = 0;
+"11
+[v _App_Output `uc ~T0 @X0 -> 2 `i e ]
+[; ;App.c: 11: uint8 App_Output[ 2 ] ;
 "13
-[v _main `(v ~T0 @X0 1 ef ]
+[v _Vol_1 `uc ~T0 @X0 1 e ]
+[i _Vol_1
+-> -> 0 `i `uc
+]
+[; ;App.c: 13: uint8 Vol_1 = 0;
 "14
+[v _Vol_margin `Cuc ~T0 @X0 1 e ]
+[i _Vol_margin
+-> -> 2 `i `uc
+]
+[; ;App.c: 14: const uint8 Vol_margin = 2;
+"17
+[v _App_Init `(v ~T0 @X0 1 ef ]
+"18
 {
-[; ;Main.c: 13: void main( void )
-[; ;Main.c: 14: {
-[e :U _main ]
+[; ;App.c: 17: void App_Init( void )
+[; ;App.c: 18: {
+[e :U _App_Init ]
 [f ]
-[; ;Main.c: 15: App_Init();
-"15
-[e ( _App_Init ..  ]
-[; ;Main.c: 16: Chip_Init();
-"16
-[e ( _Chip_Init ..  ]
-[; ;Main.c: 19: while( 1 )
+[; ;App.c: 19: }
 "19
-[e :U 659 ]
-[; ;Main.c: 20: {
-"20
-{
-[; ;Main.c: 21: if( MidTick_Task )
-"21
-[e $ ! != -> _MidTick_Task `i -> -> -> 0 `i `uc `i 661  ]
-[; ;Main.c: 22: {
-"22
-{
-[; ;Main.c: 23: MidTick_Task --;
-"23
-[e -- _MidTick_Task -> -> 1 `i `uc ]
-[; ;Main.c: 24: MidTick_Step();
-"24
-[e ( _MidTick_Step ..  ]
-"25
-}
-[e :U 661 ]
-"26
-}
-[e :U 658 ]
-"19
-[e $U 659  ]
-[e :U 660 ]
-[; ;Main.c: 25: }
-[; ;Main.c: 26: }
-[; ;Main.c: 28: }
-"28
 [e :UE 657 ]
 }
+"21
+[v _App_Step `(v ~T0 @X0 1 ef ]
+"22
+{
+[; ;App.c: 21: void App_Step( void )
+[; ;App.c: 22: {
+[e :U _App_Step ]
+[f ]
+[; ;App.c: 23: App_Tempo_Phase += App_Tempo;
+"23
+[e =+ _App_Tempo_Phase -> _App_Tempo `us ]
+[; ;App.c: 25: if( App_Tempo_Phase >= 2500 )
+"25
+[e $ ! >= -> _App_Tempo_Phase `ui -> -> 2500 `i `ui 659  ]
+[; ;App.c: 26: {
+"26
+{
+[; ;App.c: 27: App_Tempo_Phase -= 2500;
+"27
+[e =- _App_Tempo_Phase -> -> 2500 `i `us ]
+"28
+}
+[e :U 659 ]
+"30
+[v _vol `uc ~T0 @X0 1 a ]
+[; ;App.c: 28: }
+[; ;App.c: 30: uint8 vol = ADC_Res();
+[e = _vol ( _ADC_Res ..  ]
+[; ;App.c: 31: if( vol > ( Vol_1 + Vol_margin ) )
 "31
-[v _MidTick_Step `(v ~T0 @X0 1 ef ]
+[e $ ! > -> _vol `i + -> _Vol_1 `i -> _Vol_margin `i 660  ]
+[; ;App.c: 32: {
 "32
 {
-[; ;Main.c: 31: void MidTick_Step( void )
-[; ;Main.c: 32: {
-[e :U _MidTick_Step ]
-[f ]
-[; ;Main.c: 33: LED_Ctr += 131;
+[; ;App.c: 33: Vol_1 = vol - Vol_margin;
 "33
-[e =+ _LED_Ctr -> -> 131 `i `us ]
-[; ;Main.c: 34: LATA = LED_Ctr >> 10;
+[e = _Vol_1 -> - -> _vol `i -> _Vol_margin `i `uc ]
 "34
-[e = _LATA -> >> -> _LED_Ctr `ui -> 10 `i `uc ]
-[; ;Main.c: 36: App_Step();
+}
+[e :U 660 ]
+[; ;App.c: 34: }
+[; ;App.c: 35: if( vol < Vol_1 )
+"35
+[e $ ! < -> _vol `i -> _Vol_1 `i 661  ]
+[; ;App.c: 36: {
 "36
-[e ( _App_Step ..  ]
-[; ;Main.c: 37: }
+{
+[; ;App.c: 37: Vol_1 = vol;
 "37
-[e :UE 662 ]
+[e = _Vol_1 _vol ]
+"38
 }
-[v F5271 `(v ~T0 @X0 1 tf ]
-"40
-[v _ISR `IF5271 ~T0 @X0 1 e ]
-"41
-{
-[; ;Main.c: 40: void interrupt ISR( void )
-[; ;Main.c: 41: {
-[e :U _ISR ]
-[f ]
-[; ;Main.c: 42: if( TMR2IF )
-"42
-[e $ ! _TMR2IF 664  ]
-[; ;Main.c: 43: {
+[e :U 661 ]
+[; ;App.c: 38: }
+[; ;App.c: 43: App_Noise = Noise_Step( 4 ) & 0xFF;
 "43
-{
-[; ;Main.c: 44: TMR2IF = 0;
-"44
-[e = _TMR2IF -> -> 0 `i `b ]
-[; ;Main.c: 46: if( -- MidTick_DivCtr == 0 )
+[e = _App_Noise -> & -> ( _Noise_Step (1 -> -> 4 `i `uc `i -> 255 `i `uc ]
+[; ;App.c: 45: ADC_Go();
+"45
+[e ( _ADC_Go ..  ]
+[; ;App.c: 46: }
 "46
-[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 665  ]
-[; ;Main.c: 47: {
-"47
-{
-[; ;Main.c: 48: MidTick_DivCtr = 64;
-"48
-[e = _MidTick_DivCtr -> -> 64 `i `uc ]
-[; ;Main.c: 49: MidTick_Task ++;
-"49
-[e ++ _MidTick_Task -> -> 1 `i `uc ]
-"50
-}
-[e :U 665 ]
-[; ;Main.c: 50: }
-[; ;Main.c: 52: CCPR1= Voix_int_Step();
-"52
-[e = _CCPR1 ( _Voix_int_Step ..  ]
-"53
-}
-[e :U 664 ]
-[; ;Main.c: 53: }
-[; ;Main.c: 54: }
-"54
-[e :UE 663 ]
+[e :UE 658 ]
 }

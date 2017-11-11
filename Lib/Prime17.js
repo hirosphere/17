@@ -48,6 +48,7 @@ var $ = new function()
 	{
 		var e = document.createElement( type );
 		if( attrs )  for( var fn in attrs )  e[ fn ] = attrs[ fn ];
+		if( style )  for( var fn in style )  e.style[ fn ] = style[ fn ];
 		if( text != null ) $.Text( e, text );
 		if( com )  com.appendChild( e );
 		return e;

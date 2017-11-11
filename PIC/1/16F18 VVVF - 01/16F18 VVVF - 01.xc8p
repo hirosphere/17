@@ -1,9 +1,14 @@
 {
-	Title: "PIC16F18qxx VVVF - 01",
+	Title: "PIC16F18 VVVF - 01",
 	Chip: "16F18313",
 	Output: "VVVF - 01 - 16F18313.hex",
 	OutDir: "{PrjDir}\\Output",
 	ObjDir: "{PrjDir}\\Temp",
+	Options:
+	[
+		//  "-M",
+		"--ASMLIST"
+	],
 	IPaths:
 	[
 		// "{PrjDir}\\..\\Lib"
@@ -15,8 +20,9 @@
 			Items:
 			[
 				"Main.c",
-				"Voix.c",
-				"Config.c"
+				"App.c",
+				"Config.c",
+				"Voix.c"
 			]
 		},
 		{
