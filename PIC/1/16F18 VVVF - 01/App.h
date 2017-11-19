@@ -27,6 +27,8 @@ uint8 ADC_Res( void );
 
 uint8 Noise_Step( uint8 bits );
 
+void Voix_Set_Dir( bool reverse );
+void Voix_Out( uint16 voltage );
 void Voix_Set_Speed( uint16 speed );
 uint16 Voix_int_Step( void );
 

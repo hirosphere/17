@@ -16,8 +16,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISA `Vuc ~T0 @X0 0 e@140 ]
 "1975
 [v _LATA `Vuc ~T0 @X0 0 e@268 ]
-"10459
-[v _RA4PPS `Vuc ~T0 @X0 0 e@3732 ]
+"10510
+[v _RA5PPS `Vuc ~T0 @X0 0 e@3733 ]
 "1859
 [v _ADCON1 `Vuc ~T0 @X0 0 e@158 ]
 "1344
@@ -5104,10 +5104,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 23: void ADC_Go( void );
 [; ;App.h: 24: uint8 ADC_Res( void );
 [; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: void Voix_Set_Speed( uint16 speed );
-[; ;App.h: 31: uint16 Voix_int_Step( void );
-[; ;App.h: 36: void App_Init( void );
-[; ;App.h: 37: void App_Step( void );
+[; ;App.h: 30: void Voix_Set_Dir( bool reverse );
+[; ;App.h: 31: void Voix_Out( uint16 voltage );
+[; ;App.h: 32: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 33: uint16 Voix_int_Step( void );
+[; ;App.h: 38: void App_Init( void );
+[; ;App.h: 39: void App_Step( void );
 "27 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c
 [p x FEXTOSC=OFF ]
 "28
@@ -5164,9 +5166,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Config.c: 68: LATA = 0b000000;
 "68
 [e = _LATA -> -> 0 `i `uc ]
-[; ;Config.c: 70: RA4PPS = 0x0C;
+[; ;Config.c: 70: RA5PPS = 0x0C;
 "70
-[e = _RA4PPS -> -> 12 `i `uc ]
+[e = _RA5PPS -> -> 12 `i `uc ]
 [; ;Config.c: 74: ADCON1 =
 [; ;Config.c: 75: 6 << 0x4
 [; ;Config.c: 76: ;

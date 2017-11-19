@@ -4,7 +4,7 @@
 
 //	
 
-uint8	MidTick_DivCtr = 1;		//	32kHz -> 500Hz
+uint8	MidTick_DivCtr = 1;		//	32kHz -> 1000Hz
 uint8	MidTick_Task = 0;
 void	MidTick_Step( void );
 
@@ -30,8 +30,8 @@ void main( void )
 
 void MidTick_Step( void )
 {
-	LED_Ctr += 131;
-	LATA = LED_Ctr >> 10;
+	LED_Ctr += 33;
+	// LATA = LED_Ctr >> 10;
 	
 	App_Step();
 }
@@ -45,7 +45,7 @@ void interrupt ISR( void )
 		
 		if( -- MidTick_DivCtr == 0 )
 		{
-			MidTick_DivCtr = 64;
+			MidTick_DivCtr = 32;
 			MidTick_Task ++;
 		}
 		

@@ -6679,6 +6679,8 @@ uint8 ADC_Res( void );
 
 uint8 Noise_Step( uint8 bits );
 
+void Voix_Set_Dir( bool reverse );
+void Voix_Out( uint16 voltage );
 void Voix_Set_Speed( uint16 speed );
 uint16 Voix_int_Step( void );
 
@@ -6715,8 +6717,8 @@ MidTick_Step();
 
 void MidTick_Step( void )
 {
-LED_Ctr += 131;
-LATA = LED_Ctr >> 10;
+LED_Ctr += 33;
+
 
 App_Step();
 }
@@ -6730,7 +6732,7 @@ TMR2IF = 0;
 
 if( -- MidTick_DivCtr == 0 )
 {
-MidTick_DivCtr = 64;
+MidTick_DivCtr = 32;
 MidTick_Task ++;
 }
 

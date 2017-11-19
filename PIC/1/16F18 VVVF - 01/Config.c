@@ -67,7 +67,7 @@ void Chip_Init( void )
 	TRISA		= 0b000111;
 	LATA		= 0b000000;
 	
-	RA4PPS = PPS_out_CCP1;
+	RA5PPS = PPS_out_CCP1;
 	
 	//  ADC  //
 	
@@ -80,26 +80,26 @@ void Chip_Init( void )
 	PR2	= 250 - 1;			//  32kHz	= 8MHz / 250
 	TMR2	= 0;
 	T2CON =
-		0	<< _T2CON_T2CKPS_POSITION 	|
-		0	<< _T2CON_T2OUTPS_POSITION	|
-		On 	<< _T2CON_TMR2ON_POSITION
+		0	<< _T2CON_T2CKPS_POSN 	|
+		0	<< _T2CON_T2OUTPS_POSN	|
+		On 	<< _T2CON_TMR2ON_POSN
 	;
 	
 	CCPR1 = 0x100;
 	
 	CCP1CON =
-		On						<< _CCP1CON_CCP1EN_POSITION		|
-		CCP_mode_PWM		<< _CCP1CON_CCP1MODE_POSITION
+		On						<< _CCP1CON_CCP1EN_POSN		|
+		CCP_mode_PWM		<< _CCP1CON_CCP1MODE_POSN
 	;
 	
 	//	Interrupt
 	
 	PIE1 =
-		On 	<< _PIE1_TMR2IE_POSITION
+		On 	<< _PIE1_TMR2IE_POSN
 	;
 	INTCON =
-		On		<< _INTCON_PEIE_POSITION	|
-		On		<< _INTCON_GIE_POSITION
+		On		<< _INTCON_PEIE_POSN	|
+		On		<< _INTCON_GIE_POSN
 	;
 }
 

@@ -1,0 +1,33 @@
+//  
+{
+	Title: "CS 001 Layout",
+	Output: "CS 001 Layout.exe",
+	Target: "winexe",
+	_options:
+	[
+		//"/unsafe"
+	],
+	AsmRefs:
+	[
+	],
+	Srcs:
+	[
+		{
+			Dir: "{PrjDir}",
+			Items:
+			[
+				"Main.cs",
+				"Form1.cs",
+				"Layout.cs",
+				"ComPort.cs",
+				"GUI.cs"
+			]
+		},
+		{
+			Dir: "{PrjDir}\\..\\Lib",
+			Items:
+			[
+			]
+		}
+	]
+}

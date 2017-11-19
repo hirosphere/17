@@ -58,7 +58,7 @@ void App_Step( void )
 			Train_Step();
 			break;
 		
-		case 9:
+		case 19:
 			phase = 0;
 			break;
 	}

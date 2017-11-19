@@ -77,12 +77,12 @@ reset_vec:
 start
 
 ;Initialize the stack pointer (FSR1)
-;Stack space: 0204Dh-020EFh (163 bytes)
+;Stack space: 0205Eh-020EFh (146 bytes)
 
 	fsr1l	equ	6
 	fsr1h	equ	7
 	global stacklo, stackhi
-	stacklo	equ	0204Dh
+	stacklo	equ	0205Eh
 	stackhi	equ	020EFh
 
 
