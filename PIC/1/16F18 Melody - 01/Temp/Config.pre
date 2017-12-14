@@ -6674,7 +6674,7 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 24
+# 26
 void Noise_Step( uint8 bits );
 
 typedef struct
@@ -6691,7 +6691,7 @@ void Voix_Trigger( Voix * this, uint8 key );
 void Voix_Step( Voix * this );
 uint8 Voix_int_Step( Voix * this );
 
-# 48
+# 50
 typedef struct
 {
 uint8 * Start;
@@ -6750,7 +6750,7 @@ OSCFRQbits.HFFRQ = 6;
 
 ANSELA = 0b000000;
 TRISA = 0b000011;
-LATA = 0b010000;
+LATA = 0b110000;
 
 RA2PPS = 0x0C;
 

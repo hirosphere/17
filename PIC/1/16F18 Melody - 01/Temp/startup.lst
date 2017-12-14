@@ -1,7 +1,7 @@
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-                                                                                                           Sun Nov 05 01:05:57 2017
+                                                                                                           Thu Dec 14 09:32:20 2017
 
 
      1                           
@@ -81,13 +81,13 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
     75                           start
     76  0038                     
     77                           ;Initialize the stack pointer (FSR1)
-    78                           ;Stack space: 0209Ah-020EFh (86 bytes)
+    78                           ;Stack space: 02090h-020EFh (96 bytes)
     79                           
     80                           	fsr1l	equ	6
     81  0006                     	fsr1h	equ	7
     82  0007                     	global stacklo, stackhi
-    83                           	stacklo	equ	0209Ah
-    84  209A                     	stackhi	equ	020EFh
+    83                           	stacklo	equ	02090h
+    84  2090                     	stackhi	equ	020EFh
     85  20EF                     
     86                           
     87                           	psect	stack,class=STACK,space=2,noexec
@@ -164,9 +164,9 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-Symbol Table                                                                                               Sun Nov 05 01:05:57 2017
+Symbol Table                                                                                               Thu Dec 14 09:32:20 2017
 
-               ___sp 0000                 _main 032D                 start 0038               stackhi 20EF  
-             stacklo 209A  start_initialization 0039             ___int_sp 0000             intlevel0 0000  
+               ___sp 0000                 _main 0333                 start 0038               stackhi 20EF  
+             stacklo 2090  start_initialization 0039             ___int_sp 0000             intlevel0 0000  
            intlevel1 0000             intlevel2 0000             intlevel3 0000             intlevel4 0000  
            intlevel5 0000             reset_vec 0000  

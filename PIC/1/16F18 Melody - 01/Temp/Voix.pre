@@ -6674,7 +6674,7 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 24
+# 26
 void Noise_Step( uint8 bits );
 
 typedef struct
@@ -6691,7 +6691,7 @@ void Voix_Trigger( Voix * this, uint8 key );
 void Voix_Step( Voix * this );
 uint8 Voix_int_Step( Voix * this );
 
-# 48
+# 50
 typedef struct
 {
 uint8 * Start;
@@ -6724,7 +6724,7 @@ if( ( !a && b ) || ( a && !b ) ) Noise_Seed |= 1;
 
 
 
-uint8 Con_Tempo = 96;
+uint8 Con_Tempo = 90;
 uint16 Con_Tempo_Phase = 0;
 uint8 Con_Noise = 0;
 
@@ -6823,7 +6823,7 @@ return 0;
 }
 
 # 122
-const uint16 Voix_Decay = 0x0068;
+const uint16 Voix_Decay = 0x0078;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
@@ -6838,7 +6838,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 this->Freq = 0;
-this->Width = 114;
+this->Width = 96;
 this->Env = 0;
 this->Phase = 0;
 }

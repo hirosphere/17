@@ -11,6 +11,8 @@ typedef	unsigned long	uint32;
 
 typedef	unsigned char	bool;
 
+#define	null	( ( void * ) 0 )
+
 #define	false	0
 #define	true	1
 #define	Off		0

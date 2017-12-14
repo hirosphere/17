@@ -1,8 +1,8 @@
-#ifdef  Song_HappyEnd
+#ifdef  Muse_HappyEnd
 
-uint8	Seq_A_1[] =
+uint8	Song_HappyEnd_1[] =
 {
-	n_trans(  2,  5  ),
+	n_trans(  2,  8  ),
 	
 	n_(  6,  9  ),	n_(  6,  16  ),	n_(  6,  16  ),	n_(  6,  14  ),
 	n_(  6,  14  ),	n_(  6,  16  ),	n_(  6,  12  ),	n_(  6,  11  ),
@@ -27,9 +27,9 @@ uint8	Seq_A_1[] =
 	n_end
 };
 
-uint8	Seq_A_2[] =
+uint8	Song_HappyEnd_2[] =
 {
-	n_trans(  0,  5  ),
+	n_trans(  0,  8  ),
 
 	n_(  7,  21  ),	n_(  7,  17  ),
 	n_(  7,  19  ),	n_(  7,  16  ),
@@ -58,9 +58,9 @@ uint8	Seq_A_2[] =
 
 
 
-#ifdef  Song_TongPoo
+#ifdef  Muse_TongPoo
 
-uint8	Seq_A_1[] =
+uint8	Song_TongPoo_1[] =
 {
 	n_trans(  2,  3  ),
 	
@@ -80,7 +80,7 @@ uint8	Seq_A_1[] =
 	n_end
 };
 
-uint8	Seq_A_2[] =
+uint8	Song_TongPoo_2[] =
 {
 	n_trans(  1,  3  ),
 

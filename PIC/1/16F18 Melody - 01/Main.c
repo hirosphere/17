@@ -21,6 +21,28 @@
 #include <xc.h>
 #include "App.h"
 
+
+//
+
+
+//#define  Muse_HappyEnd
+//#define  Muse_BehindTheMask
+//#define  Muse_TongPoo
+
+#define  Muse_Gimn_SSSR
+
+
+#include  ".\\Melody\\RS Happy.c"
+#include  ".\\Melody\\Anthem.c"
+
+//uint8 *  Seq_A_1 = Song_TongPoo_1;
+//uint8 *  Seq_A_2 = Song_TongPoo_2;
+//uint8  Seq_A_1[] = Song_HappyEnd_1;
+//uint8  Seq_A_2[] = Song_HappyEnd_2;
+uint8 *  Seq_A_1 = Song_Gimn_SSSR_1;
+uint8 *  Seq_A_2 = Song_Gimn_SSSR_2;
+
+
 //	
 
 uint8	MidTick_DivCtr = 1;		//	32kHz -> 500Hz
@@ -31,7 +53,7 @@ uint16	LED_Ctr = 0;
 
 void MidTick_Step( void )
 {
-	LED_Ctr += 131;
+	LED_Ctr += 32;
 	LATA = LED_Ctr >> 10;
 	
 	Con_Step();
@@ -58,12 +80,6 @@ void interrupt ISR( void )
 		CCPR1 = acc;
 	}
 }
-
-//#define  Song_HappyEnd
-//#define  Song_BehindTheMask
-#define  Song_TongPoo
-
-#include  ".\\Melody\\RS Happy.c"
 
 void main( void )
 {

@@ -563,7 +563,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "49
 [e = _TRISA -> -> 3 `i `uc ]
 "50
-[e = _LATA -> -> 16 `i `uc ]
+[e = _LATA -> -> 48 `i `uc ]
 "52
 [e = _RA2PPS -> -> 12 `i `uc ]
 "56

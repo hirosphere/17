@@ -47,7 +47,7 @@ void Chip_Init( void )
 	
 	ANSELA	= 0b000000;
 	TRISA		= 0b000011;
-	LATA		= 0b010000;
+	LATA		= 0b110000;
 	
 	RA2PPS = PPS_out_CCP1;
 	

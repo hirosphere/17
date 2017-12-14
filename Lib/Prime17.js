@@ -177,31 +177,6 @@ var $ = new function()
 		uDD:  function( date )  {  return  ( "0" + date.getUTCDate() ).substr( -2 );  },
 	};
 	
-	//* Hash Doc *//
-	
-	this.HashDoc = class_def
-	(
-		null,
-		function()
-		{
-			this.Initiate = function()
-			{
-				this.Value = {};
-			};
-			
-			this.Get = function()
-			{
-				return {};
-			};
-			
-			this.Set = function( value )
-			{
-				
-			};
-		}
-	);
-	
-	
 	// *  Model - View  * //
 	
 	this.Model = class_def
@@ -299,4 +274,77 @@ var $ = new function()
 	{
 		return "{}";
 	}
+	
+	//  Audio  //
+	
+	var audio_context = null;
+	
+	this.AudioContext = function()
+	{
+		if( audio_context )  return audio_context;
+		
+		var Context = AudioContext || webkitAudioContext;
+		
+		if( Context )
+		{
+			var context = new Context();
+			
+			context.bt = function()
+			{
+				return this.currentTime + delay;
+			}
+			
+			var osc_0_hz = context.createOscillator();
+			osc_0_hz.type = "square";
+			osc_0_hz.frequency.value = 0.1;
+			osc_0_hz.frequency.setValueAtTime( 0, context.bt() + 1 );
+			osc_0_hz.start();
+			
+			var dc_src = context.createGain();
+			dc_src.gain.value = 7 / 6;
+			osc_0_hz.connect( dc_src );
+			
+			
+			context.create_const_gain = function()
+			{
+				var gain = context.createGain();
+				dc_src.connect( gain );
+				return gain;
+			}
+			
+			
+			var exp_min = Math.pow( 10, min_db / 20 );
+			var exp_ramp_rate = min_db / -60;
+			
+			AudioParam.prototype.attack = function( time )
+			{
+				var t = context.bt();
+				
+				this.cancelScheduledValues( t );
+				this.setValueAtTime( 0, t );
+				this.linearRampToValueAtTime( 1, t + time );
+				//slog( [ "attack", t, time ] );
+			}
+			
+			AudioParam.prototype.release = function( time )
+			{
+				var t = context.bt();
+				
+				var curv = this.value;
+				//this.cancelScheduledValues( t );
+				//this.setValueAtTime( curv, t );
+				
+				var tend = t + time * exp_ramp_rate;
+				( [ "release", t, tend ] );
+				this.exponentialRampToValueAtTime( exp_min, tend );
+			}
+			
+			// slog( "au_new()" );
+			
+			audio_context = context;
+		}
+		
+		return audio_context;
+	}
 };
+
