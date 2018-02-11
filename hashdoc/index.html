@@ -113,11 +113,13 @@ var TextHDPane = class_def
 		
 		this.Update_Link = function()
 		{
-			var hash = "#" + encodeURIComponent( this.JSON_Edit.value );
+			var pageurl = location.href.replace( /#.*$/, "" );
+			var hash = "#" + this.Doc.Hash;
 			var link =
-			this.Link.href =
-			this.Hash_Edit.value =
-				location.href.replace( location.hash, "" ) + hash;
+				this.Link.href =
+				this.Hash_Edit.value =
+				pageurl + hash
+			;
 			
 			var twlink = encodeURIComponent( link );
 			var twtext = encodeURIComponent( this.Doc.Value.Title + "" );
