@@ -17,7 +17,7 @@ void Noise_Step( uint8 bits )
 
 //		Con
 
-uint8	Con_Tempo = 90;
+uint8	Con_Tempo = App_Song_Tempo;
 uint16	Con_Tempo_Phase = 0;
 uint8	Con_Noise = 0;
 
@@ -119,7 +119,7 @@ bool Seq_Step( Seq * this, uint8 * output )
 //		Voix
 
 #define	Voix_Freq( freq )	( ( freq ) * 65536 / 32000 )
-const uint16 Voix_Decay = 0x0078;
+const uint16 Voix_Decay = App_Voix_Decay;
 
 const uint16 Voix_Key_Table[ 72 ] =
 {
@@ -134,7 +134,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 	this->Freq = 0;
-	this->Width = 96;
+	this->Width = App_Voix_PW;
 	this->Env = 0;
 	this->Phase = 0;
 }

@@ -6670,13 +6670,12 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 22
+# 19
 void Chip_Init( void );
 void ADC_Go( void );
 uint8 ADC_Res( void );
 
-
-
+# 29
 uint8 Noise_Step( uint8 bits );
 
 void Voix_Set_Dir( bool reverse );
@@ -6690,8 +6689,9 @@ uint16 Voix_int_Step( void );
 void App_Init( void );
 void App_Step( void );
 
-# 4 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
 void Train_Set_Acc( uint16 acc, bool up );
+
+# 4 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
 void Train_Step( void );
 
 void Vol_1_Change( void );
@@ -6711,7 +6711,8 @@ const uint8 Vol_margin = 2;
 
 void App_Init( void )
 {
-Voix_Set_Speed( 0 );
+Voix_Set_Speed( 100 * 256 );
+Train_Set_Acc( 0x0010, 1 );
 }
 
 void App_Step( void )
@@ -6734,17 +6735,6 @@ ADC_Go();
 break;
 
 case 1:
-vol = ADC_Res();
-if( vol > ( Vol_1 + Vol_margin ) )
-{
-Vol_1 = vol - Vol_margin;
-Vol_1_Change();
-}
-if( vol < Vol_1 )
-{
-Vol_1 = vol;
-Vol_1_Change();
-}
 Train_Step();
 break;
 

@@ -1,19 +1,19 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"29 C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h
+"35 C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h
 [s S657 `us 1 `uc 1 `us 1 `us 1 ]
 [n S657 . Freq Width Env Phase ]
-"51
+"57
 [s S658 `*uc 1 `*uc 1 `uc 1 `uc 1 ]
 [n S658 . Start Cur Trans Time ]
-"59
+"65
 [v _Seq_Init `(v ~T0 @X0 0 ef2`*S658`*uc ]
-"37
+"43
 [v _Voix_Init `(v ~T0 @X0 0 ef1`*S657 ]
-"60
+"66
 [v _Seq_Step `(uc ~T0 @X0 0 ef2`*S658`*uc ]
-"38
+"44
 [v _Voix_Trigger `(v ~T0 @X0 0 ef2`*S657`uc ]
-"39
+"45
 [v _Voix_Step `(v ~T0 @X0 0 ef1`*S657 ]
 "51 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [; <" INDF0 equ 00h ;# ">
@@ -540,7 +540,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "20
 [v _Con_Tempo `uc ~T0 @X0 1 e ]
 [i _Con_Tempo
--> -> 90 `i `uc
+-> -> 96 `i `uc
 ]
 "21
 [v _Con_Tempo_Phase `us ~T0 @X0 1 e ]
@@ -834,7 +834,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "136
 [e = . *U _this 0 -> -> 0 `i `us ]
 "137
-[e = . *U _this 1 -> -> 96 `i `uc ]
+[e = . *U _this 1 -> - -> 128 `i -> 1 `i `uc ]
 "138
 [e = . *U _this 2 -> -> 0 `i `us ]
 "139

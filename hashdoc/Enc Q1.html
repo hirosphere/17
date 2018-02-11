@@ -1,0 +1,190 @@
+﻿<html>
+<head>
+<title>Text 1 -- HashDoc</title>
+<meta name="viewport"  content="width=320" />
+<style>
+textarea, button
+{
+	vertical-align: top;
+}
+
+textarea
+{
+	font-size: 18px;
+	font-family: serif;
+}
+
+a
+{
+	padding: 2ex;
+	text-decoration: none;
+}
+</style>
+
+<script src="../Lib/Prime17.js"></script>
+
+<body>
+
+
+<div id= "App1"></div>
+<script>
+
+var MainPane = class_def
+(
+	null,
+	function()
+	{
+		this.Initiate = function( com )
+		{
+			var self = this;
+			
+			var e = $.Create( "div", com );
+			
+			var d1 = $.Create( "div", e );
+			this.Title = $.Create( "h1", d1 );
+			
+			
+			var d2 = $.Create( "div", e, null );
+			this.Text_Edit = $.Create
+			(
+				"textarea",
+				d2, { value: sampletext },
+				{ width: "900px", height: "12em", margin: "0 10px 10px" }
+			);
+			
+			var upd_bu = $.Create_t( "button", d2, "反映", {  onclick: function() { self.Update(); }  } );
+			
+
+			var d2 = $.Create( "div", e, null );
+			this.Output = $.Create
+			(
+				"textarea",
+				d2, { },
+				{ width: "900px", height: "12em", margin: "0 10px 10px" }
+			);
+			
+			var d3 = $.Create( "div", e );
+			this.Hash_Edit = $.Create
+			(
+				"textarea",
+				d3,  null,
+				{ width: "50em", height: "5em", margin: "0 10px 10px" }
+			);
+			
+			this.Update();
+		};
+		
+		this.Update = function()
+		{
+			document.title = "? -- Enc Q1";
+			this.Output.value = Base64.Encode( this.Text_Edit.value );
+		};
+	}
+);
+
+var Base64 = new function()
+{
+	this.Encode = function( value )
+	{
+		return btoa( unescape( encodeURIComponent( value ) ) );
+	};
+	
+	this.Decode = function( value )
+	{
+		return decodeURIComponent( escape( atob( value ) ) );
+	};
+	
+	this.Encode_ = function( value )
+	{
+		var enc = new Enc();
+		
+		for( var i = 0; i < value.length; i ++ )
+		{
+			enc.Put( value[ i ] );
+		}
+		
+		return enc.GetRes();
+	};
+	
+	function Enc()
+	{
+		var output = "";
+		var bin_buff = "";
+		
+		var enc_table =
+		[
+			"A", "B", "C", "D", "E", "F", "G", "H",   "I", "J", "K", "L", "M", "N", "O", "P", 
+			"Q", "R", "S", "T", "U", "V", "W", "X",   "Y", "Z", "a", "b", "c", "d", "e", "f", 
+			"g", "h", "i", "j", "k", "l", "m", "n",   "o", "p", "q", "r", "s", "t", "u", "v", 
+			"w", "x", "y", "z", "0", "1", "2", "3",   "4", "5", "6", "7", "8", "9", "+", "/"
+		];
+		
+		this.Put = function( char )
+		{
+			var uric = encodeURIComponent( char );
+			
+			if( uric.length == 1 )
+			{
+				this.PutByte( char.charCodeAt( 0 ) );
+			}
+			
+			else if( uric.length > 1 )
+			{
+				for( var i = 1; i < uric.length; i += 3 )
+				{
+					var hex = uric.substr( i, 2 );
+					var byte = parseInt( hex, 16 );
+					this.PutByte( byte );
+				}
+			}
+			
+			//output += "; ";
+		};
+		
+		this.PutByte = function( value )
+		{
+			bin_buff += ( 256 + value ).toString( 2 ).slice( -8 ) + "";
+			this.convert();
+		};
+		
+		this.convert = function ()
+		{
+			while( bin_buff.length >= 6 )
+			{
+				var v = parseInt( bin_buff.slice( 0, 6 ), 2 );
+				output += enc_table[ v ];
+				bin_buff = bin_buff.slice( 6 );
+			}
+		}
+		
+		this.GetRes = function()
+		{
+			if( bin_buff.length > 0 )
+			{
+				bin_buff += "0000;";
+				this.convert();
+			}
+			
+			if( output.length % 3 > 0 )   output += "=";
+			if( output.length % 3 > 0 )   output += "=";
+			
+			return output
+				+ "\n"
+				//+ "bin - " + bin_buff + " "
+				+ output.length + " "
+			;
+		}
+	}
+};
+
+
+var sampletext = "ASCIIは、7桁の2進数で表すことのできる整数の数値のそれぞれに、大小のラテン文字や数字、英文でよく使われる約物などを割り当てた文字コードである。1963年6月17日に、American Standards Association（ASA、後のANSI）によって制定された。当時の規格番号は ASA X3.4 、現在の規格番号は ANSI INCITS 4 である。\n\nASCIIはISO標準7ビット文字コードISO/IEC 646の元となり、後に8ビット文字コードであるISO/IEC 8859が主流となって以降、世界中で使用されている様々な文字の符号化方式の多くは、ASCIIで使用されていない128番以降の部分に、その他の文字を割り当てたものである。"
+
+new function()
+{
+	MainPane.Create( $.Id( "App1" ) );
+}
+
+</script>
+</body>
+</html>

@@ -1,7 +1,6 @@
 #include <xc.h>
 #include "App.h"
 
-void Train_Set_Acc( uint16 acc, bool up ); 
 void Train_Step( void );
 
 void Vol_1_Change( void );
@@ -21,7 +20,8 @@ const uint8  Vol_margin = 2;
 
 void App_Init( void )
 {
-	Voix_Set_Speed( 0 );
+	Voix_Set_Speed( 100 * 256 );
+	Train_Set_Acc( 0x0010, true );
 }
 
 void App_Step( void )
@@ -44,17 +44,6 @@ void App_Step( void )
 			break;
 		
 		case 1:
-			vol = ADC_Res();
-			if( vol > ( Vol_1 + Vol_margin ) )
-			{
-				Vol_1 = vol - Vol_margin;
-				Vol_1_Change();
-			}
-			if( vol < Vol_1 )
-			{
-				Vol_1 = vol;
-				Vol_1_Change();
-			}
 			Train_Step();
 			break;
 		

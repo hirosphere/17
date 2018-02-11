@@ -16,6 +16,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISA `Vuc ~T0 @X0 0 e@140 ]
 "1975
 [v _LATA `Vuc ~T0 @X0 0 e@268 ]
+"10000
+[v _RXPPS `Vuc ~T0 @X0 0 e@3620 ]
 "10510
 [v _RA5PPS `Vuc ~T0 @X0 0 e@3733 ]
 "1859
@@ -30,11 +32,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _CCPR1 `Vus ~T0 @X0 0 e@657 ]
 "4800
 [v _CCP1CON `Vuc ~T0 @X0 0 e@659 ]
+"2547
+[v _SP1BRGL `Vuc ~T0 @X0 0 e@411 ]
+"2848
+[v _TX1STA `Vuc ~T0 @X0 0 e@414 ]
+"2669
+[v _RC1STA `Vuc ~T0 @X0 0 e@413 ]
 "1509
 [v _PIE1 `Vuc ~T0 @X0 0 e@145 ]
 "335
 [v _INTCON `Vuc ~T0 @X0 0 e@11 ]
-"1774
+"14497
+[v _TMR2IF `Vb ~T0 @X0 0 e@137 ]
+"34 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+[v _Voix_int_Step `(us ~T0 @X0 0 ef ]
+"14167 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
+[v _RCIF `Vb ~T0 @X0 0 e@141 ]
+"42 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.h
+[v _Train_Set_Acc `(v ~T0 @X0 0 ef2`us`uc ]
+"1774 C:\Program Files (x86)\Microchip\xc8\v1.41\include\pic16f18313.h
 [v _ADCON0 `Vuc ~T0 @X0 0 e@157 ]
 "1755
 [v _ADRESH `Vuc ~T0 @X0 0 e@156 ]
@@ -5100,16 +5116,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 5: typedef unsigned short uint16;
 [; ;App.h: 6: typedef unsigned long uint32;
 [; ;App.h: 8: typedef unsigned char bool;
-[; ;App.h: 22: void Chip_Init( void );
-[; ;App.h: 23: void ADC_Go( void );
-[; ;App.h: 24: uint8 ADC_Res( void );
-[; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: void Voix_Set_Dir( bool reverse );
-[; ;App.h: 31: void Voix_Out( uint16 voltage );
-[; ;App.h: 32: void Voix_Set_Speed( uint16 speed );
-[; ;App.h: 33: uint16 Voix_int_Step( void );
-[; ;App.h: 38: void App_Init( void );
-[; ;App.h: 39: void App_Step( void );
+[; ;App.h: 19: void Chip_Init( void );
+[; ;App.h: 20: void ADC_Go( void );
+[; ;App.h: 21: uint8 ADC_Res( void );
+[; ;App.h: 29: uint8 Noise_Step( uint8 bits );
+[; ;App.h: 31: void Voix_Set_Dir( bool reverse );
+[; ;App.h: 32: void Voix_Out( uint16 voltage );
+[; ;App.h: 33: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 34: uint16 Voix_int_Step( void );
+[; ;App.h: 39: void App_Init( void );
+[; ;App.h: 40: void App_Step( void );
+[; ;App.h: 42: void Train_Set_Acc( uint16 acc, bool up );
 "27 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c
 [p x FEXTOSC=OFF ]
 "28
@@ -5157,92 +5174,191 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Config.c: 62: OSCFRQbits.HFFRQ = 6;
 "62
 [e = . . _OSCFRQbits 0 0 -> -> 6 `i `uc ]
-[; ;Config.c: 66: ANSELA = 0b000100;
+[; ;Config.c: 66: ANSELA = 0b000000;
 "66
-[e = _ANSELA -> -> 4 `i `uc ]
+[e = _ANSELA -> -> 0 `i `uc ]
 [; ;Config.c: 67: TRISA = 0b000111;
 "67
 [e = _TRISA -> -> 7 `i `uc ]
 [; ;Config.c: 68: LATA = 0b000000;
 "68
 [e = _LATA -> -> 0 `i `uc ]
-[; ;Config.c: 70: RA5PPS = 0x0C;
+[; ;Config.c: 70: RXPPS = 0x12;
 "70
+[e = _RXPPS -> -> 18 `i `uc ]
+[; ;Config.c: 71: RA5PPS = 0x0C;
+"71
 [e = _RA5PPS -> -> 12 `i `uc ]
-[; ;Config.c: 74: ADCON1 =
-[; ;Config.c: 75: 6 << 0x4
-[; ;Config.c: 76: ;
-"76
+[; ;Config.c: 75: ADCON1 =
+[; ;Config.c: 76: 6 << 0x4
+[; ;Config.c: 77: ;
+"77
 [e = _ADCON1 -> << -> 6 `i -> 4 `i `uc ]
-[; ;Config.c: 80: PR2 = 250 - 1;
-"80
-[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
-[; ;Config.c: 81: TMR2 = 0;
+[; ;Config.c: 81: PR2 = 250 - 1;
 "81
+[e = _PR2 -> - -> 250 `i -> 1 `i `uc ]
+[; ;Config.c: 82: TMR2 = 0;
+"82
 [e = _TMR2 -> -> 0 `i `uc ]
-[; ;Config.c: 82: T2CON =
-[; ;Config.c: 83: 0 << 0x0 |
-[; ;Config.c: 84: 0 << 0x3 |
-[; ;Config.c: 85: 1 << 0x2
-[; ;Config.c: 86: ;
-"86
+[; ;Config.c: 83: T2CON =
+[; ;Config.c: 84: 0 << 0x0 |
+[; ;Config.c: 85: 0 << 0x3 |
+[; ;Config.c: 86: 1 << 0x2
+[; ;Config.c: 87: ;
+"87
 [e = _T2CON -> | | << -> 0 `i -> 0 `i << -> 0 `i -> 3 `i << -> 1 `i -> 2 `i `uc ]
-[; ;Config.c: 88: CCPR1 = 0x100;
-"88
+[; ;Config.c: 89: CCPR1 = 0x100;
+"89
 [e = _CCPR1 -> -> 256 `i `us ]
-[; ;Config.c: 90: CCP1CON =
-[; ;Config.c: 91: 1 << 0x7 |
-[; ;Config.c: 92: 0x0F << 0x0
-[; ;Config.c: 93: ;
-"93
+[; ;Config.c: 91: CCP1CON =
+[; ;Config.c: 92: 1 << 0x7 |
+[; ;Config.c: 93: 0x0F << 0x0
+[; ;Config.c: 94: ;
+"94
 [e = _CCP1CON -> | << -> 1 `i -> 7 `i << -> 15 `i -> 0 `i `uc ]
-[; ;Config.c: 97: PIE1 =
-[; ;Config.c: 98: 1 << 0x1
-[; ;Config.c: 99: ;
-"99
-[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
-[; ;Config.c: 100: INTCON =
-[; ;Config.c: 101: 1 << 0x6 |
-[; ;Config.c: 102: 1 << 0x7
-[; ;Config.c: 103: ;
-"103
-[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
-[; ;Config.c: 104: }
-"104
-[e :UE 657 ]
-}
-"106
-[v _ADC_Go `(v ~T0 @X0 1 ef ]
+[; ;Config.c: 98: SP1BRGL = 4;
+"98
+[e = _SP1BRGL -> -> 4 `i `uc ]
+[; ;Config.c: 100: TX1STA =
+[; ;Config.c: 101: 1 << 0x2
+[; ;Config.c: 102: ;
+"102
+[e = _TX1STA -> << -> 1 `i -> 2 `i `uc ]
+[; ;Config.c: 104: RC1STA =
+[; ;Config.c: 105: 1 << 0x7 |
+[; ;Config.c: 106: 1 << 0x4
+[; ;Config.c: 107: ;
 "107
-{
-[; ;Config.c: 106: void ADC_Go()
-[; ;Config.c: 107: {
-[e :U _ADC_Go ]
-[f ]
-[; ;Config.c: 108: ADCON0 =
-[; ;Config.c: 109: 1 << 0x0 |
-[; ;Config.c: 110: 1 << 0x1 |
-[; ;Config.c: 111: 2 << 0x2
-[; ;Config.c: 112: ;
-"112
-[e = _ADCON0 -> | | << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 2 `i -> 2 `i `uc ]
-[; ;Config.c: 113: }
+[e = _RC1STA -> | << -> 1 `i -> 7 `i << -> 1 `i -> 4 `i `uc ]
+[; ;Config.c: 111: PIE1 =
+[; ;Config.c: 112: 1 << 0x1
+[; ;Config.c: 113: ;
 "113
-[e :UE 658 ]
-}
-"115
-[v _ADC_Res `(uc ~T0 @X0 1 ef ]
-"116
-{
-[; ;Config.c: 115: uint8 ADC_Res( void )
-[; ;Config.c: 116: {
-[e :U _ADC_Res ]
-[f ]
-[; ;Config.c: 117: return ADRESH;
+[e = _PIE1 -> << -> 1 `i -> 1 `i `uc ]
+[; ;Config.c: 114: INTCON =
+[; ;Config.c: 115: 1 << 0x6 |
+[; ;Config.c: 116: 1 << 0x7
+[; ;Config.c: 117: ;
 "117
-[e ) _ADRESH ]
-[e $UE 659  ]
+[e = _INTCON -> | << -> 1 `i -> 6 `i << -> 1 `i -> 7 `i `uc ]
 [; ;Config.c: 118: }
 "118
-[e :UE 659 ]
+[e :UE 657 ]
+}
+"121
+[v _MidTick_DivCtr `uc ~T0 @X0 1 e ]
+[i _MidTick_DivCtr
+-> -> 1 `i `uc
+]
+[; ;Config.c: 121: extern uint8 MidTick_DivCtr = 1;
+"122
+[v _MidTick_Task `uc ~T0 @X0 1 e ]
+[i _MidTick_Task
+-> -> 0 `i `uc
+]
+[; ;Config.c: 122: extern uint8 MidTick_Task = 0;
+"124
+[v _updown `uc ~T0 @X0 1 e ]
+[i _updown
+-> -> 0 `i `uc
+]
+[; ;Config.c: 124: bool updown = 0;
+[v F5276 `(v ~T0 @X0 1 tf ]
+"126
+[v _ISR `IF5276 ~T0 @X0 1 e ]
+"127
+{
+[; ;Config.c: 126: void interrupt ISR( void )
+[; ;Config.c: 127: {
+[e :U _ISR ]
+[f ]
+[; ;Config.c: 128: if( TMR2IF )
+"128
+[e $ ! _TMR2IF 659  ]
+[; ;Config.c: 129: {
+"129
+{
+[; ;Config.c: 130: TMR2IF = 0;
+"130
+[e = _TMR2IF -> -> 0 `i `b ]
+[; ;Config.c: 132: if( -- MidTick_DivCtr == 0 )
+"132
+[e $ ! == -> =- _MidTick_DivCtr -> -> 1 `i `uc `i -> 0 `i 660  ]
+[; ;Config.c: 133: {
+"133
+{
+[; ;Config.c: 134: MidTick_DivCtr = 32;
+"134
+[e = _MidTick_DivCtr -> -> 32 `i `uc ]
+[; ;Config.c: 135: MidTick_Task ++;
+"135
+[e ++ _MidTick_Task -> -> 1 `i `uc ]
+"136
+}
+[e :U 660 ]
+[; ;Config.c: 136: }
+[; ;Config.c: 138: CCPR1= Voix_int_Step();
+"138
+[e = _CCPR1 ( _Voix_int_Step ..  ]
+"139
+}
+[e :U 659 ]
+[; ;Config.c: 139: }
+[; ;Config.c: 141: if( RCIF )
+"141
+[e $ ! _RCIF 661  ]
+[; ;Config.c: 142: {
+"142
+{
+[; ;Config.c: 143: RCIF = 0;
+"143
+[e = _RCIF -> -> 0 `i `b ]
+[; ;Config.c: 144: updown = ! updown;
+"144
+[e = _updown -> -> ! != -> _updown `i -> -> -> 0 `i `uc `i `i `uc ]
+[; ;Config.c: 146: Train_Set_Acc( 0x30, updown );
+"146
+[e ( _Train_Set_Acc (2 , -> -> 48 `i `us _updown ]
+"147
+}
+[e :U 661 ]
+[; ;Config.c: 147: }
+[; ;Config.c: 148: }
+"148
+[e :UE 658 ]
+}
+"150
+[v _ADC_Go `(v ~T0 @X0 1 ef ]
+"151
+{
+[; ;Config.c: 150: void ADC_Go()
+[; ;Config.c: 151: {
+[e :U _ADC_Go ]
+[f ]
+[; ;Config.c: 152: ADCON0 =
+[; ;Config.c: 153: 1 << 0x0 |
+[; ;Config.c: 154: 1 << 0x1 |
+[; ;Config.c: 155: 2 << 0x2
+[; ;Config.c: 156: ;
+"156
+[e = _ADCON0 -> | | << -> 1 `i -> 0 `i << -> 1 `i -> 1 `i << -> 2 `i -> 2 `i `uc ]
+[; ;Config.c: 157: }
+"157
+[e :UE 662 ]
+}
+"159
+[v _ADC_Res `(uc ~T0 @X0 1 ef ]
+"160
+{
+[; ;Config.c: 159: uint8 ADC_Res( void )
+[; ;Config.c: 160: {
+[e :U _ADC_Res ]
+[f ]
+[; ;Config.c: 161: return ADRESH;
+"161
+[e ) _ADRESH ]
+[e $UE 663  ]
+[; ;Config.c: 162: }
+"162
+[e :UE 663 ]
 }

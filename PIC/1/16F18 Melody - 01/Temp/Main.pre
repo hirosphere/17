@@ -6663,7 +6663,7 @@ extern unsigned char __resetbits;
 extern __bit __powerdown;
 extern __bit __timeout;
 
-# 4 "C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h"
+# 10 "C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h"
 void Chip_Init( void );
 
 
@@ -6674,7 +6674,7 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 26
+# 32
 void Noise_Step( uint8 bits );
 
 typedef struct
@@ -6691,7 +6691,7 @@ void Voix_Trigger( Voix * this, uint8 key );
 void Voix_Step( Voix * this );
 uint8 Voix_int_Step( Voix * this );
 
-# 50
+# 56
 typedef struct
 {
 uint8 * Start;
@@ -6710,7 +6710,7 @@ void Con_Step( void );
 # 3 "C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\.\\Melody\\Anthem.c"
 uint8 Song_Gimn_SSSR_1[] =
 {
-0x01, ( (2) * 12 + (2) ),
+0x01, ( (3) * 12 + (2) ),
 
 ( ( 6 ) << 5 | ( 12 ) ), ( ( 5 ) << 5 | ( 7 ) ), ( ( 5 ) << 5 | ( 9 ) ), ( ( 6 ) << 5 | ( 11 ) ), ( ( 6 ) << 5 | ( 4 ) ),
 ( ( 6 ) << 5 | ( 9 ) ), ( ( 5 ) << 5 | ( 7 ) ), ( ( 5 ) << 5 | ( 5 ) ), ( ( 6 ) << 5 | ( 7 ) ), ( ( 6 ) << 5 | ( 0 ) ),
@@ -6729,7 +6729,7 @@ uint8 Song_Gimn_SSSR_1[] =
 
 uint8 Song_Gimn_SSSR_2[] =
 {
-0x01, ( (1) * 12 + (2) ),
+0x01, ( (2) * 12 + (2) ),
 
 ( ( 7 ) << 5 | ( 0 ) ), ( ( 7 ) << 5 | ( 4 ) ), ( ( 7 ) << 5 | ( 5 ) ), ( ( 7 ) << 5 | ( 0 ) ),
 ( ( 7 ) << 5 | ( 2 ) ), ( ( 7 ) << 5 | ( 2 ) ), ( ( 6 ) << 5 | ( 5 ) ), ( ( 6 ) << 5 | ( 5 ) ), ( ( 7 ) << 5 | ( 7 ) ),

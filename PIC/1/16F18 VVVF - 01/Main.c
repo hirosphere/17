@@ -36,20 +36,3 @@ void MidTick_Step( void )
 	App_Step();
 }
 
-
-void interrupt ISR( void )
-{
-	if( TMR2IF )
-	{
-		TMR2IF = Off;
-		
-		if( -- MidTick_DivCtr == 0 )
-		{
-			MidTick_DivCtr = 32;
-			MidTick_Task ++;
-		}
-		
-		CCPR1= Voix_int_Step();
-	}
-}
-

@@ -82,7 +82,7 @@ var $ = new function()
 		return ( "" + plain ).replace( /<|>|&|  | |\t|\r\n|\r|\n/g, hp_rep );
 	};
 	
-	var ht_rep_tab =
+	var ht_rep_table =
 	{
 		"<": "&lt;",
 		">": "&gt;",
@@ -95,7 +95,7 @@ var $ = new function()
 		"\n": "<br/>\r\n" 
 	};
 	
-	function hp_rep( ch )  {  return ht_rep_tab[ ch ];  }
+	function hp_rep( ch )  {  return ht_rep_table[ ch ];  }
 	
 	
 	//*  *//

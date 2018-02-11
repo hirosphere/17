@@ -1531,7 +1531,7 @@ __pidataBANK0:
 	line	20
 
 ;initializer for _Con_Tempo
-	retlw	05Ah
+	retlw	060h
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\Main.c"
 	line	48
 
@@ -1553,7 +1553,7 @@ __pidataBANK1:
 
 ;initializer for _Song_Gimn_SSSR_1
 	retlw	01h
-	retlw	01Ah
+	retlw	026h
 	retlw	0CCh
 	retlw	0A7h
 	retlw	0A9h
@@ -1599,7 +1599,7 @@ __pidataBANK1:
 
 ;initializer for _Song_Gimn_SSSR_2
 	retlw	01h
-	retlw	0Eh
+	retlw	01Ah
 	retlw	0E0h
 	retlw	0E4h
 	retlw	0E5h
@@ -3640,7 +3640,7 @@ l869:
 	line	137
 	
 l871:	
-	movlw	low(060h)
+	movlw	low(07Fh)
 	movwf	(??_Voix_Init+0)+0
 	movf	(Voix_Init@this),w
 	addlw	02h

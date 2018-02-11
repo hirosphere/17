@@ -7,11 +7,19 @@ textarea, button
 {
 	vertical-align: top;
 }
+
+textarea
+{
+	font-size: 18px;
+	font-family: serif;
+}
+
 a
 {
 	padding: 2ex;
 	text-decoration: none;
 }
+
 </style>
 <script src="../Lib/Prime17.js"></script>
 <body>
@@ -155,8 +163,9 @@ var TextHD = class_def
 		
 		this.Update = function()
 		{
-			this.Hash = location.hash.substr( 1 );
-			this.JSON = decodeURIComponent( this.Hash );
+			var hash = location.hash.substr( 1 );
+			this.Hash = hash.match( /[A-Za-z0-9/+]+/ ) ? hash : "";
+			this.JSON = decodeURIComponent( escape( atob( this.Hash ) ) );
 			var value = $.FromJSON( this.JSON );
 			this.Value =
 			{
@@ -176,8 +185,12 @@ var TextHD = class_def
 				this.Value.Text,
 				this.Value.Font,
 			];
-			location.hash = "#" + $.ToJSON( ar );
+			var json = $.ToJSON( ar );
+			var base64 = btoa( unescape( encodeURIComponent( json ) ) );
+			location.hash = "#" + base64;
 		};
+		
+		
 	}
 );
 

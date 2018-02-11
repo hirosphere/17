@@ -6670,13 +6670,12 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 22
+# 19
 void Chip_Init( void );
 void ADC_Go( void );
 uint8 ADC_Res( void );
 
-
-
+# 29
 uint8 Noise_Step( uint8 bits );
 
 void Voix_Set_Dir( bool reverse );
@@ -6689,6 +6688,8 @@ uint16 Voix_int_Step( void );
 
 void App_Init( void );
 void App_Step( void );
+
+void Train_Set_Acc( uint16 acc, bool up );
 
 # 4 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 uint32 Noise_Seed = 0x1;

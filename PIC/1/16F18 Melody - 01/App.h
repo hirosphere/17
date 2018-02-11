@@ -1,3 +1,9 @@
+//    //
+
+#define App_Song_Tempo  96
+#define  App_Voix_PW  ( 128 - 1 )
+#define  App_Voix_Decay    0x0078
+
 
 //   Chip   //
 

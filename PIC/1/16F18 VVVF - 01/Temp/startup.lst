@@ -1,7 +1,7 @@
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-                                                                                                           Sun Nov 19 07:33:23 2017
+                                                                                                           Mon Dec 25 10:41:13 2017
 
 
      1                           
@@ -76,11 +76,11 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
     70                           
     71                           ; jump to start
     72                           	ljmp	start
-    73  0000  2823               
+    73  0000  2839               
     74                           
     75                           	psect	init
     76                           start
-    77  0023                     
+    77  0039                     
     78                           ;Initialize the stack pointer (FSR1)
     79                           ;Stack space: 0205Eh-020EFh (146 bytes)
     80                           
@@ -99,7 +99,7 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
     93                           	psect	end_init
     94                           	global start_initialization
     95                           	ljmp start_initialization	;jump to C runtime clear & initialization
-    96  0023  2824               
+    96  0039  283A               
     97                           ; Config register CONFIG1 @ 0x8007
     98                           ;	FEXTOSC External Oscillator mode Selection bits
     99                           ;	FEXTOSC = OFF, Oscillator not enabled
@@ -165,9 +165,9 @@ Microchip Technology PIC Macro Assembler V1.41 build -162212810
 
 
 Microchip Technology PIC Macro Assembler V1.41 build -162212810 
-Symbol Table                                                                                               Sun Nov 19 07:33:23 2017
+Symbol Table                                                                                               Mon Dec 25 10:41:13 2017
 
-               ___sp 0000                 _main 0271                 start 0023               stackhi 20EF  
-             stacklo 205E  start_initialization 0024             ___int_sp 0000             intlevel0 0000  
+               ___sp 0000                 _main 0234                 start 0039               stackhi 20EF  
+             stacklo 205E  start_initialization 003A             ___int_sp 0000             intlevel0 0000  
            intlevel1 0000             intlevel2 0000             intlevel3 0000             intlevel4 0000  
            intlevel5 0000             reset_vec 0000  

@@ -7,17 +7,17 @@
 /*
 	PIC16F18313		VVVF - 01
 	
-	Pin		Type	Func
+	Pin		Port	Type	Func
 	
-	1	Pow	VDD
-	2	Out	Sound F
-	3	Out	Sound R
-	4	ICSP	VPP
+	1				Pow	VDD
+	2		RA5	Out	Sound F
+	3		RA4	Out	Sound R
+	4		RA3	ICSP	VPP
 	
-	8	Pow	VSS
-	7	ICSP	DAT
-	6	ICSP	CLK
-	5	Out	LED
+	8				Pow	VSS
+	7		RA0	ICSP	DAT
+	6		RA1	ICSP	CLK
+	5		RA2	I/O 	PiAN RX/TX
 	
 	
 */
@@ -63,10 +63,11 @@ void Chip_Init( void )
 	
 	//  Port  //
 	
-	ANSELA	= 0b000100;
+	ANSELA	= 0b000000;
 	TRISA		= 0b000111;
 	LATA		= 0b000000;
 	
+	RXPPS = PPS_in_RA2;
 	RA5PPS = PPS_out_CCP1;
 	
 	//  ADC  //
@@ -92,6 +93,19 @@ void Chip_Init( void )
 		CCP_mode_PWM		<< _CCP1CON_CCP1MODE_POSN
 	;
 	
+	//  ESUART
+	
+	SP1BRGL = 4;		//  500kHz
+	
+	TX1STA =
+		On  <<  _TX1STA_BRGH_POSITION
+	;
+	
+	RC1STA =
+		On  <<  _RC1STA_SPEN_POSITION  |
+		On  <<  _RC1STA_CREN_POSITION
+	;
+	
 	//	Interrupt
 	
 	PIE1 =
@@ -101,6 +115,36 @@ void Chip_Init( void )
 		On		<< _INTCON_PEIE_POSN	|
 		On		<< _INTCON_GIE_POSN
 	;
+}
+
+
+extern uint8	MidTick_DivCtr = 1;
+extern uint8	MidTick_Task = 0;
+
+bool updown = false;
+
+void interrupt ISR( void )
+{
+	if( TMR2IF )
+	{
+		TMR2IF = Off;
+		
+		if( -- MidTick_DivCtr == 0 )
+		{
+			MidTick_DivCtr = 32;
+			MidTick_Task ++;
+		}
+		
+		CCPR1= Voix_int_Step();
+	}
+	
+	if( RCIF )
+	{
+		RCIF = Off;
+		updown = ! updown;
+		
+		Train_Set_Acc( 0x30, updown );
+	}
 }
 
 void ADC_Go()

@@ -1969,15 +1969,14 @@ TOSH equ 0FEFh ;#
 	FNCALL	_main,_MidTick_Step
 	FNCALL	_MidTick_Step,_App_Step
 	FNCALL	_App_Step,_ADC_Go
-	FNCALL	_App_Step,_ADC_Res
 	FNCALL	_App_Step,_Noise_Step
 	FNCALL	_App_Step,_Train_Step
-	FNCALL	_App_Step,_Vol_1_Change
-	FNCALL	_Vol_1_Change,_Train_Set_Acc
 	FNCALL	_Train_Step,_Voix_Set_Speed
+	FNCALL	_App_Init,_Train_Set_Acc
 	FNCALL	_App_Init,_Voix_Set_Speed
 	FNROOT	_main
 	FNCALL	_ISR,_Voix_int_Step
+	FNCALL	_ISR,i1_Train_Set_Acc
 	FNCALL	intlevel1,_ISR
 	global	intlevel1
 	FNROOT	intlevel1
@@ -1995,7 +1994,7 @@ psect	idataBANK0,class=CODE,space=0,delta=2,noexec
 global __pidataBANK0
 __pidataBANK0:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	67
+	line	56
 
 ;initializer for _down_table
 	retlw	02Dh
@@ -2038,7 +2037,7 @@ __pidataBANK0:
 	retlw	05h
 
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	110
+	line	99
 
 ;initializer for _Train_Speed
 	retlw	0
@@ -2054,12 +2053,12 @@ __pidataBANK0:
 ;initializer for _Vo_1_Amp
 	retlw	0FFh
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	11
+	line	10
 
 ;initializer for _App_Tempo
 	retlw	06Ch
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
-	line	7
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
+	line	121
 
 ;initializer for _MidTick_DivCtr
 	retlw	01h
@@ -2067,7 +2066,7 @@ psect	idataBANK1,class=CODE,space=0,delta=2,noexec
 global __pidataBANK1
 __pidataBANK1:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	77
+	line	66
 
 ;initializer for _up_table
 	retlw	02h
@@ -2091,17 +2090,15 @@ __pidataBANK1:
 	retlw	025h
 	retlw	0
 
-	global	_Vol_margin
 psect	stringtext,class=STRCODE,delta=2,noexec
 global __pstringtext
 __pstringtext:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	19
+	line	18
 _Vol_margin:
 	retlw	02h
 	global __end_of_Vol_margin
 __end_of_Vol_margin:
-	global	_Vol_margin
 	global	_Vo_2_Phase
 	global	_Vo_1_Phase
 	global	_Vo_DC
@@ -2111,6 +2108,7 @@ __end_of_Vol_margin:
 	global	_Vo_2_Width
 	global	_Vo_1_Width
 	global	_Vo
+	global	_updown
 	global	_Train_Up
 	global	App_Step@phase
 	global	_Vol_1_s
@@ -2125,6 +2123,8 @@ _T2CON	set	0x1F
 _TMR2	set	0x1D
 	global	_PR2
 _PR2	set	0x1E
+	global	_RCIF
+_RCIF	set	0x8D
 	global	_TMR2IF
 _TMR2IF	set	0x89
 	global	_ADRESH
@@ -2139,6 +2139,12 @@ _ADCON1	set	0x9E
 _TRISA	set	0x8C
 	global	_LATA
 _LATA	set	0x10C
+	global	_RC1STA
+_RC1STA	set	0x19D
+	global	_TX1STA
+_TX1STA	set	0x19E
+	global	_SP1BRGL
+_SP1BRGL	set	0x19B
 	global	_ANSELA
 _ANSELA	set	0x18C
 	global	_CCPR1
@@ -2147,6 +2153,8 @@ _CCPR1	set	0x291
 _CCP1CON	set	0x293
 	global	_OSCFRQbits
 _OSCFRQbits	set	0x91F
+	global	_RXPPS
+_RXPPS	set	0xE24
 	global	_RA5PPS
 _RA5PPS	set	0xE95
 ; #config settings
@@ -2230,6 +2238,9 @@ _Vo_1_Width:
 _Vo:
        ds      1
 
+_updown:
+       ds      1
+
 _Train_Up:
        ds      1
 
@@ -2252,7 +2263,7 @@ psect	dataBANK0,class=BANK0,space=1,noexec
 global __pdataBANK0
 __pdataBANK0:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	67
+	line	56
 _down_table:
        ds      12
 
@@ -2276,7 +2287,7 @@ _Vo_1_Freq:
 
 psect	dataBANK0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	110
+	line	99
 _Train_Speed:
        ds      2
 
@@ -2294,13 +2305,13 @@ _Vo_1_Amp:
 
 psect	dataBANK0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	11
+	line	10
 _App_Tempo:
        ds      1
 
 psect	dataBANK0
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
-	line	7
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
+	line	121
 _MidTick_DivCtr:
        ds      1
 
@@ -2308,7 +2319,7 @@ psect	dataBANK1,class=BANK1,space=1,noexec
 global __pdataBANK1
 __pdataBANK1:
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	77
+	line	66
 _up_table:
        ds      14
 
@@ -2370,7 +2381,7 @@ psect cinit,class=CODE,delta=2,merge=1
 	movwf	fsr0l
 	movlw	high(__pbssBANK0)
 	movwf	fsr0h
-	movlw	01Fh
+	movlw	020h
 	fcall	clear_ram0
 psect cinit,class=CODE,delta=2,merge=1
 global end_of_initialization,__end_of__initialization
@@ -2391,16 +2402,21 @@ __pcstackCOMMON:
 ?_App_Step:	; 1 bytes @ 0x0
 ?_Noise_Step:	; 1 bytes @ 0x0
 ?_ADC_Go:	; 1 bytes @ 0x0
-?_ADC_Res:	; 1 bytes @ 0x0
-?_Vol_1_Change:	; 1 bytes @ 0x0
 ?_Train_Step:	; 1 bytes @ 0x0
 ?_main:	; 1 bytes @ 0x0
 ?_ISR:	; 1 bytes @ 0x0
+?i1_Train_Set_Acc:	; 1 bytes @ 0x0
 	global	?_Voix_int_Step
 ?_Voix_int_Step:	; 2 bytes @ 0x0
+	global	i1Train_Set_Acc@acc
+i1Train_Set_Acc@acc:	; 2 bytes @ 0x0
 	ds	2
 ??_Voix_int_Step:	; 1 bytes @ 0x2
-	ds	4
+	global	i1Train_Set_Acc@up
+i1Train_Set_Acc@up:	; 1 bytes @ 0x2
+	ds	1
+??i1_Train_Set_Acc:	; 1 bytes @ 0x3
+	ds	3
 	global	_Voix_int_Step$164
 _Voix_int_Step$164:	; 2 bytes @ 0x6
 	ds	2
@@ -2417,10 +2433,9 @@ global __pcstackBANK0
 __pcstackBANK0:
 ??_Chip_Init:	; 1 bytes @ 0x0
 ?_Voix_Set_Speed:	; 1 bytes @ 0x0
+?_Train_Set_Acc:	; 1 bytes @ 0x0
 ??_Noise_Step:	; 1 bytes @ 0x0
 ??_ADC_Go:	; 1 bytes @ 0x0
-??_ADC_Res:	; 1 bytes @ 0x0
-?_Train_Set_Acc:	; 1 bytes @ 0x0
 	global	Train_Set_Acc@acc
 Train_Set_Acc@acc:	; 2 bytes @ 0x0
 	global	Voix_Set_Speed@speed
@@ -2438,11 +2453,7 @@ Noise_Step@a:	; 1 bytes @ 0x2
 ??_Train_Set_Acc:	; 1 bytes @ 0x3
 	global	Noise_Step@b
 Noise_Step@b:	; 1 bytes @ 0x3
-	ds	1
-??_Vol_1_Change:	; 1 bytes @ 0x4
-	ds	2
-	global	Vol_1_Change@s
-Vol_1_Change@s:	; 1 bytes @ 0x6
+	ds	3
 	global	Voix_Set_Speed@bias
 Voix_Set_Speed@bias:	; 2 bytes @ 0x6
 	ds	2
@@ -2456,25 +2467,22 @@ Voix_Set_Speed@power:	; 2 bytes @ 0x8
 Train_Step@s:	; 2 bytes @ 0xE
 	ds	2
 ??_App_Step:	; 1 bytes @ 0x10
-	ds	4
-	global	App_Step@vol
-App_Step@vol:	; 1 bytes @ 0x14
-	ds	1
-??_MidTick_Step:	; 1 bytes @ 0x15
-??_main:	; 1 bytes @ 0x15
+	ds	2
+??_MidTick_Step:	; 1 bytes @ 0x12
+??_main:	; 1 bytes @ 0x12
 ;!
 ;!Data Sizes:
 ;!    Strings     0
 ;!    Constant    1
 ;!    Data        40
-;!    BSS         31
+;!    BSS         32
 ;!    Persistent  0
 ;!    Stack       0
 ;!
 ;!Auto Spaces:
 ;!    Space          Size  Autos    Used
 ;!    COMMON           14     14      14
-;!    BANK0            80     21      78
+;!    BANK0            80     18      76
 ;!    BANK1            80      0      14
 ;!    BANK2            80      0       0
 
@@ -2497,7 +2505,6 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;!
 ;!    _MidTick_Step->_App_Step
 ;!    _App_Step->_Train_Step
-;!    _Vol_1_Change->_Train_Set_Acc
 ;!    _Train_Step->_Voix_Set_Speed
 ;!    _App_Init->_Voix_Set_Speed
 ;!
@@ -2531,28 +2538,19 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (0) _main                                                 0     0      0    1315
+;! (0) _main                                                 0     0      0    1231
 ;!                           _App_Init
 ;!                          _Chip_Init
 ;!                       _MidTick_Step
 ;! ---------------------------------------------------------------------------------
-;! (1) _MidTick_Step                                         0     0      0     964
+;! (1) _MidTick_Step                                         0     0      0     464
 ;!                           _App_Step
 ;! ---------------------------------------------------------------------------------
-;! (2) _App_Step                                             5     5      0     964
-;!                                             16 BANK0      5     5      0
+;! (2) _App_Step                                             3     3      0     464
+;!                                             16 BANK0      2     2      0
 ;!                             _ADC_Go
-;!                            _ADC_Res
 ;!                         _Noise_Step
 ;!                         _Train_Step
-;!                       _Vol_1_Change
-;! ---------------------------------------------------------------------------------
-;! (3) _Vol_1_Change                                         3     3      0     411
-;!                                              4 BANK0      3     3      0
-;!                      _Train_Set_Acc
-;! ---------------------------------------------------------------------------------
-;! (4) _Train_Set_Acc                                        4     1      3     256
-;!                                              0 BANK0      4     1      3
 ;! ---------------------------------------------------------------------------------
 ;! (3) _Train_Step                                           6     6      0     352
 ;!                                             10 BANK0      6     6      0
@@ -2561,25 +2559,31 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;! (3) _Noise_Step                                           4     4      0     112
 ;!                                              0 BANK0      4     4      0
 ;! ---------------------------------------------------------------------------------
-;! (3) _ADC_Res                                              0     0      0       0
-;! ---------------------------------------------------------------------------------
 ;! (3) _ADC_Go                                               0     0      0       0
 ;! ---------------------------------------------------------------------------------
 ;! (1) _Chip_Init                                            0     0      0       0
 ;! ---------------------------------------------------------------------------------
-;! (1) _App_Init                                             0     0      0     351
+;! (1) _App_Init                                             0     0      0     767
+;!                      _Train_Set_Acc
 ;!                     _Voix_Set_Speed
 ;! ---------------------------------------------------------------------------------
 ;! (4) _Voix_Set_Speed                                      10     8      2     351
 ;!                                              0 BANK0     10     8      2
 ;! ---------------------------------------------------------------------------------
+;! (2) _Train_Set_Acc                                        4     1      3     416
+;!                                              0 BANK0      4     1      3
+;! ---------------------------------------------------------------------------------
 ;! Estimated maximum stack depth 4
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (5) _ISR                                                  2     2      0      73
+;! (5) _ISR                                                  2     2      0     169
 ;!                                             12 COMMON     2     2      0
 ;!                      _Voix_int_Step
+;!                    i1_Train_Set_Acc
+;! ---------------------------------------------------------------------------------
+;! (6) i1_Train_Set_Acc                                      4     1      3      96
+;!                                              0 COMMON     4     1      3
 ;! ---------------------------------------------------------------------------------
 ;! (6) _Voix_int_Step                                       12    10      2      73
 ;!                                              0 COMMON    12    10      2
@@ -2591,20 +2595,19 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;!
 ;! _main (ROOT)
 ;!   _App_Init
+;!     _Train_Set_Acc
 ;!     _Voix_Set_Speed
 ;!   _Chip_Init
 ;!   _MidTick_Step
 ;!     _App_Step
 ;!       _ADC_Go
-;!       _ADC_Res
 ;!       _Noise_Step
 ;!       _Train_Step
 ;!         _Voix_Set_Speed
-;!       _Vol_1_Change
-;!         _Train_Set_Acc
 ;!
 ;! _ISR (ROOT)
 ;!   _Voix_int_Step
+;!   i1_Train_Set_Acc
 ;!
 
 ;! Address spaces:
@@ -2625,11 +2628,11 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;!STACK                0      0       0       3        0.0%
 ;!BITSFR3              0      0       0       4        0.0%
 ;!SFR3                 0      0       0       4        0.0%
-;!ABS                  0      0      6A       4        0.0%
+;!ABS                  0      0      68       4        0.0%
 ;!BITBANK0            50      0       0       5        0.0%
 ;!BITSFR4              0      0       0       5        0.0%
 ;!SFR4                 0      0       0       5        0.0%
-;!BANK0               50     15      4E       6       97.5%
+;!BANK0               50     12      4C       6       95.0%
 ;!BITSFR5              0      0       0       6        0.0%
 ;!SFR5                 0      0       0       6        0.0%
 ;!BITBANK1            50      0       0       7        0.0%
@@ -2646,7 +2649,7 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;!SFR9                 0      0       0      10        0.0%
 ;!BITSFR10             0      0       0      11        0.0%
 ;!SFR10                0      0       0      11        0.0%
-;!DATA                 0      0      6A      11        0.0%
+;!DATA                 0      0      68      11        0.0%
 ;!BITSFR11             0      0       0      12        0.0%
 ;!SFR11                0      0       0      12        0.0%
 ;!BITSFR12             0      0       0      13        0.0%
@@ -2702,7 +2705,7 @@ App_Step@vol:	; 1 bytes @ 0x14
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
 ;; Tracked objects:
 ;;		On entry : B1F/0
 ;;		On exit  : 0/0
@@ -2736,60 +2739,60 @@ psect	maintext
 _main:	
 ;incstack = 0
 	opt	stack 10
-; Regs used in _main: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+; Regs used in _main: [wreg-fsr0h+status,2+status,0+pclath+cstack]
 	line	15
 	
-l1041:	
+l1030:	
 ;Main.c: 15: App_Init();
 	fcall	_App_Init
 	line	16
 ;Main.c: 16: Chip_Init();
 	fcall	_Chip_Init
-	goto	l1043
+	goto	l1032
 	line	19
 ;Main.c: 19: while( 1 )
 	
-l23:	
+l17:	
 	line	21
 	
-l1043:	
+l1032:	
 ;Main.c: 20: {
 ;Main.c: 21: if( MidTick_Task )
 	movlb 0	; select bank0
 	movf	((_MidTick_Task)),w
 	btfsc	status,2
-	goto	u741
-	goto	u740
-u741:
-	goto	l1043
-u740:
+	goto	u681
+	goto	u680
+u681:
+	goto	l1032
+u680:
 	line	23
 	
-l1045:	
+l1034:	
 ;Main.c: 22: {
 ;Main.c: 23: MidTick_Task --;
 	movlw	01h
 	subwf	(_MidTick_Task),f
 	line	24
 	
-l1047:	
+l1036:	
 ;Main.c: 24: MidTick_Step();
 	fcall	_MidTick_Step
-	goto	l1043
+	goto	l1032
 	line	25
 	
-l24:	
-	goto	l1043
+l18:	
+	goto	l1032
 	line	26
 	
-l25:	
+l19:	
 	line	19
-	goto	l1043
+	goto	l1032
 	
-l26:	
+l20:	
 	line	28
 	
-l27:	
+l21:	
 	global	start
 	ljmp	start
 	opt stack 0
@@ -2808,7 +2811,7 @@ GLOBAL	__end_of_main
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
@@ -2840,10 +2843,10 @@ psect	text1
 _MidTick_Step:	
 ;incstack = 0
 	opt	stack 10
-; Regs used in _MidTick_Step: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+; Regs used in _MidTick_Step: [wreg-fsr0h+status,2+status,0+pclath+cstack]
 	line	33
 	
-l1017:	
+l1004:	
 ;Main.c: 33: LED_Ctr += 33;
 	movlw	021h
 	movlb 0	; select bank0
@@ -2852,12 +2855,12 @@ l1017:
 	addwfc	(_LED_Ctr+1),f
 	line	36
 	
-l1019:	
+l1006:	
 ;Main.c: 36: App_Step();
 	fcall	_App_Step
 	line	37
 	
-l30:	
+l24:	
 	return
 	opt stack 0
 GLOBAL	__end_of_MidTick_Step
@@ -2871,29 +2874,27 @@ GLOBAL	__end_of_MidTick_Step
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
-;;  vol             1   20[BANK0 ] unsigned char 
+;;  vol             1    0        unsigned char 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
 ;;      Params:         0       0       0       0
-;;      Locals:         0       1       0       0
-;;      Temps:          0       4       0       0
-;;      Totals:         0       5       0       0
-;;Total ram usage:        5 bytes
+;;      Locals:         0       0       0       0
+;;      Temps:          0       2       0       0
+;;      Totals:         0       2       0       0
+;;Total ram usage:        2 bytes
 ;; Hardware stack levels used:    1
 ;; Hardware stack levels required when called:    4
 ;; This function calls:
 ;;		_ADC_Go
-;;		_ADC_Res
 ;;		_Noise_Step
 ;;		_Train_Step
-;;		_Vol_1_Change
 ;; This function is called by:
 ;;		_MidTick_Step
 ;; This function uses a non-reentrant model
@@ -2912,10 +2913,10 @@ psect	text2
 _App_Step:	
 ;incstack = 0
 	opt	stack 10
-; Regs used in _App_Step: [wreg-fsr1h+status,2+status,0+pclath+cstack]
+; Regs used in _App_Step: [wreg-fsr0h+status,2+status,0+pclath+cstack]
 	line	31
 	
-l957:	
+l948:	
 ;App.c: 29: static uint8 phase = 0;
 ;App.c: 31: App_Noise = Noise_Step( 4 ) & 0xFF;
 	movlw	low(04h)
@@ -2926,7 +2927,7 @@ l957:
 	movwf	(_App_Noise)
 	line	32
 	
-l959:	
+l950:	
 ;App.c: 32: App_Tempo_Phase += App_Tempo;
 	movf	(_App_Tempo),w
 	movwf	(??_App_Step+0)+0
@@ -2937,7 +2938,7 @@ l959:
 	addwfc	(_App_Tempo_Phase+1),f
 	line	34
 	
-l961:	
+l952:	
 ;App.c: 34: if( App_Tempo_Phase >= 2500 )
 	movlw	09h
 	subwf	(_App_Tempo_Phase+1),w
@@ -2945,178 +2946,77 @@ l961:
 	skipnz
 	subwf	(_App_Tempo_Phase),w
 	skipc
-	goto	u681
-	goto	u680
-u681:
-	goto	l987
-u680:
+	goto	u641
+	goto	u640
+u641:
+	goto	l964
+u640:
 	line	36
 	
-l963:	
+l954:	
 ;App.c: 35: {
 ;App.c: 36: App_Tempo_Phase -= 2500;
 	movlw	0C4h
 	subwf	(_App_Tempo_Phase),f
 	movlw	09h
 	subwfb	(_App_Tempo_Phase+1),f
-	goto	l987
+	goto	l964
 	line	37
 	
-l71:	
+l56:	
 	line	40
 ;App.c: 37: }
 ;App.c: 39: uint8 vol;
 ;App.c: 40: switch( phase ++ )
-	goto	l987
+	goto	l964
 	line	42
 ;App.c: 41: {
 ;App.c: 42: case 0:
 	
-l73:	
+l58:	
 	line	43
 	
-l965:	
+l956:	
 ;App.c: 43: ADC_Go();
 	fcall	_ADC_Go
 	line	44
 ;App.c: 44: break;
-	goto	l79
+	goto	l62
 	line	46
 ;App.c: 46: case 1:
 	
-l75:	
+l60:	
 	line	47
 	
-l967:	
-;App.c: 47: vol = ADC_Res();
-	fcall	_ADC_Res
-	movlb 0	; select bank0
-	movwf	(??_App_Step+0)+0
-	movf	(??_App_Step+0)+0,w
-	movwf	(App_Step@vol)
+l958:	
+;App.c: 47: Train_Step();
+	fcall	_Train_Step
 	line	48
-	
-l969:	
-;App.c: 48: if( vol > ( Vol_1 + Vol_margin ) )
-	movlw	low(_Vol_margin|8000h)
-	movwf	fsr0l
-	movlw	high(_Vol_margin|8000h)
-	movwf	fsr0h
-	movf	indf0,w ;code access
-	movwf	(??_App_Step+0)+0
-	movf	(_Vol_1),w
-	addwf	(??_App_Step+0)+0,w
-	movwf	(??_App_Step+1)+0
-	clrf	(??_App_Step+1)+0+1
-	rlf	1+(??_App_Step+1)+0,f
-	
-	movf	1+(??_App_Step+1)+0,w
-	xorlw	80h
-	movwf	(??_App_Step+3)+0
-	movlw	80h
-	subwf	(??_App_Step+3)+0,w
-	skipz
-	goto	u695
-	movf	(App_Step@vol),w
-	subwf	0+(??_App_Step+1)+0,w
-u695:
-
-	skipnc
-	goto	u691
-	goto	u690
-u691:
-	goto	l975
-u690:
+;App.c: 48: break;
+	goto	l62
 	line	50
+;App.c: 50: case 19:
 	
-l971:	
-;App.c: 49: {
-;App.c: 50: Vol_1 = vol - Vol_margin;
-	movlw	low(_Vol_margin|8000h)
-	movwf	fsr0l
-	movlw	high(_Vol_margin|8000h)
-	movwf	fsr0h
-	movf	indf0,w ;code access
-	xorlw	0ffh
-	addlw	1
-	movlb 0	; select bank0
-	addwf	(App_Step@vol),w
-	movwf	(??_App_Step+0)+0
-	movf	(??_App_Step+0)+0,w
-	movwf	(_Vol_1)
+l61:	
 	line	51
 	
-l973:	
-;App.c: 51: Vol_1_Change();
-	fcall	_Vol_1_Change
-	goto	l975
-	line	52
-	
-l76:	
-	line	53
-	
-l975:	
-;App.c: 52: }
-;App.c: 53: if( vol < Vol_1 )
-	movlb 0	; select bank0
-	movf	(_Vol_1),w
-	subwf	(App_Step@vol),w
-	skipnc
-	goto	u701
-	goto	u700
-u701:
-	goto	l981
-u700:
-	line	55
-	
-l977:	
-;App.c: 54: {
-;App.c: 55: Vol_1 = vol;
-	movf	(App_Step@vol),w
-	movwf	(??_App_Step+0)+0
-	movf	(??_App_Step+0)+0,w
-	movwf	(_Vol_1)
-	line	56
-	
-l979:	
-;App.c: 56: Vol_1_Change();
-	fcall	_Vol_1_Change
-	goto	l981
-	line	57
-	
-l77:	
-	line	58
-	
-l981:	
-;App.c: 57: }
-;App.c: 58: Train_Step();
-	fcall	_Train_Step
-	line	59
-;App.c: 59: break;
-	goto	l79
-	line	61
-;App.c: 61: case 19:
-	
-l78:	
-	line	62
-	
-l983:	
-;App.c: 62: phase = 0;
+l960:	
+;App.c: 51: phase = 0;
 	movlb 0	; select bank0
 	clrf	(App_Step@phase)
-	line	63
-;App.c: 63: break;
-	goto	l79
-	line	64
+	line	52
+;App.c: 52: break;
+	goto	l62
+	line	53
 	
-l985:	
-;App.c: 64: }
-	goto	l79
+l962:	
+;App.c: 53: }
+	goto	l62
 	line	40
 	
-l72:	
+l57:	
 	
-l987:	
+l964:	
 	movf	(App_Step@phase),w
 	incf	(App_Step@phase),f
 	; Switch size 1, requested type "space"
@@ -3132,290 +3032,32 @@ l987:
 	opt asmopt_off
 	xorlw	0^0	; case 0
 	skipnz
-	goto	l965
+	goto	l956
 	xorlw	1^0	; case 1
 	skipnz
-	goto	l967
+	goto	l958
 	xorlw	19^1	; case 19
 	skipnz
-	goto	l983
-	goto	l79
+	goto	l960
+	goto	l62
 	opt asmopt_pop
 
-	line	64
+	line	53
 	
-l74:	
-	line	65
+l59:	
+	line	54
 	
-l79:	
+l62:	
 	return
 	opt stack 0
 GLOBAL	__end_of_App_Step
 	__end_of_App_Step:
 	signat	_App_Step,89
-	global	_Vol_1_Change
-
-;; *************** function _Vol_1_Change *****************
-;; Defined at:
-;;		line 88 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-;; Parameters:    Size  Location     Type
-;;		None
-;; Auto vars:     Size  Location     Type
-;;  s               1    6[BANK0 ] unsigned char 
-;; Return value:  Size  Location     Type
-;;                  1    wreg      void 
-;; Registers used:
-;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2
-;;      Params:         0       0       0       0
-;;      Locals:         0       1       0       0
-;;      Temps:          0       2       0       0
-;;      Totals:         0       3       0       0
-;;Total ram usage:        3 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    3
-;; This function calls:
-;;		_Train_Set_Acc
-;; This function is called by:
-;;		_App_Step
-;; This function uses a non-reentrant model
-;;
-psect	text3,local,class=CODE,delta=2,merge=1,group=0
-	line	88
-global __ptext3
-__ptext3:	;psect for function _Vol_1_Change
-psect	text3
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	88
-	global	__size_of_Vol_1_Change
-	__size_of_Vol_1_Change	equ	__end_of_Vol_1_Change-_Vol_1_Change
-	
-_Vol_1_Change:	
-;incstack = 0
-	opt	stack 10
-; Regs used in _Vol_1_Change: [wreg+fsr1l+fsr1h+status,2+status,0+pclath+cstack]
-	line	90
-	
-l921:	
-;App.c: 90: uint8 s = Vol_1 >> 4;
-	movlb 0	; select bank0
-	movf	(_Vol_1),w
-	movwf	(??_Vol_1_Change+0)+0
-	movlw	04h
-u605:
-	lsrf	(??_Vol_1_Change+0)+0,f
-	decfsz	wreg,f
-	goto	u605
-	movf	0+(??_Vol_1_Change+0)+0,w
-	movwf	(??_Vol_1_Change+1)+0
-	movf	(??_Vol_1_Change+1)+0,w
-	movwf	(Vol_1_Change@s)
-	line	91
-	
-l923:	
-;App.c: 91: if( s == Vol_1_s ) return;
-	movf	(Vol_1_Change@s),w
-	xorwf	(_Vol_1_s),w
-	skipz
-	goto	u611
-	goto	u610
-u611:
-	goto	l927
-u610:
-	goto	l87
-	
-l925:	
-	goto	l87
-	
-l86:	
-	line	92
-	
-l927:	
-;App.c: 92: Vol_1_s = s;
-	movf	(Vol_1_Change@s),w
-	movwf	(??_Vol_1_Change+0)+0
-	movf	(??_Vol_1_Change+0)+0,w
-	movwf	(_Vol_1_s)
-	line	94
-;App.c: 94: if( s > 8 )
-	movlw	low(09h)
-	subwf	(Vol_1_Change@s),w
-	skipc
-	goto	u621
-	goto	u620
-u621:
-	goto	l931
-u620:
-	line	96
-	
-l929:	
-;App.c: 95: {
-;App.c: 96: Train_Set_Acc( up_table[ s - 9 ], 1 );
-	lslf	(Vol_1_Change@s),w
-	addlw	0EEh
-	addlw	low(_up_table|((0x0)<<8))&0ffh
-	movwf	fsr1l
-	clrf fsr1h	
-	
-	moviw	[0]fsr1
-	movwf	(Train_Set_Acc@acc)
-	moviw	[1]fsr1
-	movwf	(Train_Set_Acc@acc+1)
-	clrf	(Train_Set_Acc@up)
-	incf	(Train_Set_Acc@up),f
-	fcall	_Train_Set_Acc
-	line	97
-;App.c: 97: }
-	goto	l87
-	line	98
-	
-l88:	
-	
-l931:	
-;App.c: 98: else if( s < 2 )
-	movlw	low(02h)
-	movlb 0	; select bank0
-	subwf	(Vol_1_Change@s),w
-	skipnc
-	goto	u631
-	goto	u630
-u631:
-	goto	l935
-u630:
-	goto	l87
-	line	100
-	
-l933:	
-;App.c: 99: {
-;App.c: 100: }
-	goto	l87
-	line	101
-	
-l90:	
-	
-l935:	
-;App.c: 101: else if( s < 8 )
-	movlw	low(08h)
-	subwf	(Vol_1_Change@s),w
-	skipnc
-	goto	u641
-	goto	u640
-u641:
-	goto	l87
-u640:
-	line	103
-	
-l937:	
-;App.c: 102: {
-;App.c: 103: Train_Set_Acc( down_table[ s - 2 ], 0 );
-	lslf	(Vol_1_Change@s),w
-	addlw	0FCh
-	addlw	low(_down_table|((0x0)<<8))&0ffh
-	movwf	fsr1l
-	clrf fsr1h	
-	
-	moviw	[0]fsr1
-	movwf	(Train_Set_Acc@acc)
-	moviw	[1]fsr1
-	movwf	(Train_Set_Acc@acc+1)
-	clrf	(Train_Set_Acc@up)
-	fcall	_Train_Set_Acc
-	goto	l87
-	line	104
-	
-l92:	
-	goto	l87
-	line	106
-	
-l91:	
-	goto	l87
-	
-l89:	
-	
-l87:	
-	return
-	opt stack 0
-GLOBAL	__end_of_Vol_1_Change
-	__end_of_Vol_1_Change:
-	signat	_Vol_1_Change,89
-	global	_Train_Set_Acc
-
-;; *************** function _Train_Set_Acc *****************
-;; Defined at:
-;;		line 114 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-;; Parameters:    Size  Location     Type
-;;  acc             2    0[BANK0 ] unsigned short 
-;;  up              1    2[BANK0 ] unsigned char 
-;; Auto vars:     Size  Location     Type
-;;		None
-;; Return value:  Size  Location     Type
-;;                  1    wreg      void 
-;; Registers used:
-;;		wreg
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2
-;;      Params:         0       3       0       0
-;;      Locals:         0       0       0       0
-;;      Temps:          0       1       0       0
-;;      Totals:         0       4       0       0
-;;Total ram usage:        4 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    2
-;; This function calls:
-;;		Nothing
-;; This function is called by:
-;;		_Vol_1_Change
-;; This function uses a non-reentrant model
-;;
-psect	text4,local,class=CODE,delta=2,merge=1,group=0
-	line	114
-global __ptext4
-__ptext4:	;psect for function _Train_Set_Acc
-psect	text4
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	114
-	global	__size_of_Train_Set_Acc
-	__size_of_Train_Set_Acc	equ	__end_of_Train_Set_Acc-_Train_Set_Acc
-	
-_Train_Set_Acc:	
-;incstack = 0
-	opt	stack 10
-; Regs used in _Train_Set_Acc: [wreg]
-	line	116
-	
-l891:	
-;App.c: 116: Train_Acc = acc;
-	movlb 0	; select bank0
-	movf	(Train_Set_Acc@acc+1),w
-	movwf	(_Train_Acc+1)
-	movf	(Train_Set_Acc@acc),w
-	movwf	(_Train_Acc)
-	line	117
-;App.c: 117: Train_Up = up;
-	movf	(Train_Set_Acc@up),w
-	movwf	(??_Train_Set_Acc+0)+0
-	movf	(??_Train_Set_Acc+0)+0,w
-	movwf	(_Train_Up)
-	line	118
-	
-l101:	
-	return
-	opt stack 0
-GLOBAL	__end_of_Train_Set_Acc
-	__end_of_Train_Set_Acc:
-	signat	_Train_Set_Acc,8313
 	global	_Train_Step
 
 ;; *************** function _Train_Step *****************
 ;; Defined at:
-;;		line 120 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+;;		line 109 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -3442,13 +3084,13 @@ GLOBAL	__end_of_Train_Set_Acc
 ;;		_App_Step
 ;; This function uses a non-reentrant model
 ;;
-psect	text5,local,class=CODE,delta=2,merge=1,group=0
-	line	120
-global __ptext5
-__ptext5:	;psect for function _Train_Step
-psect	text5
+psect	text3,local,class=CODE,delta=2,merge=1,group=0
+	line	109
+global __ptext3
+__ptext3:	;psect for function _Train_Step
+psect	text3
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	120
+	line	109
 	global	__size_of_Train_Step
 	__size_of_Train_Step	equ	__end_of_Train_Step-_Train_Step
 	
@@ -3456,31 +3098,31 @@ _Train_Step:
 ;incstack = 0
 	opt	stack 10
 ; Regs used in _Train_Step: [wreg+status,2+status,0+pclath+cstack]
-	line	122
+	line	111
 	
-l939:	
-;App.c: 122: uint16 s = Train_Speed;
+l930:	
+;App.c: 111: uint16 s = Train_Speed;
 	movlb 0	; select bank0
 	movf	(_Train_Speed+1),w
 	movwf	(Train_Step@s+1)
 	movf	(_Train_Speed),w
 	movwf	(Train_Step@s)
-	line	124
+	line	113
 	
-l941:	
-;App.c: 124: if( Train_Up )
+l932:	
+;App.c: 113: if( Train_Up )
 	movf	((_Train_Up)),w
 	btfsc	status,2
-	goto	u651
-	goto	u650
-u651:
-	goto	l949
-u650:
-	line	126
+	goto	u611
+	goto	u610
+u611:
+	goto	l940
+u610:
+	line	115
 	
-l943:	
-;App.c: 125: {
-;App.c: 126: if( Train_Speed < ( 0xFFFF - Train_Acc ) ) Train_Speed += Train_Acc;
+l934:	
+;App.c: 114: {
+;App.c: 115: if( Train_Speed < ( 0xFFFF - Train_Acc ) ) Train_Speed += Train_Acc;
 	comf	(_Train_Acc),w
 	movwf	(??_Train_Step+0)+0
 	comf	(_Train_Acc+1),w
@@ -3497,96 +3139,96 @@ l943:
 	movf	1+(??_Train_Step+2)+0,w
 	subwf	(_Train_Speed+1),w
 	skipz
-	goto	u665
+	goto	u625
 	movf	0+(??_Train_Step+2)+0,w
 	subwf	(_Train_Speed),w
-u665:
+u625:
 	skipnc
-	goto	u661
-	goto	u660
-u661:
-	goto	l947
-u660:
+	goto	u621
+	goto	u620
+u621:
+	goto	l938
+u620:
 	
-l945:	
+l936:	
 	movf	(_Train_Acc),w
 	addwf	(_Train_Speed),f
 	movf	(_Train_Acc+1),w
 	addwfc	(_Train_Speed+1),f
-	goto	l955
-	line	127
+	goto	l946
+	line	116
 	
-l105:	
+l88:	
 	
-l947:	
-;App.c: 127: else Train_Speed = 0xFFFF;
+l938:	
+;App.c: 116: else Train_Speed = 0xFFFF;
 	movlw	0FFh
 	movwf	(_Train_Speed)
 	movlw	0FFh
 	movwf	((_Train_Speed))+1
-	goto	l955
+	goto	l946
 	
-l106:	
-	line	128
-;App.c: 128: }
-	goto	l955
-	line	129
+l89:	
+	line	117
+;App.c: 117: }
+	goto	l946
+	line	118
 	
-l104:	
-	line	131
+l87:	
+	line	120
 	
-l949:	
-;App.c: 129: else
-;App.c: 130: {
-;App.c: 131: if( Train_Speed > Train_Acc ) Train_Speed -= Train_Acc;
+l940:	
+;App.c: 118: else
+;App.c: 119: {
+;App.c: 120: if( Train_Speed > Train_Acc ) Train_Speed -= Train_Acc;
 	movf	(_Train_Speed+1),w
 	subwf	(_Train_Acc+1),w
 	skipz
-	goto	u675
+	goto	u635
 	movf	(_Train_Speed),w
 	subwf	(_Train_Acc),w
-u675:
+u635:
 	skipnc
-	goto	u671
-	goto	u670
-u671:
-	goto	l953
-u670:
+	goto	u631
+	goto	u630
+u631:
+	goto	l944
+u630:
 	
-l951:	
+l942:	
 	movf	(_Train_Acc),w
 	subwf	(_Train_Speed),f
 	movf	(_Train_Acc+1),w
 	subwfb	(_Train_Speed+1),f
-	goto	l955
-	line	132
+	goto	l946
+	line	121
 	
-l108:	
+l91:	
 	
-l953:	
-;App.c: 132: else Train_Speed = 0;
+l944:	
+;App.c: 121: else Train_Speed = 0;
 	clrf	(_Train_Speed)
 	clrf	(_Train_Speed+1)
-	goto	l955
+	goto	l946
 	
-l109:	
-	goto	l955
-	line	133
+l92:	
+	goto	l946
+	line	122
 	
-l107:	
-	line	135
+l90:	
+	line	124
 	
-l955:	
-;App.c: 133: }
-;App.c: 135: Voix_Set_Speed( Train_Speed );
+l946:	
+;App.c: 122: }
+;App.c: 124: Voix_Set_Speed( Train_Speed );
 	movf	(_Train_Speed+1),w
 	movwf	(Voix_Set_Speed@speed+1)
 	movf	(_Train_Speed),w
 	movwf	(Voix_Set_Speed@speed)
 	fcall	_Voix_Set_Speed
-	line	136
+	line	125
 	
-l110:	
+l93:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Train_Step
@@ -3625,12 +3267,12 @@ GLOBAL	__end_of_Train_Step
 ;;		_App_Step
 ;; This function uses a non-reentrant model
 ;;
-psect	text6,local,class=CODE,delta=2,merge=1,group=0
+psect	text4,local,class=CODE,delta=2,merge=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	6
-global __ptext6
-__ptext6:	;psect for function _Noise_Step
-psect	text6
+global __ptext4
+__ptext4:	;psect for function _Noise_Step
+psect	text4
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	6
 	global	__size_of_Noise_Step
@@ -3645,206 +3287,143 @@ _Noise_Step:
 	movwf	(Noise_Step@bits)
 	line	8
 	
-l893:	
+l906:	
 ;Voix.c: 8: while( -- bits )
-	goto	l909
+	goto	l922
 	
-l155:	
+l166:	
 	line	10
 	
-l895:	
+l908:	
 ;Voix.c: 9: {
 ;Voix.c: 10: Noise_Seed <<= 1;
 	movlw	01h
-u505:
+u515:
 	lslf	(_Noise_Seed),f
 	rlf	(_Noise_Seed+1),f
 	rlf	(_Noise_Seed+2),f
 	rlf	(_Noise_Seed+3),f
 	decfsz	wreg,f
-	goto	u505
+	goto	u515
 	line	11
 	
-l897:	
+l910:	
 ;Voix.c: 11: bool a = ( Noise_Seed & 0x100000 ) > 0;
 	btfsc	(_Noise_Seed+2),(20)&7
-	goto	u511
-	goto	u510
-u511:
-	movlw	1
+	goto	u521
 	goto	u520
-u510:
-	movlw	0
+u521:
+	movlw	1
+	goto	u530
 u520:
+	movlw	0
+u530:
 	movwf	(??_Noise_Step+0)+0
 	movf	(??_Noise_Step+0)+0,w
 	movwf	(Noise_Step@a)
 	line	12
 	
-l899:	
+l912:	
 ;Voix.c: 12: bool b = ( Noise_Seed & 0x400000 ) > 0;
 	btfsc	(_Noise_Seed+2),(22)&7
-	goto	u531
-	goto	u530
-u531:
-	movlw	1
+	goto	u541
 	goto	u540
-u530:
-	movlw	0
+u541:
+	movlw	1
+	goto	u550
 u540:
+	movlw	0
+u550:
 	movwf	(??_Noise_Step+0)+0
 	movf	(??_Noise_Step+0)+0,w
 	movwf	(Noise_Step@b)
 	line	14
 	
-l901:	
+l914:	
 ;Voix.c: 14: if( ( !a && b ) || ( a && !b ) ) Noise_Seed |= 1;
 	movf	((Noise_Step@a)),w
-	btfss	status,2
-	goto	u551
-	goto	u550
-u551:
-	goto	l905
-u550:
-	
-l903:	
-	movf	((Noise_Step@b)),w
 	btfss	status,2
 	goto	u561
 	goto	u560
 u561:
-	goto	l158
+	goto	l918
 u560:
-	goto	l905
 	
-l160:	
-	
-l905:	
-	movf	((Noise_Step@a)),w
-	btfsc	status,2
+l916:	
+	movf	((Noise_Step@b)),w
+	btfss	status,2
 	goto	u571
 	goto	u570
 u571:
-	goto	l909
+	goto	l169
 u570:
+	goto	l918
 	
-l907:	
-	movf	((Noise_Step@b)),w
-	btfss	status,2
+l171:	
+	
+l918:	
+	movf	((Noise_Step@a)),w
+	btfsc	status,2
 	goto	u581
 	goto	u580
 u581:
-	goto	l909
+	goto	l922
 u580:
 	
-l158:	
-	bsf	(_Noise_Seed)+(0/8),(0)&7
-	goto	l909
-	
-l156:	
-	goto	l909
-	line	15
-	
-l154:	
-	line	8
-	
-l909:	
-	movlw	01h
-	subwf	(Noise_Step@bits),f
+l920:	
+	movf	((Noise_Step@b)),w
 	btfss	status,2
 	goto	u591
 	goto	u590
 u591:
-	goto	l895
+	goto	l922
 u590:
-	goto	l911
 	
-l161:	
+l169:	
+	bsf	(_Noise_Seed)+(0/8),(0)&7
+	goto	l922
+	
+l167:	
+	goto	l922
+	line	15
+	
+l165:	
+	line	8
+	
+l922:	
+	movlw	01h
+	subwf	(Noise_Step@bits),f
+	btfss	status,2
+	goto	u601
+	goto	u600
+u601:
+	goto	l908
+u600:
+	goto	l924
+	
+l172:	
 	line	17
 	
-l911:	
+l924:	
 ;Voix.c: 15: }
 ;Voix.c: 17: return Noise_Seed;
 	movf	(_Noise_Seed),w
-	goto	l162
+	goto	l173
 	
-l913:	
+l926:	
 	line	18
 	
-l162:	
+l173:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Noise_Step
 	__end_of_Noise_Step:
 	signat	_Noise_Step,4217
-	global	_ADC_Res
-
-;; *************** function _ADC_Res *****************
-;; Defined at:
-;;		line 115 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
-;; Parameters:    Size  Location     Type
-;;		None
-;; Auto vars:     Size  Location     Type
-;;		None
-;; Return value:  Size  Location     Type
-;;                  1    wreg      unsigned char 
-;; Registers used:
-;;		wreg
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2
-;;      Params:         0       0       0       0
-;;      Locals:         0       0       0       0
-;;      Temps:          0       0       0       0
-;;      Totals:         0       0       0       0
-;;Total ram usage:        0 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    2
-;; This function calls:
-;;		Nothing
-;; This function is called by:
-;;		_App_Step
-;; This function uses a non-reentrant model
-;;
-psect	text7,local,class=CODE,delta=2,merge=1,group=0
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
-	line	115
-global __ptext7
-__ptext7:	;psect for function _ADC_Res
-psect	text7
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
-	line	115
-	global	__size_of_ADC_Res
-	__size_of_ADC_Res	equ	__end_of_ADC_Res-_ADC_Res
-	
-_ADC_Res:	
-;incstack = 0
-	opt	stack 11
-; Regs used in _ADC_Res: [wreg]
-	line	117
-	
-l917:	
-;Config.c: 117: return ADRESH;
-	movlb 1	; select bank1
-	movf	(156)^080h,w	;volatile
-	goto	l149
-	
-l919:	
-	line	118
-	
-l149:	
-	return
-	opt stack 0
-GLOBAL	__end_of_ADC_Res
-	__end_of_ADC_Res:
-	signat	_ADC_Res,89
 	global	_ADC_Go
 
 ;; *************** function _ADC_Go *****************
 ;; Defined at:
-;;		line 106 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
+;;		line 150 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -3871,13 +3450,14 @@ GLOBAL	__end_of_ADC_Res
 ;;		_App_Step
 ;; This function uses a non-reentrant model
 ;;
-psect	text8,local,class=CODE,delta=2,merge=1,group=0
-	line	106
-global __ptext8
-__ptext8:	;psect for function _ADC_Go
-psect	text8
+psect	text5,local,class=CODE,delta=2,merge=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
-	line	106
+	line	150
+global __ptext5
+__ptext5:	;psect for function _ADC_Go
+psect	text5
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
+	line	150
 	global	__size_of_ADC_Go
 	__size_of_ADC_Go	equ	__end_of_ADC_Go-_ADC_Go
 	
@@ -3885,20 +3465,20 @@ _ADC_Go:
 ;incstack = 0
 	opt	stack 11
 ; Regs used in _ADC_Go: [wreg]
-	line	112
+	line	156
 	
-l915:	
-;Config.c: 108: ADCON0 =
-;Config.c: 109: 1 << 0x0 |
-;Config.c: 110: 1 << 0x1 |
-;Config.c: 111: 2 << 0x2
-;Config.c: 112: ;
+l928:	
+;Config.c: 152: ADCON0 =
+;Config.c: 153: 1 << 0x0 |
+;Config.c: 154: 1 << 0x1 |
+;Config.c: 155: 2 << 0x2
+;Config.c: 156: ;
 	movlw	low(0Bh)
 	movlb 1	; select bank1
 	movwf	(157)^080h	;volatile
-	line	113
+	line	157
 	
-l146:	
+l157:	
 	return
 	opt stack 0
 GLOBAL	__end_of_ADC_Go
@@ -3935,11 +3515,11 @@ GLOBAL	__end_of_ADC_Go
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text9,local,class=CODE,delta=2,merge=1,group=0
+psect	text6,local,class=CODE,delta=2,merge=1,group=0
 	line	58
-global __ptext9
-__ptext9:	;psect for function _Chip_Init
-psect	text9
+global __ptext6
+__ptext6:	;psect for function _Chip_Init
+psect	text6
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
 	line	58
 	global	__size_of_Chip_Init
@@ -3951,7 +3531,7 @@ _Chip_Init:
 ; Regs used in _Chip_Init: [wreg+status,2+status,0]
 	line	62
 	
-l991:	
+l970:	
 ;Config.c: 62: OSCFRQbits.HFFRQ = 6;
 	movlb 18	; select bank18
 	movf	(2335)^0900h,w	;volatile
@@ -3960,101 +3540,131 @@ l991:
 	movwf	(2335)^0900h	;volatile
 	line	66
 	
-l993:	
-;Config.c: 66: ANSELA = 0b000100;
-	movlw	low(04h)
+l972:	
+;Config.c: 66: ANSELA = 0b000000;
 	movlb 3	; select bank3
-	movwf	(396)^0180h	;volatile
+	clrf	(396)^0180h	;volatile
 	line	67
 	
-l995:	
+l974:	
 ;Config.c: 67: TRISA = 0b000111;
 	movlw	low(07h)
 	movlb 1	; select bank1
 	movwf	(140)^080h	;volatile
 	line	68
 	
-l997:	
+l976:	
 ;Config.c: 68: LATA = 0b000000;
 	movlb 2	; select bank2
 	clrf	(268)^0100h	;volatile
 	line	70
 	
-l999:	
-;Config.c: 70: RA5PPS = 0x0C;
+l978:	
+;Config.c: 70: RXPPS = 0x12;
+	movlw	low(012h)
+	movlb 28	; select bank28
+	movwf	(3620)^0E00h	;volatile
+	line	71
+	
+l980:	
+;Config.c: 71: RA5PPS = 0x0C;
 	movlw	low(0Ch)
 	movlb 29	; select bank29
 	movwf	(3733)^0E80h	;volatile
-	line	76
+	line	77
 	
-l1001:	
-;Config.c: 74: ADCON1 =
-;Config.c: 75: 6 << 0x4
-;Config.c: 76: ;
+l982:	
+;Config.c: 75: ADCON1 =
+;Config.c: 76: 6 << 0x4
+;Config.c: 77: ;
 	movlw	low(060h)
 	movlb 1	; select bank1
 	movwf	(158)^080h	;volatile
-	line	80
+	line	81
 	
-l1003:	
-;Config.c: 80: PR2 = 250 - 1;
+l984:	
+;Config.c: 81: PR2 = 250 - 1;
 	movlw	low(0F9h)
 	movlb 0	; select bank0
 	movwf	(30)	;volatile
-	line	81
+	line	82
 	
-l1005:	
-;Config.c: 81: TMR2 = 0;
+l986:	
+;Config.c: 82: TMR2 = 0;
 	clrf	(29)	;volatile
-	line	86
+	line	87
 	
-l1007:	
-;Config.c: 82: T2CON =
-;Config.c: 83: 0 << 0x0 |
-;Config.c: 84: 0 << 0x3 |
-;Config.c: 85: 1 << 0x2
-;Config.c: 86: ;
+l988:	
+;Config.c: 83: T2CON =
+;Config.c: 84: 0 << 0x0 |
+;Config.c: 85: 0 << 0x3 |
+;Config.c: 86: 1 << 0x2
+;Config.c: 87: ;
 	movlw	low(04h)
 	movwf	(31)	;volatile
-	line	88
+	line	89
 	
-l1009:	
-;Config.c: 88: CCPR1 = 0x100;
+l990:	
+;Config.c: 89: CCPR1 = 0x100;
 	movlw	01h
 	movlb 5	; select bank5
 	movwf	(657+1)^0280h	;volatile
 	movlw	0
 	movwf	(657)^0280h	;volatile
-	line	93
+	line	94
 	
-l1011:	
-;Config.c: 90: CCP1CON =
-;Config.c: 91: 1 << 0x7 |
-;Config.c: 92: 0x0F << 0x0
-;Config.c: 93: ;
+l992:	
+;Config.c: 91: CCP1CON =
+;Config.c: 92: 1 << 0x7 |
+;Config.c: 93: 0x0F << 0x0
+;Config.c: 94: ;
 	movlw	low(08Fh)
 	movwf	(659)^0280h	;volatile
-	line	99
+	line	98
 	
-l1013:	
-;Config.c: 97: PIE1 =
-;Config.c: 98: 1 << 0x1
-;Config.c: 99: ;
+l994:	
+;Config.c: 98: SP1BRGL = 4;
+	movlw	low(04h)
+	movlb 3	; select bank3
+	movwf	(411)^0180h	;volatile
+	line	102
+	
+l996:	
+;Config.c: 100: TX1STA =
+;Config.c: 101: 1 << 0x2
+;Config.c: 102: ;
+	movlw	low(04h)
+	movwf	(414)^0180h	;volatile
+	line	107
+	
+l998:	
+;Config.c: 104: RC1STA =
+;Config.c: 105: 1 << 0x7 |
+;Config.c: 106: 1 << 0x4
+;Config.c: 107: ;
+	movlw	low(090h)
+	movwf	(413)^0180h	;volatile
+	line	113
+	
+l1000:	
+;Config.c: 111: PIE1 =
+;Config.c: 112: 1 << 0x1
+;Config.c: 113: ;
 	movlw	low(02h)
 	movlb 1	; select bank1
 	movwf	(145)^080h	;volatile
-	line	103
+	line	117
 	
-l1015:	
-;Config.c: 100: INTCON =
-;Config.c: 101: 1 << 0x6 |
-;Config.c: 102: 1 << 0x7
-;Config.c: 103: ;
+l1002:	
+;Config.c: 114: INTCON =
+;Config.c: 115: 1 << 0x6 |
+;Config.c: 116: 1 << 0x7
+;Config.c: 117: ;
 	movlw	low(0C0h)
 	movwf	(11)	;volatile
-	line	104
+	line	118
 	
-l143:	
+l142:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Chip_Init
@@ -4064,7 +3674,7 @@ GLOBAL	__end_of_Chip_Init
 
 ;; *************** function _App_Init *****************
 ;; Defined at:
-;;		line 22 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+;;		line 21 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -4086,19 +3696,20 @@ GLOBAL	__end_of_Chip_Init
 ;; Hardware stack levels used:    1
 ;; Hardware stack levels required when called:    3
 ;; This function calls:
+;;		_Train_Set_Acc
 ;;		_Voix_Set_Speed
 ;; This function is called by:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text10,local,class=CODE,delta=2,merge=1,group=0
+psect	text7,local,class=CODE,delta=2,merge=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	22
-global __ptext10
-__ptext10:	;psect for function _App_Init
-psect	text10
+	line	21
+global __ptext7
+__ptext7:	;psect for function _App_Init
+psect	text7
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
-	line	22
+	line	21
 	global	__size_of_App_Init
 	__size_of_App_Init	equ	__end_of_App_Init-_App_Init
 	
@@ -4106,18 +3717,29 @@ _App_Init:
 ;incstack = 0
 	opt	stack 12
 ; Regs used in _App_Init: [wreg+status,2+status,0+pclath+cstack]
-	line	24
+	line	23
 	
-l989:	
-;App.c: 24: Voix_Set_Speed( 0 );
+l968:	
+;App.c: 23: Voix_Set_Speed( 100 * 256 );
 	movlw	0
 	movlb 0	; select bank0
 	movwf	(Voix_Set_Speed@speed)
-	movwf	(Voix_Set_Speed@speed+1)
+	movlw	064h
+	movwf	((Voix_Set_Speed@speed))+1
 	fcall	_Voix_Set_Speed
+	line	24
+;App.c: 24: Train_Set_Acc( 0x0010, 1 );
+	movlw	010h
+	movlb 0	; select bank0
+	movwf	(Train_Set_Acc@acc)
+	movlw	0
+	movwf	((Train_Set_Acc@acc))+1
+	clrf	(Train_Set_Acc@up)
+	incf	(Train_Set_Acc@up),f
+	fcall	_Train_Set_Acc
 	line	25
 	
-l66:	
+l51:	
 	return
 	opt stack 0
 GLOBAL	__end_of_App_Init
@@ -4156,12 +3778,12 @@ GLOBAL	__end_of_App_Init
 ;;		_Train_Step
 ;; This function uses a non-reentrant model
 ;;
-psect	text11,local,class=CODE,delta=2,merge=1,group=0
+psect	text8,local,class=CODE,delta=2,merge=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	45
-global __ptext11
-__ptext11:	;psect for function _Voix_Set_Speed
-psect	text11
+global __ptext8
+__ptext8:	;psect for function _Voix_Set_Speed
+psect	text8
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	45
 	global	__size_of_Voix_Set_Speed
@@ -4173,36 +3795,36 @@ _Voix_Set_Speed:
 ; Regs used in _Voix_Set_Speed: [wreg+status,2+status,0]
 	line	47
 	
-l865:	
+l880:	
 ;Voix.c: 47: Vo.Run = speed > 0;
 	movlb 0	; select bank0
 	movf	((Voix_Set_Speed@speed)),w
 iorwf	((Voix_Set_Speed@speed+1)),w
 	btfss	status,2
-	goto	u391
-	goto	u390
+	goto	u401
+	goto	u400
 	
-u391:
+u401:
 	movlb 0	; select bank0
 	bsf	(_Vo),0
-	goto	u404
-u390:
+	goto	u414
+u400:
 	movlb 0	; select bank0
 	bcf	(_Vo),0
-u404:
+u414:
 	line	49
 	
-l867:	
+l882:	
 ;Voix.c: 49: if( Vo.Run )
 	btfss	(_Vo),0
-	goto	u411
-	goto	u410
-u411:
-	goto	l889
-u410:
+	goto	u421
+	goto	u420
+u421:
+	goto	l904
+u420:
 	line	51
 	
-l869:	
+l884:	
 ;Voix.c: 50: {
 ;Voix.c: 51: uint16 bias = 0x200;
 	movlw	0
@@ -4211,18 +3833,18 @@ l869:
 	movwf	((Voix_Set_Speed@bias))+1
 	line	52
 	
-l871:	
+l886:	
 ;Voix.c: 52: uint16 power = ( speed >> 4 ) + bias;
 	movf	(Voix_Set_Speed@speed+1),w
 	movwf	(??_Voix_Set_Speed+0)+0+1
 	movf	(Voix_Set_Speed@speed),w
 	movwf	(??_Voix_Set_Speed+0)+0
 	movlw	04h
-u425:
+u435:
 	lsrf	(??_Voix_Set_Speed+0)+1,f
 	rrf	(??_Voix_Set_Speed+0)+0,f
 	decfsz	wreg,f
-	goto	u425
+	goto	u435
 	movf	(Voix_Set_Speed@bias),w
 	addwf	0+(??_Voix_Set_Speed+0)+0,w
 	movwf	(Voix_Set_Speed@power)
@@ -4231,7 +3853,7 @@ u425:
 	movwf	1+(Voix_Set_Speed@power)
 	line	54
 	
-l873:	
+l888:	
 ;Voix.c: 54: if( power > 0x0FFF ) power = 0x0FFF;
 	movlw	010h
 	subwf	(Voix_Set_Speed@power+1),w
@@ -4239,23 +3861,23 @@ l873:
 	skipnz
 	subwf	(Voix_Set_Speed@power),w
 	skipc
-	goto	u431
-	goto	u430
-u431:
-	goto	l877
-u430:
+	goto	u441
+	goto	u440
+u441:
+	goto	l892
+u440:
 	
-l875:	
+l890:	
 	movlw	0FFh
 	movwf	(Voix_Set_Speed@power)
 	movlw	0Fh
 	movwf	((Voix_Set_Speed@power))+1
-	goto	l877
+	goto	l892
 	
-l188:	
+l199:	
 	line	59
 	
-l877:	
+l892:	
 ;Voix.c: 59: Vo_DC = ( power >> 3 );
 	movf	(Voix_Set_Speed@power+1),w
 	movwf	(??_Voix_Set_Speed+0)+0+1
@@ -4273,26 +3895,8 @@ l877:
 	movwf	(_Vo_DC+1)
 	line	61
 	
-l879:	
+l894:	
 ;Voix.c: 61: Vo_1_Width = ( power >> 4 );
-	movf	(Voix_Set_Speed@power+1),w
-	movwf	(??_Voix_Set_Speed+0)+0+1
-	movf	(Voix_Set_Speed@power),w
-	movwf	(??_Voix_Set_Speed+0)+0
-	movlw	04h
-u445:
-	lsrf	(??_Voix_Set_Speed+0)+1,f
-	rrf	(??_Voix_Set_Speed+0)+0,f
-	decfsz	wreg,f
-	goto	u445
-	movf	0+(??_Voix_Set_Speed+0)+0,w
-	movwf	(??_Voix_Set_Speed+2)+0
-	movf	(??_Voix_Set_Speed+2)+0,w
-	movwf	(_Vo_1_Width)
-	line	62
-	
-l881:	
-;Voix.c: 62: Vo_2_Width = ( power >> 4 );
 	movf	(Voix_Set_Speed@power+1),w
 	movwf	(??_Voix_Set_Speed+0)+0+1
 	movf	(Voix_Set_Speed@power),w
@@ -4306,10 +3910,28 @@ u455:
 	movf	0+(??_Voix_Set_Speed+0)+0,w
 	movwf	(??_Voix_Set_Speed+2)+0
 	movf	(??_Voix_Set_Speed+2)+0,w
+	movwf	(_Vo_1_Width)
+	line	62
+	
+l896:	
+;Voix.c: 62: Vo_2_Width = ( power >> 4 );
+	movf	(Voix_Set_Speed@power+1),w
+	movwf	(??_Voix_Set_Speed+0)+0+1
+	movf	(Voix_Set_Speed@power),w
+	movwf	(??_Voix_Set_Speed+0)+0
+	movlw	04h
+u465:
+	lsrf	(??_Voix_Set_Speed+0)+1,f
+	rrf	(??_Voix_Set_Speed+0)+0,f
+	decfsz	wreg,f
+	goto	u465
+	movf	0+(??_Voix_Set_Speed+0)+0,w
+	movwf	(??_Voix_Set_Speed+2)+0
+	movf	(??_Voix_Set_Speed+2)+0,w
 	movwf	(_Vo_2_Width)
 	line	64
 	
-l883:	
+l898:	
 ;Voix.c: 64: if( speed >= 0x0A00 )
 	movlw	0Ah
 	subwf	(Voix_Set_Speed@speed+1),w
@@ -4317,14 +3939,14 @@ l883:
 	skipnz
 	subwf	(Voix_Set_Speed@speed),w
 	skipc
-	goto	u461
-	goto	u460
-u461:
-	goto	l887
-u460:
+	goto	u471
+	goto	u470
+u471:
+	goto	l902
+u470:
 	line	66
 	
-l885:	
+l900:	
 ;Voix.c: 65: {
 ;Voix.c: 66: Vo_1_Freq = ( speed >> 6 );
 	movf	(Voix_Set_Speed@speed+1),w
@@ -4332,11 +3954,11 @@ l885:
 	movf	(Voix_Set_Speed@speed),w
 	movwf	(??_Voix_Set_Speed+0)+0
 	movlw	06h
-u475:
+u485:
 	lsrf	(??_Voix_Set_Speed+0)+1,f
 	rrf	(??_Voix_Set_Speed+0)+0,f
 	decfsz	wreg,f
-	goto	u475
+	goto	u485
 	movf	0+(??_Voix_Set_Speed+0)+0,w
 	movwf	(_Vo_1_Freq)
 	movf	1+(??_Voix_Set_Speed+0)+0,w
@@ -4348,21 +3970,21 @@ u475:
 	movf	(Voix_Set_Speed@speed),w
 	movwf	(??_Voix_Set_Speed+0)+0
 	movlw	04h
-u485:
+u495:
 	lsrf	(??_Voix_Set_Speed+0)+1,f
 	rrf	(??_Voix_Set_Speed+0)+0,f
 	decfsz	wreg,f
-	goto	u485
+	goto	u495
 	movf	(Voix_Set_Speed@speed+1),w
 	movwf	(??_Voix_Set_Speed+2)+0+1
 	movf	(Voix_Set_Speed@speed),w
 	movwf	(??_Voix_Set_Speed+2)+0
 	movlw	06h
-u495:
+u505:
 	lsrf	(??_Voix_Set_Speed+2)+1,f
 	rrf	(??_Voix_Set_Speed+2)+0,f
 	decfsz	wreg,f
-	goto	u495
+	goto	u505
 	movf	0+(??_Voix_Set_Speed+0)+0,w
 	addwf	0+(??_Voix_Set_Speed+2)+0,w
 	movwf	(_Vo_2_Freq)
@@ -4371,13 +3993,13 @@ u495:
 	movwf	1+(_Vo_2_Freq)
 	line	68
 ;Voix.c: 68: }
-	goto	l192
+	goto	l203
 	line	69
 	
-l189:	
+l200:	
 	line	71
 	
-l887:	
+l902:	
 ;Voix.c: 69: else
 ;Voix.c: 70: {
 ;Voix.c: 71: Vo_1_Freq = ( ( 200 ) * 65536 / 32000 );
@@ -4391,20 +4013,20 @@ l887:
 	movwf	(_Vo_2_Freq)
 	movlw	03h
 	movwf	((_Vo_2_Freq))+1
-	goto	l192
+	goto	l203
 	line	73
 	
-l190:	
+l201:	
 	line	74
 ;Voix.c: 73: }
 ;Voix.c: 74: }
-	goto	l192
+	goto	l203
 	line	75
 	
-l187:	
+l198:	
 	line	77
 	
-l889:	
+l904:	
 ;Voix.c: 75: else
 ;Voix.c: 76: {
 ;Voix.c: 77: Vo_DC = 0x0060;
@@ -4412,23 +4034,94 @@ l889:
 	movwf	(_Vo_DC)
 	movlw	0
 	movwf	((_Vo_DC))+1
-	goto	l192
+	goto	l203
 	line	78
 	
-l191:	
+l202:	
 	line	79
 	
-l192:	
+l203:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_Set_Speed
 	__end_of_Voix_Set_Speed:
 	signat	_Voix_Set_Speed,4217
+	global	_Train_Set_Acc
+
+;; *************** function _Train_Set_Acc *****************
+;; Defined at:
+;;		line 103 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+;; Parameters:    Size  Location     Type
+;;  acc             2    0[BANK0 ] unsigned short 
+;;  up              1    2[BANK0 ] unsigned char 
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;                  1    wreg      void 
+;; Registers used:
+;;		wreg
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+;;      Params:         0       3       0       0
+;;      Locals:         0       0       0       0
+;;      Temps:          0       1       0       0
+;;      Totals:         0       4       0       0
+;;Total ram usage:        4 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    2
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_App_Init
+;;		_Vol_1_Change
+;; This function uses a non-reentrant model
+;;
+psect	text9,local,class=CODE,delta=2,merge=1,group=0
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+	line	103
+global __ptext9
+__ptext9:	;psect for function _Train_Set_Acc
+psect	text9
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+	line	103
+	global	__size_of_Train_Set_Acc
+	__size_of_Train_Set_Acc	equ	__end_of_Train_Set_Acc-_Train_Set_Acc
+	
+_Train_Set_Acc:	
+;incstack = 0
+	opt	stack 12
+; Regs used in _Train_Set_Acc: [wreg]
+	line	105
+	
+l966:	
+;App.c: 105: Train_Acc = acc;
+	movlb 0	; select bank0
+	movf	(Train_Set_Acc@acc+1),w
+	movwf	(_Train_Acc+1)
+	movf	(Train_Set_Acc@acc),w
+	movwf	(_Train_Acc)
+	line	106
+;App.c: 106: Train_Up = up;
+	movf	(Train_Set_Acc@up),w
+	movwf	(??_Train_Set_Acc+0)+0
+	movf	(??_Train_Set_Acc+0)+0,w
+	movwf	(_Train_Up)
+	line	107
+	
+l84:	
+	return
+	opt stack 0
+GLOBAL	__end_of_Train_Set_Acc
+	__end_of_Train_Set_Acc:
+	signat	_Train_Set_Acc,8313
 	global	_ISR
 
 ;; *************** function _ISR *****************
 ;; Defined at:
-;;		line 40 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
+;;		line 126 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -4451,6 +4144,7 @@ GLOBAL	__end_of_Voix_Set_Speed
 ;; Hardware stack levels required when called:    1
 ;; This function calls:
 ;;		_Voix_int_Step
+;;		i1_Train_Set_Acc
 ;; This function is called by:
 ;;		Interrupt level 1
 ;; This function uses a non-reentrant model
@@ -4459,8 +4153,8 @@ psect	intentry,class=CODE,delta=2
 global __pintentry
 __pintentry:
 psect	intentry
-	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Main.c"
-	line	40
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
+	line	126
 	global	__size_of_ISR
 	__size_of_ISR	equ	__end_of_ISR-_ISR
 	
@@ -4474,73 +4168,125 @@ psect	intentry
 	movlb 0	; select bank0
 	movf	btemp+1,w
 	movwf	(??_ISR+1)
-	line	42
+	line	128
 	
-i1l1049:	
-;Main.c: 42: if( TMR2IF )
+i1l1056:	
+;Config.c: 128: if( TMR2IF )
 	btfss	(137/8),(137)&7	;volatile
-	goto	u75_21
-	goto	u75_20
-u75_21:
-	goto	i1l35
-u75_20:
-	line	44
+	goto	u74_21
+	goto	u74_20
+u74_21:
+	goto	i1l1068
+u74_20:
+	line	130
 	
-i1l1051:	
-;Main.c: 43: {
-;Main.c: 44: TMR2IF = 0;
+i1l1058:	
+;Config.c: 129: {
+;Config.c: 130: TMR2IF = 0;
 	bcf	(137/8),(137)&7	;volatile
-	line	46
+	line	132
 	
-i1l1053:	
-;Main.c: 46: if( -- MidTick_DivCtr == 0 )
+i1l1060:	
+;Config.c: 132: if( -- MidTick_DivCtr == 0 )
 	movlw	01h
 	subwf	(_MidTick_DivCtr),f
 	btfss	status,2
-	goto	u76_21
-	goto	u76_20
-u76_21:
-	goto	i1l1059
-u76_20:
-	line	48
+	goto	u75_21
+	goto	u75_20
+u75_21:
+	goto	i1l1066
+u75_20:
+	line	134
 	
-i1l1055:	
-;Main.c: 47: {
-;Main.c: 48: MidTick_DivCtr = 32;
+i1l1062:	
+;Config.c: 133: {
+;Config.c: 134: MidTick_DivCtr = 32;
 	movlw	low(020h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	movwf	(_MidTick_DivCtr)
-	line	49
+	line	135
 	
-i1l1057:	
-;Main.c: 49: MidTick_Task ++;
+i1l1064:	
+;Config.c: 135: MidTick_Task ++;
 	movlw	low(01h)
 	movwf	(??_ISR+0)+0
 	movf	(??_ISR+0)+0,w
 	addwf	(_MidTick_Task),f
-	goto	i1l1059
-	line	50
+	goto	i1l1066
+	line	136
 	
-i1l34:	
-	line	52
+i1l152:	
+	line	138
 	
-i1l1059:	
-;Main.c: 50: }
-;Main.c: 52: CCPR1= Voix_int_Step();
+i1l1066:	
+;Config.c: 136: }
+;Config.c: 138: CCPR1= Voix_int_Step();
 	fcall	_Voix_int_Step
 	movf	(1+(?_Voix_int_Step)),w
 	movlb 5	; select bank5
 	movwf	(657+1)^0280h	;volatile
 	movf	(0+(?_Voix_int_Step)),w
 	movwf	(657)^0280h	;volatile
-	goto	i1l35
-	line	53
+	goto	i1l1068
+	line	139
 	
-i1l33:	
-	line	54
+i1l151:	
+	line	141
 	
-i1l35:	
+i1l1068:	
+;Config.c: 139: }
+;Config.c: 141: if( RCIF )
+	movlb 0	; select bank0
+	btfss	(141/8),(141)&7	;volatile
+	goto	u76_21
+	goto	u76_20
+u76_21:
+	goto	i1l154
+u76_20:
+	line	143
+	
+i1l1070:	
+;Config.c: 142: {
+;Config.c: 143: RCIF = 0;
+	bcf	(141/8),(141)&7	;volatile
+	line	144
+	
+i1l1072:	
+;Config.c: 144: updown = ! updown;
+	movf	((_updown)),w
+	btfsc	status,2
+	goto	u77_21
+	goto	u77_20
+u77_21:
+	movlw	1
+	goto	u78_20
+u77_20:
+	movlw	0
+u78_20:
+	movwf	(??_ISR+0)+0
+	movf	(??_ISR+0)+0,w
+	movwf	(_updown)
+	line	146
+	
+i1l1074:	
+;Config.c: 146: Train_Set_Acc( 0x30, updown );
+	movlw	030h
+	movwf	(i1Train_Set_Acc@acc)
+	movlw	0
+	movwf	((i1Train_Set_Acc@acc))+1
+	movf	(_updown),w
+	movwf	(??_ISR+0)+0
+	movf	(??_ISR+0)+0,w
+	movwf	(i1Train_Set_Acc@up)
+	fcall	i1_Train_Set_Acc
+	goto	i1l154
+	line	147
+	
+i1l153:	
+	line	148
+	
+i1l154:	
 	movf	(??_ISR+1),w
 	movlb 0	; select bank0
 	movwf	btemp+1
@@ -4550,6 +4296,75 @@ i1l35:
 GLOBAL	__end_of_ISR
 	__end_of_ISR:
 	signat	_ISR,89
+	global	i1_Train_Set_Acc
+
+;; *************** function i1_Train_Set_Acc *****************
+;; Defined at:
+;;		line 103 in file "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+;; Parameters:    Size  Location     Type
+;;  acc             2    0[COMMON] unsigned short 
+;;  up              1    2[COMMON] unsigned char 
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;                  1    wreg      void 
+;; Registers used:
+;;		wreg
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+;;      Params:         3       0       0       0
+;;      Locals:         0       0       0       0
+;;      Temps:          1       0       0       0
+;;      Totals:         4       0       0       0
+;;Total ram usage:        4 bytes
+;; Hardware stack levels used:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_ISR
+;; This function uses a non-reentrant model
+;;
+psect	text11,local,class=CODE,delta=2,merge=1,group=0
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+	line	103
+global __ptext11
+__ptext11:	;psect for function i1_Train_Set_Acc
+psect	text11
+	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\App.c"
+	line	103
+	global	__size_ofi1_Train_Set_Acc
+	__size_ofi1_Train_Set_Acc	equ	__end_ofi1_Train_Set_Acc-i1_Train_Set_Acc
+	
+i1_Train_Set_Acc:	
+;incstack = 0
+	opt	stack 10
+; Regs used in i1_Train_Set_Acc: [wreg]
+	line	105
+	
+i1l1028:	
+;App.c: 105: Train_Acc = acc;
+	movf	(i1Train_Set_Acc@acc+1),w
+	movlb 0	; select bank0
+	movwf	(_Train_Acc+1)
+	movf	(i1Train_Set_Acc@acc),w
+	movwf	(_Train_Acc)
+	line	106
+;App.c: 106: Train_Up = up;
+	movf	(i1Train_Set_Acc@up),w
+	movwf	(??i1_Train_Set_Acc+0)+0
+	movf	(??i1_Train_Set_Acc+0)+0,w
+	movwf	(_Train_Up)
+	line	107
+	
+i1l84:	
+	return
+	opt stack 0
+GLOBAL	__end_ofi1_Train_Set_Acc
+	__end_ofi1_Train_Set_Acc:
+	signat	i1_Train_Set_Acc,89
 	global	_Voix_int_Step
 
 ;; *************** function _Voix_int_Step *****************
@@ -4580,12 +4395,12 @@ GLOBAL	__end_of_ISR
 ;;		_ISR
 ;; This function uses a non-reentrant model
 ;;
-psect	text13,local,class=CODE,delta=2,merge=1,group=0
+psect	text12,local,class=CODE,delta=2,merge=1,group=0
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	81
-global __ptext13
-__ptext13:	;psect for function _Voix_int_Step
-psect	text13
+global __ptext12
+__ptext12:	;psect for function _Voix_int_Step
+psect	text12
 	file	"C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c"
 	line	81
 	global	__size_of_Voix_int_Step
@@ -4597,7 +4412,7 @@ _Voix_int_Step:
 ; Regs used in _Voix_int_Step: [wreg+status,2+status,0]
 	line	83
 	
-i1l1021:	
+i1l1008:	
 ;Voix.c: 83: uint16 acc = Vo_DC;
 	movlb 0	; select bank0
 	movf	(_Vo_DC+1),w
@@ -4606,17 +4421,17 @@ i1l1021:
 	movwf	(Voix_int_Step@acc)
 	line	85
 	
-i1l1023:	
+i1l1010:	
 ;Voix.c: 85: if( Vo.Run )
 	btfss	(_Vo),0
-	goto	u71_21
-	goto	u71_20
-u71_21:
-	goto	i1l195
-u71_20:
+	goto	u65_21
+	goto	u65_20
+u65_21:
+	goto	i1l206
+u65_20:
 	line	87
 	
-i1l1025:	
+i1l1012:	
 ;Voix.c: 86: {
 ;Voix.c: 87: Vo_1_Phase += Vo_1_Freq;
 	movf	(_Vo_1_Freq),w
@@ -4631,7 +4446,7 @@ i1l1025:
 	addwfc	(_Vo_2_Phase+1),f
 	line	90
 	
-i1l1027:	
+i1l1014:	
 ;Voix.c: 90: acc += ( ( ( Vo_1_Phase >> 8 ) < Vo_1_Width ) ? Vo_1_Amp : 0 );
 	movf	(_Vo_1_Width),w
 	movwf	(??_Voix_int_Step+0)+0
@@ -4646,25 +4461,25 @@ i1l1027:
 	movf	1+(??_Voix_int_Step+0)+0,w
 	subwf	1+(??_Voix_int_Step+2)+0,w
 	skipz
-	goto	u72_25
+	goto	u66_25
 	movf	0+(??_Voix_int_Step+0)+0,w
 	subwf	0+(??_Voix_int_Step+2)+0,w
-u72_25:
+u66_25:
 	skipc
-	goto	u72_21
-	goto	u72_20
-u72_21:
-	goto	i1l1031
-u72_20:
+	goto	u66_21
+	goto	u66_20
+u66_21:
+	goto	i1l1018
+u66_20:
 	
-i1l1029:	
+i1l1016:	
 	clrf	(_Voix_int_Step$164)
 	clrf	(_Voix_int_Step$164+1)
-	goto	i1l199
+	goto	i1l210
 	
-i1l197:	
+i1l208:	
 	
-i1l1031:	
+i1l1018:	
 	movf	(_Vo_1_Amp),w
 	movwf	(??_Voix_int_Step+0)+0
 	clrf	(??_Voix_int_Step+0)+0+1
@@ -4673,14 +4488,14 @@ i1l1031:
 	movf	1+(??_Voix_int_Step+0)+0,w
 	movwf	(_Voix_int_Step$164+1)
 	
-i1l199:	
+i1l210:	
 	movf	(_Voix_int_Step$164),w
 	addwf	(Voix_int_Step@acc),f
 	movf	(_Voix_int_Step$164+1),w
 	addwfc	(Voix_int_Step@acc+1),f
 	line	91
 	
-i1l1033:	
+i1l1020:	
 ;Voix.c: 91: acc += ( ( ( Vo_2_Phase >> 8 ) < Vo_2_Width ) ? Vo_2_Amp : 0 );
 	movf	(_Vo_2_Width),w
 	movwf	(??_Voix_int_Step+0)+0
@@ -4695,25 +4510,25 @@ i1l1033:
 	movf	1+(??_Voix_int_Step+0)+0,w
 	subwf	1+(??_Voix_int_Step+2)+0,w
 	skipz
-	goto	u73_25
+	goto	u67_25
 	movf	0+(??_Voix_int_Step+0)+0,w
 	subwf	0+(??_Voix_int_Step+2)+0,w
-u73_25:
+u67_25:
 	skipc
-	goto	u73_21
-	goto	u73_20
-u73_21:
-	goto	i1l1037
-u73_20:
+	goto	u67_21
+	goto	u67_20
+u67_21:
+	goto	i1l1024
+u67_20:
 	
-i1l1035:	
+i1l1022:	
 	clrf	(_Voix_int_Step$165)
 	clrf	(_Voix_int_Step$165+1)
-	goto	i1l203
+	goto	i1l214
 	
-i1l201:	
+i1l212:	
 	
-i1l1037:	
+i1l1024:	
 	movf	(_Vo_2_Amp),w
 	movwf	(??_Voix_int_Step+0)+0
 	clrf	(??_Voix_int_Step+0)+0+1
@@ -4722,14 +4537,14 @@ i1l1037:
 	movf	1+(??_Voix_int_Step+0)+0,w
 	movwf	(_Voix_int_Step$165+1)
 	
-i1l203:	
+i1l214:	
 	movf	(_Voix_int_Step$165),w
 	addwf	(Voix_int_Step@acc),f
 	movf	(_Voix_int_Step$165+1),w
 	addwfc	(Voix_int_Step@acc+1),f
 	line	92
 	
-i1l195:	
+i1l206:	
 	line	94
 ;Voix.c: 92: }
 ;Voix.c: 94: return acc;
@@ -4737,12 +4552,12 @@ i1l195:
 	movwf	(?_Voix_int_Step+1)
 	movf	(Voix_int_Step@acc),w
 	movwf	(?_Voix_int_Step)
-	goto	i1l204
+	goto	i1l215
 	
-i1l1039:	
+i1l1026:	
 	line	95
 	
-i1l204:	
+i1l215:	
 	return
 	opt stack 0
 GLOBAL	__end_of_Voix_int_Step

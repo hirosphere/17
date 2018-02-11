@@ -6663,7 +6663,7 @@ extern unsigned char __resetbits;
 extern __bit __powerdown;
 extern __bit __timeout;
 
-# 4 "C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h"
+# 10 "C:\17\D\GitHub\17\PIC\1\16F18 Melody - 01\App.h"
 void Chip_Init( void );
 
 
@@ -6674,7 +6674,7 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 26
+# 32
 void Noise_Step( uint8 bits );
 
 typedef struct
@@ -6691,7 +6691,7 @@ void Voix_Trigger( Voix * this, uint8 key );
 void Voix_Step( Voix * this );
 uint8 Voix_int_Step( Voix * this );
 
-# 50
+# 56
 typedef struct
 {
 uint8 * Start;
@@ -6724,7 +6724,7 @@ if( ( !a && b ) || ( a && !b ) ) Noise_Seed |= 1;
 
 
 
-uint8 Con_Tempo = 90;
+uint8 Con_Tempo = 96;
 uint16 Con_Tempo_Phase = 0;
 uint8 Con_Noise = 0;
 
@@ -6838,7 +6838,7 @@ const uint16 Voix_Key_Table[ 72 ] =
 void Voix_Init( Voix * this )
 {
 this->Freq = 0;
-this->Width = 96;
+this->Width = ( 128 - 1 );
 this->Env = 0;
 this->Phase = 0;
 }

@@ -5064,16 +5064,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;App.h: 5: typedef unsigned short uint16;
 [; ;App.h: 6: typedef unsigned long uint32;
 [; ;App.h: 8: typedef unsigned char bool;
-[; ;App.h: 22: void Chip_Init( void );
-[; ;App.h: 23: void ADC_Go( void );
-[; ;App.h: 24: uint8 ADC_Res( void );
-[; ;App.h: 28: uint8 Noise_Step( uint8 bits );
-[; ;App.h: 30: void Voix_Set_Dir( bool reverse );
-[; ;App.h: 31: void Voix_Out( uint16 voltage );
-[; ;App.h: 32: void Voix_Set_Speed( uint16 speed );
-[; ;App.h: 33: uint16 Voix_int_Step( void );
-[; ;App.h: 38: void App_Init( void );
-[; ;App.h: 39: void App_Step( void );
+[; ;App.h: 19: void Chip_Init( void );
+[; ;App.h: 20: void ADC_Go( void );
+[; ;App.h: 21: uint8 ADC_Res( void );
+[; ;App.h: 29: uint8 Noise_Step( uint8 bits );
+[; ;App.h: 31: void Voix_Set_Dir( bool reverse );
+[; ;App.h: 32: void Voix_Out( uint16 voltage );
+[; ;App.h: 33: void Voix_Set_Speed( uint16 speed );
+[; ;App.h: 34: uint16 Voix_int_Step( void );
+[; ;App.h: 39: void App_Init( void );
+[; ;App.h: 40: void App_Step( void );
+[; ;App.h: 42: void Train_Set_Acc( uint16 acc, bool up );
 "4 C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Voix.c
 [v _Noise_Seed `ul ~T0 @X0 1 e ]
 [i _Noise_Seed

@@ -6670,13 +6670,12 @@ typedef unsigned long uint32;
 
 typedef unsigned char bool;
 
-# 22
+# 19
 void Chip_Init( void );
 void ADC_Go( void );
 uint8 ADC_Res( void );
 
-
-
+# 29
 uint8 Noise_Step( uint8 bits );
 
 void Voix_Set_Dir( bool reverse );
@@ -6689,6 +6688,8 @@ uint16 Voix_int_Step( void );
 
 void App_Init( void );
 void App_Step( void );
+
+void Train_Set_Acc( uint16 acc, bool up );
 
 
 # 27 "C:\17\D\GitHub\17\PIC\1\16F18 VVVF - 01\Config.c"
@@ -6731,10 +6732,11 @@ OSCFRQbits.HFFRQ = 6;
 
 
 
-ANSELA = 0b000100;
+ANSELA = 0b000000;
 TRISA = 0b000111;
 LATA = 0b000000;
 
+RXPPS = 0x12;
 RA5PPS = 0x0C;
 
 
@@ -6762,6 +6764,19 @@ CCP1CON =
 
 
 
+SP1BRGL = 4;
+
+TX1STA =
+1 << 0x2
+;
+
+RC1STA =
+1 << 0x7 |
+1 << 0x4
+;
+
+
+
 PIE1 =
 1 << 0x1
 ;
@@ -6769,6 +6784,36 @@ INTCON =
 1 << 0x6 |
 1 << 0x7
 ;
+}
+
+
+extern uint8 MidTick_DivCtr = 1;
+extern uint8 MidTick_Task = 0;
+
+bool updown = 0;
+
+void interrupt ISR( void )
+{
+if( TMR2IF )
+{
+TMR2IF = 0;
+
+if( -- MidTick_DivCtr == 0 )
+{
+MidTick_DivCtr = 32;
+MidTick_Task ++;
+}
+
+CCPR1= Voix_int_Step();
+}
+
+if( RCIF )
+{
+RCIF = 0;
+updown = ! updown;
+
+Train_Set_Acc( 0x30, updown );
+}
 }
 
 void ADC_Go()
