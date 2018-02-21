@@ -44,12 +44,18 @@ var $ = new function()
 		return  this.Create( type, com, attrs, style, text, class_name );
 	};
 	
+	this.Create_c = function( type, com, class_name, attrs, style, text )
+	{
+		return  this.Create( type, com, attrs, style, text, class_name );
+	};
+	
 	this.Create = function( type, com, attrs, style, text, class_name )
 	{
 		var e = document.createElement( type );
 		if( attrs )  for( var fn in attrs )  e[ fn ] = attrs[ fn ];
 		if( style )  for( var fn in style )  e.style[ fn ] = style[ fn ];
 		if( text != null ) $.Text( e, text );
+		if( class_name )  e.className = class_name;
 		if( com )  com.appendChild( e );
 		return e;
 	};

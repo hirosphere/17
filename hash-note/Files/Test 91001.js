@@ -1,50 +1,42 @@
-﻿<html>
-<head>
-<title>Text 1 -- HashDoc</title>
-<meta name="viewport"  content="width=320" />
-<style>
-textarea, button
-{
-	vertical-align: top;
-}
-
-textarea
-{
-	font-size: 18px;
-	font-family: serif;
-}
-
-a
-{
-	padding: 2ex;
-	text-decoration: none;
-}
-
-</style>
-<script src="../Lib/Prime17.js"></script>
-<body>
+﻿HNC.TN1 = {};
 
 
-<div id= "App1"></div>
-<script>
-
-var TextHDPane = class_def
+HNC.TN1.Pane = class_def
 (
-	null,
-	function()
+	ContentPane,
+	function( base )
 	{
 		this.Initiate = function( com )
 		{
 			var self = this;
-			this.Doc = TextHD.Create();
+			this.Doc = HNC.TN1.Doc.Create();
 			
-			var e = $.Create( "div", com );
+			base.Initiate.call( this, com, "HNC_TN1" );
 			
-			var d1 = $.Create( "div", e );
-			this.Title = $.Create( "h1", d1 );
+			var e = this.E;
 			
 			
-			var d2 = $.Create( "div", e, null );
+			//  Content  //
+			
+			var condiv = $.Create( "div", e, null, {} );
+			this.Title = $.Create( "h1", condiv );
+			this.Text = $.Create( "div", condiv );
+			var toggleedit = $.Create
+			(
+				"div", condiv,
+				{ onclick: function() { editdiv.style.display = ( edvis = ! edvis ) ? "block" : "none"  } },
+				{ height: "120px" }
+			);
+			
+			
+			//  Editor div //
+			
+			var editdiv = $.Create( "div", e, null, { display: "none" } );
+			var edvis = false;
+			$.Create_t( "h3", editdiv, "<Text Note> 編集" );
+			
+			var d2 = $.Create( "div", editdiv, null );
+			$.Create_t( "h4", d2, "タイトル入力" );
 			this.Text_Edit = $.Create
 			(
 				"textarea",
@@ -52,10 +44,16 @@ var TextHDPane = class_def
 				{ width: "50em", height: "8em", margin: "0 10px 10px" }
 			);
 			
-			var upd_bu = $.Create_t( "button", d2, "反映", {  onclick: function() { self.Cure(); }  } );
+			var upd_bu = $.Create_t
+			(
+				"button", d2, "反映",
+				{  onclick: function() { self.Cure(); }  },
+				{ width: "", height: "" }
+			);
 			
 
-			var d2 = $.Create( "div", e, null );
+			var d2 = $.Create( "div", editdiv, null );
+			$.Create_t( "h4", d2, "JSON" );
 			this.JSON_Edit = $.Create
 			(
 				"textarea",
@@ -66,7 +64,8 @@ var TextHDPane = class_def
 			var upd_bu = $.Create_t( "button", d2, "反映" );
 			
 			
-			var d3 = $.Create( "div", e );
+			var d3 = $.Create( "div", editdiv );
+			$.Create_t( "h4", d3, "確認" );
 			this.Hash_Edit = $.Create
 			(
 				"textarea",
@@ -74,15 +73,15 @@ var TextHDPane = class_def
 				{ width: "50em", height: "5em", margin: "0 10px 10px" }
 			);
 			
-			var d4 = $.Create( "div", e );
+			var linkdiv = $.Create( "div", null );
 			this.Link = $.Create
 			(
-				"a",  d4,  {  },  {  }, "Link"
+				"a",  linkdiv,  {  },  {  }, "Link"
 			);
 			
 			this.Tweet = $.Create
 			(
-				"a",  d4,  { target: "_blank" },  {  }, "Tweet"
+				"a",  linkdiv,  { target: "_blank" },  {  }, "Tweet"
 			);
 			
 			upd_bu.onclick = function()
@@ -95,10 +94,11 @@ var TextHDPane = class_def
 			{
 				ValueChange: function()  { self.Update() }
 			};
-			this.Doc.AddView( eh );
+			//this.Doc.AddView( eh );
 			
 			this.Update();
 		};
+		
 		
 		this.Update = function()
 		{
@@ -110,6 +110,7 @@ var TextHDPane = class_def
 			this.JSON_Edit.value = this.Doc.JSON;
 			this.Update_Link();
 		};
+		
 		
 		this.Update_Link = function()
 		{
@@ -144,45 +145,32 @@ var TextHDPane = class_def
 
 
 
-var TextHD = class_def
+HNC.TN1.Doc = class_def
 (
-	$.Model,
+	null,
 	function( base )
 	{
 		this.Initiate = function()
 		{
-			base.Initiate.call( this );
-			
-			this.Hash = "";
-			this.JSON = "";
-			this.Value = { Title: "", Text: "", Font: "" };
-			
-			var self = this;
-			window.addEventListener( "hashchange", function() { self.Update(); } ,  false );
-			
-			this.Update();
+			//base.Initiate.call( this );
+			this.InitiateValue();
 		};
 		
-		this.Update = function()
+		this.InitiateValue = function( value )
 		{
-			var hash = location.hash.substr( 1 );
-			this.Hash = hash.match( /[A-Za-z0-9/+]+/ ) ? hash : "";
-			this.JSON = decodeURIComponent( escape( atob( this.Hash ) ) );
-			var value = $.FromJSON( this.JSON );
 			this.Value =
 			{
-				Title: value && value[ 1 ] || "--",
+				Title: value && value[ 1 ] || "Text Note",
 				Text: value && value[ 2 ] || "",
 				Font: value && value[ 3 ] || ""
 			};
-			this.Notify( "ValueChange" );
 		};
 		
 		this.GoNext = function()
 		{
 			var ar =
 			[
-				91,
+				91001,
 				this.Value.Title,
 				this.Value.Text,
 				this.Value.Font,
@@ -196,11 +184,3 @@ var TextHD = class_def
 	}
 );
 
-new function()
-{
-	TextHDPane.Create( $.Id( "App1" ) );
-}
-
-</script>
-</body>
-</html>
